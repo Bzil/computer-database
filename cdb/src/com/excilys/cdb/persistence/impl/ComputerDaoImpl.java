@@ -28,7 +28,7 @@ public enum ComputerDaoImpl implements ComputerDao {
 	private Connection connection;
 
 	private ComputerDaoImpl(){
-		connection = DaoManager.open();
+		connection = DaoManager.INSTANCE.open();
 		prepareQueries();
 	}
 

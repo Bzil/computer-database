@@ -26,7 +26,7 @@ public enum CompanyDaoImpl implements CompanyDao {
 	private final Map<String, PreparedStatement> queries = new HashMap<>();
 
 	private CompanyDaoImpl(){
-		connection = DaoManager.open();
+		connection = DaoManager.INSTANCE.open();
 		prepareQueries();
 	}
 

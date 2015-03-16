@@ -7,16 +7,17 @@ import java.sql.SQLException;
 /**
  * The Class DaoManager.
  */
-public class DaoManager {
-
+public enum DaoManager {
+	INSTANCE;
+	
 	/** The url. */
-	private static String url = "jdbc:mysql://127.0.0.1:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
+	private static final String URL = "jdbc:mysql://127.0.0.1:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
 	
 	/** The login. */
-	private static String login = "admincdb";
+	private static final String LOGIN = "admincdb";
 	
 	/** The password. */
-	private static String password = "qwerty1234";
+	private static final String PASSWORD = "qwerty1234";
 	
 	/** The connection. */
 	private static Connection connection;
@@ -26,11 +27,11 @@ public class DaoManager {
 	 *
 	 * @return the connection
 	 */
-	public static Connection open() {
-		if(connection==null){
+	public Connection open() {
+		if(connection == null){
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
-				connection = DriverManager.getConnection(url, login, password);
+				connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
 			} catch (ClassNotFoundException | SQLException e) {
 				e.printStackTrace();
 			}
@@ -43,11 +44,12 @@ public class DaoManager {
 	 *
 	 * @throws SQLException the SQL exception
 	 */
-	public static void close() throws SQLException {
+	public void close() throws SQLException {
 		if(connection!=null && !connection.isClosed()){
 			connection.close();
 			connection = null;
 		}
 
 	}
+
 }
