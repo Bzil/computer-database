@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.CompanyDao;
@@ -21,8 +23,11 @@ public enum CompanyDaoImpl implements CompanyDao {
 	/** The connection. */
 	private Connection connection;
 
+	private final Map<String, PreparedStatement> queries = new HashMap<>();
+
 	private CompanyDaoImpl(){
 		connection = DaoManager.open();
+		prepareQueries();
 	}
 
 	public CompanyDao getInstance(){
@@ -34,15 +39,35 @@ public enum CompanyDaoImpl implements CompanyDao {
 		return connection;
 	}
 
+	private void prepareQueries() {
+		try {
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM company WHERE id = ?");
+			queries.put("find", statement);
+			statement =  connection.prepareStatement("INSERT INTO company(name) values (?)",Statement.RETURN_GENERATED_KEYS);
+			queries.put("create", statement);
+			statement = connection.prepareStatement("UPDATE company SET name = ? WHERE id = ?");
+			queries.put("update", statement);
+			statement = connection.prepareStatement("DELETE FROM company WHERE id = ?");
+			queries.put("delete", statement);
+			statement = connection.prepareStatement("SELECT * FROM company");
+			queries.put("findAll", statement);
+			statement = connection.prepareStatement("SELECT COUNT(*) AS count FROM company");
+			queries.put("count", statement);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/* (non-Javadoc)
 	 * @see com.excilys.cdb.persistence.CompanyDao#find(int)
 	 */
 	@Override
 	public Company find(int id) {
-		String query = "SELECT * FROM company WHERE id = " + id;
 		Company company = null;
 		try {
-			ResultSet result = connection.createStatement().executeQuery(query);
+			PreparedStatement statement = queries.get("find");
+			statement.setInt(1, id);
+			ResultSet result = statement.executeQuery();
 			if(result.first())
 				company = new Company(id,result.getString("name"));
 
@@ -57,10 +82,9 @@ public enum CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public Company create(Company company) {
-		String query = "INSERT INTO company(name) values (?)";
 		Company ojb = null;
 		try {
-			PreparedStatement statement = (PreparedStatement) connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement statement = queries.get("create");
 			statement.setString(1, company.getName());
 			statement.executeUpdate();
 			// get keys
@@ -80,10 +104,8 @@ public enum CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public Company update(Company company) {
-		String query = "UPDATE company SET name = ? WHERE id = ?";
-		PreparedStatement statement;
 		try {
-			statement = (PreparedStatement) connection.prepareStatement(query);
+			PreparedStatement statement = queries.get("update");
 			statement.setString(1, company.getName());
 			statement.setInt(2, company.getId());
 			statement.executeUpdate();
@@ -98,13 +120,13 @@ public enum CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public void delete(Company company) {
-		String query ="DELETE FROM company WHERE id = " + company.getId();
 		try {
-			this.connection.createStatement().executeUpdate(query);
+			PreparedStatement statement = queries.get("delete");
+			statement.setInt(1, company.getId());
+			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/* (non-Javadoc)
@@ -112,10 +134,9 @@ public enum CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public List<Company> findAll() {
-		String query = "SELECT * FROM company";
 		List<Company> companys = new ArrayList<>();
 		try {
-			ResultSet result = connection.createStatement().executeQuery(query);
+			ResultSet result = queries.get("findAll").executeQuery();
 			while (result.next()) {
 				companys.add(new Company(result.getInt("id"), result.getString("name")));
 			}
@@ -130,12 +151,9 @@ public enum CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public int count() {
-		String query = "SELECT COUNT(*) AS count FROM company";
-		PreparedStatement counter;
 		int count = -1;
 		try {
-			counter = this.connection.prepareStatement(query);
-			ResultSet res = counter.executeQuery();
+			ResultSet res = queries.get("count").executeQuery();
 			res.next();
 			count = res.getInt("count");
 		} catch(SQLException e){ 

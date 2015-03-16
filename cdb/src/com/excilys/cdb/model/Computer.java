@@ -1,6 +1,6 @@
 package com.excilys.cdb.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * The Class Computer.
@@ -10,14 +10,38 @@ public class Computer {
 	/** Specific id of a computer. */
 	private int id;
 	
+	/** The name. */
+	private String name;
+	
 	/** The introduced. */
-	private LocalDate introduced;
+	private Date introduced;
 	
 	/** The discontinued. */
-	private LocalDate discontinued;
+	private Date discontinued;
 	
 	/** The compagny. */
-	private Company company;
+	private Integer companyId;
+	
+	/**
+	 * Instantiates a new computer.
+	 *
+	 * @param id the id
+	 * @param name the name
+	 * @param introduced the introducedgetTime
+	 * @param discontinued the discontinued
+	 * @param companyId the company id
+	 */
+	public Computer(int id, String name, Date introduced, Date discontinued, int companyId) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		this.companyId = companyId;
+	}
+	public Computer(String name, Date introduced, Date discontinued, int companyId) {
+		this(-1, name, introduced, discontinued, companyId);
+	}
 
 	/**
 	 * Gets the id.
@@ -33,7 +57,7 @@ public class Computer {
 	 *
 	 * @param id the new id
 	 */
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -42,8 +66,45 @@ public class Computer {
 	 *
 	 * @return the introduced
 	 */
-	public LocalDate getIntroduced() {
+	public Date getIntroduced() {
 		return introduced;
+	}
+
+	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Sets the name.
+	 *
+	 * @param name the new name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Gets the company id.
+	 *
+	 * @return the company id
+	 */
+	public int getCompanyId() {
+		return companyId;
+	}
+
+	/**
+	 * Sets the company id.
+	 *
+	 * @param companyId the new company id
+	 */
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
 	}
 
 	/**
@@ -51,7 +112,7 @@ public class Computer {
 	 *
 	 * @param introduced the new introduced
 	 */
-	public void setIntroduced(LocalDate introduced) {
+	public void setIntroduced(Date introduced) {
 		this.introduced = introduced;
 	}
 
@@ -60,7 +121,7 @@ public class Computer {
 	 *
 	 * @return the discontinued
 	 */
-	public LocalDate getDiscontinued() {
+	public Date getDiscontinued() {
 		return discontinued;
 	}
 
@@ -69,26 +130,8 @@ public class Computer {
 	 *
 	 * @param discontinued the new discontinued
 	 */
-	public void setDiscontinued(LocalDate discontinued) {
+	public void setDiscontinued(Date discontinued) {
 		this.discontinued = discontinued;
-	}
-
-	/**
-	 * Gets the compagny.
-	 *
-	 * @return the compagny
-	 */
-	public Company getCompagny() {
-		return company;
-	}
-
-	/**
-	 * Sets the compagny.
-	 *
-	 * @param company the new compagny
-	 */
-	public void setCompagny(Company company) {
-		this.company = company;
 	}
 
 	/* (non-Javadoc)
@@ -96,8 +139,11 @@ public class Computer {
 	 */
 	@Override
 	public String toString() {
-		return "Computer [id=" + id + ", introduced=" + introduced
-				+ ", discontinued=" + discontinued + ", compagny=" + company
-				+ "]";
+		return new StringBuilder("Computer [id=").append(id)
+				.append(" name : ").append(name)
+				.append(" introduced : ").append(introduced)
+				.append(" discontinued : ").append(discontinued)
+				.append(" company id : ").append(companyId)
+				.append(" ]").toString();
 	}
 }

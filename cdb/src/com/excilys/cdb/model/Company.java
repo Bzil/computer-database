@@ -19,8 +19,7 @@ public class Company {
 	}
 	
 	public Company(String name) {
-		super();
-		this.name = name;
+		this(-1, name);
 	}
 
 	/* (non-Javadoc)

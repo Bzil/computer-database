@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class DaoManager {
 
 	/** The url. */
-	private static String url = "jdbc:mysql://127.0.0.1:3306/computer-database-db";
+	private static String url = "jdbc:mysql://127.0.0.1:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
 	
 	/** The login. */
 	private static String login = "admincdb";
