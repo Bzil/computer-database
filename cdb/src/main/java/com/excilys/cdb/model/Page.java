@@ -30,7 +30,7 @@ public class Page<T> {
 	 * @param offset the to index
 	 * @return the list
 	 */
-	public List<T> Paginate(List<T> entites, int start, int offset) {
+	public List<T> paginate(List<T> entites, int start, int offset) {
 		if (offset > entites.size()){
 			offset = entites.size();
 		}
@@ -47,7 +47,7 @@ public class Page<T> {
 	 */
 	public void showPaginatedList(List<T> entities) {
 		for (int i = 0; i < entities.size(); i++) {
-			System.out.println(entities.get(i).toString());
+			System.out.println(entities.get(i));
 		}
 	}
 	/**

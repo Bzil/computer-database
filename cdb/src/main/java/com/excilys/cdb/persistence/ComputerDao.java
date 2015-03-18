@@ -24,7 +24,15 @@ public interface ComputerDao {
 	 * @return the list
 	 */
 	public List<Computer> findAll();
-
+	
+	/**
+	 * Find all.
+	 *
+	 * @param start the start
+	 * @param offset the offset
+	 * @return the list
+	 */
+	public List<Computer> findAll(int start, int offset);
 	/**
 	 * Creates the.
 	 *

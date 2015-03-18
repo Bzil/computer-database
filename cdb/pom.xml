@@ -38,7 +38,7 @@
 				</executions>
 				<configuration>
 					<skip>false</skip>
-					<mainClass>com.excilys.cdb.cli.MainCli</mainClass>
+					<mainClass>com.excilys.cdb.cli.Cli</mainClass>
 					<killAfter>-1</killAfter>
 					<arguments>
 						<argument>foo</argument>

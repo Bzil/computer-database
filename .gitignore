@@ -6,7 +6,7 @@
 
 # eclipse specific git ignore
 *.pydevproject
-#.project
+.project
 .metadata
 bin/**
 tmp/**
@@ -16,7 +16,7 @@ tmp/**/*
 *.swp
 *~.nib
 local.properties
-#.classpath
+.classpath
 .settings/
 .loadpath
 
@@ -26,4 +26,4 @@ local.properties
 # Locally stored "Eclipse launch configurations"
 *.launch
 
-Servers/
+#Servers/
