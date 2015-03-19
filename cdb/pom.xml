@@ -1,11 +1,10 @@
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.excilys</groupId>
 	<artifactId>cdb</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>computer-database</name>
 
 	<properties>
@@ -13,6 +12,9 @@
 		<powermock.version>1.6.2</powermock.version>
 		<junit.version>4.12</junit.version>
 		<slf4j.version>1.7.1</slf4j.version>
+		<dbunit.version>2.5.0</dbunit.version>
+		<h2.version>1.4.186</h2.version>
+		<mysql.version>5.1.34</mysql.version>
 	</properties>
 
 	<build>
@@ -53,7 +55,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.34</version>
+			<version>${mysql.version}</version>
 		</dependency>
 
 		<dependency>
@@ -73,14 +75,14 @@
 		<dependency>
 			<groupId>org.dbunit</groupId>
 			<artifactId>dbunit</artifactId>
-			<version>2.5.0</version>
+			<version>${dbunit.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.4.186</version>
+			<version>${h2.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -90,6 +92,7 @@
 			<version>${powermock.version}</version>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-api-mockito</artifactId>
