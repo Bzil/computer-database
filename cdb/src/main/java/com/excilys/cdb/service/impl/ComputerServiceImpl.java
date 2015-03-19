@@ -22,7 +22,7 @@ public enum ComputerServiceImpl implements ComputerService {
 	 * Instantiates a new computer service impl.
 	 */
 	private ComputerServiceImpl() {
-		dao = ComputerDaoImpl.INSTANCE.getInstance();
+		dao = ComputerDaoImpl.getInstance();
 	}
 
 	/**

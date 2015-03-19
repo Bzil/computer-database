@@ -22,7 +22,7 @@ public enum CompanyServiceImpl implements CompanyService {
 	 * Instantiates a new company service impl.
 	 */
 	private CompanyServiceImpl() {
-		dao = CompanyDaoImpl.INSTANCE.getInstance();
+		dao = CompanyDaoImpl.getInstance();
 	}
 
 	/**
@@ -89,7 +89,10 @@ public enum CompanyServiceImpl implements CompanyService {
 	public Company update(Company company) {
 		return dao.update(company);
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.service.CompanyService#findAll(int, int)
+	 */
 	@Override
 	public List<Company> findAll(int start, int offset) {
 		return dao.findAll(start, offset);

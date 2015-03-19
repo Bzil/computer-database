@@ -8,14 +8,20 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * The Class DaoManager.
  */
-public enum DaoManager implements AutoCloseable{
+public enum DaoManager implements AutoCloseable {
 	INSTANCE;
 
-	private final static String FILE_NAME = "src/main/resources/mysql.properties";
+	String propertiesFile = "src/main/resources/mysql.properties";
 
+	/** The Constant LOOGER. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(DaoManager.class);
+	
 	/** The connection. */
 	private Connection connection;
 
@@ -28,16 +34,17 @@ public enum DaoManager implements AutoCloseable{
 	 */
 	public Connection getConnection() {
 		connection = null;
-		try (
-				InputStream ips = new FileInputStream(FILE_NAME);
-				){
+		try (InputStream ips = new FileInputStream(propertiesFile);) {
 			prop.load(ips);
 			String url = prop.getProperty("url");
 			connection = (Connection) DriverManager.getConnection(url, prop);
+			LOGGER.info("Connect to Database with this url : " + url);
 		} catch (IOException e) {
+			LOGGER.debug("Can't open/read mysql.properties");
 			System.err.println(e);
 		} catch (SQLException e) {
-			System.err.println(e); 
+			LOGGER.debug("Can't open new connection");
+			System.err.println(e);
 		}
 		return connection;
 	}
@@ -51,6 +58,7 @@ public enum DaoManager implements AutoCloseable{
 		try {
 			connection.close();
 		} catch (SQLException e) {
+			LOGGER.debug("Can't close existing connection");
 			System.err.println(e);
 		}
 	}

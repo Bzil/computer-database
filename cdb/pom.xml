@@ -10,6 +10,9 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<powermock.version>1.6.2</powermock.version>
+		<junit.version>4.12</junit.version>
+		<slf4j.version>1.7.1</slf4j.version>
 	</properties>
 
 	<build>
@@ -40,15 +43,12 @@
 					<skip>false</skip>
 					<mainClass>com.excilys.cdb.cli.Cli</mainClass>
 					<killAfter>-1</killAfter>
-					<arguments>
-						<argument>foo</argument>
-						<argument>bar</argument>
-					</arguments>
 				</configuration>
 			</plugin>
 
 		</plugins>
 	</build>
+
 	<dependencies>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -57,10 +57,45 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<!-- TEST -->
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+			<version>2.5.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.186</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 </project>

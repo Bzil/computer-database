@@ -8,6 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.Mapper;
 import com.excilys.cdb.model.Company;
@@ -19,11 +22,12 @@ import com.excilys.cdb.persistence.DaoManager;
  */
 public enum CompanyDaoImpl implements CompanyDao {
 	INSTANCE;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDaoImpl.class);
+	
+	private CompanyDaoImpl() {}
 
-	private CompanyDaoImpl() {
-	}
-
-	public CompanyDao getInstance() {
+	public static CompanyDao getInstance() {
 		return INSTANCE;
 	}
 
@@ -46,6 +50,7 @@ public enum CompanyDaoImpl implements CompanyDao {
 			}
 
 		} catch (SQLException e) {
+			LOGGER.debug("Can't execute select request with id " + id );
 			e.printStackTrace();
 		}
 		return company;
@@ -60,7 +65,6 @@ public enum CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public Company create(Company company) {
-		Company ojb = null;
 		try (Connection connection = DaoManager.INSTANCE.getConnection();
 				PreparedStatement statement = connection.prepareStatement(
 						"INSERT INTO company(name) values (?)",
@@ -71,13 +75,14 @@ public enum CompanyDaoImpl implements CompanyDao {
 			// get keys
 			ResultSet generatedKeys = statement.getGeneratedKeys();
 			if (generatedKeys.next()) {
-				ojb = this.find(generatedKeys.getInt(1));
+				company.setId(generatedKeys.getInt(1));
 			}
 
 		} catch (SQLException e) {
+			LOGGER.debug("Can't exectute create request of " + company);
 			e.printStackTrace();
 		}
-		return ojb;
+		return company;
 	}
 
 	/*
@@ -96,9 +101,11 @@ public enum CompanyDaoImpl implements CompanyDao {
 			statement.setInt(2, company.getId());
 			statement.executeUpdate();
 		} catch (SQLException e) {
+			company = null;
+			LOGGER.debug("Can't exceute update request of " + company);
 			e.printStackTrace();
 		}
-		return this.find(company.getId());
+		return company;
 	}
 
 	/*
@@ -116,6 +123,7 @@ public enum CompanyDaoImpl implements CompanyDao {
 			statement.setInt(1, company.getId());
 			statement.executeUpdate();
 		} catch (SQLException e) {
+			LOGGER.debug("Can't execute delete request of " + company);
 			e.printStackTrace();
 		}
 	}
@@ -127,38 +135,40 @@ public enum CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public List<Company> findAll() {
-		List<Company> companys = new ArrayList<>();
+		List<Company> companies = new ArrayList<>();
 		Mapper<Company> mapper = new CompanyMapper();
 		try (Connection connection = DaoManager.INSTANCE.getConnection();
 				PreparedStatement statement = connection
 						.prepareStatement("SELECT * FROM company");) {
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				companys.add((Company) mapper.rowMap(result));
+				companies.add((Company) mapper.rowMap(result));
 			}
 		} catch (SQLException e) {
+			LOGGER.debug("Can't find all computer");
 			e.printStackTrace();
 		}
-		return companys;
+		return companies;
 	}
 
 	@Override
 	public List<Company> findAll(int start, int offset) {
-		List<Company> companys = new ArrayList<>();
+		List<Company> companies = new ArrayList<>();
 		Mapper<Company> mapper = new CompanyMapper();
 		try (Connection connection = DaoManager.INSTANCE.getConnection();
 				PreparedStatement statement = connection
-						.prepareStatement("SELECT * FROM computer LIMIT ?, ? ");) {
+						.prepareStatement("SELECT * FROM company LIMIT ?, ? ");) {
 			statement.setInt(1, start);
 			statement.setInt(2, offset);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				companys.add((Company) mapper.rowMap(result));
+				companies.add((Company) mapper.rowMap(result));
 			}
 		} catch (SQLException e) {
+			LOGGER.debug("Can't find all computer between [" + start +"-"+ (start+offset) +"]" );
 			e.printStackTrace();
 		}
-		return companys;
+		return companies;
 	}
 
 	/*
@@ -176,6 +186,7 @@ public enum CompanyDaoImpl implements CompanyDao {
 			res.next();
 			count = res.getInt("count");
 		} catch (SQLException e) {
+			LOGGER.debug("Can't execute count request");
 			e.printStackTrace();
 		}
 		return count;

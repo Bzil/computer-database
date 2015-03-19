@@ -10,6 +10,9 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.mapper.Mapper;
 import com.excilys.cdb.model.Computer;
@@ -21,11 +24,13 @@ import com.excilys.cdb.persistence.DaoManager;
  */
 public enum ComputerDaoImpl implements ComputerDao {
 	INSTANCE;
-
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
+	
 	private ComputerDaoImpl() {
 	}
 
-	public ComputerDao getInstance() {
+	public static ComputerDao getInstance() {
 		return INSTANCE;
 	}
 
@@ -47,7 +52,8 @@ public enum ComputerDaoImpl implements ComputerDao {
 				computer = (Computer) mapper.rowMap(result);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.debug("Can't execute select request with id " + id );
+			//e.printStackTrace();
 		}
 		return computer;
 	}
@@ -94,7 +100,8 @@ public enum ComputerDaoImpl implements ComputerDao {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.debug("Can't exectute create request of " + computer);
+			//e.printStackTrace();
 		}
 		return computer;
 	}
@@ -132,9 +139,11 @@ public enum ComputerDaoImpl implements ComputerDao {
 			statement.setInt(5, computer.getId());
 			statement.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			computer = null;
+			LOGGER.debug("Can't exceute update request of " + computer);
+			//e.printStackTrace();
 		}
-		return this.find(computer.getId());
+		return computer;
 	}
 
 	/*
@@ -152,6 +161,7 @@ public enum ComputerDaoImpl implements ComputerDao {
 			statement.setInt(1, computer.getId());
 			statement.executeUpdate();
 		} catch (SQLException e) {
+			LOGGER.debug("Can't execute delete request of " + computer);
 			e.printStackTrace();
 		}
 
@@ -171,7 +181,8 @@ public enum ComputerDaoImpl implements ComputerDao {
 			res.next();
 			count = res.getInt("count");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.debug("Can't execute count request");
+			//e.printStackTrace();
 		}
 		return count;
 
@@ -193,11 +204,17 @@ public enum ComputerDaoImpl implements ComputerDao {
 				computers.add((Computer) mapper.rowMap(result));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOGGER.debug("Can't find all computer");
+			//e.printStackTrace();
 		}
 		return computers;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.excilys.cdb.persistence.ComputerDao#findAll(int, int)
+	 */
 	@Override
 	public List<Computer> findAll(int start, int offset) {
 		List<Computer> computers = new ArrayList<>();
@@ -212,6 +229,7 @@ public enum ComputerDaoImpl implements ComputerDao {
 				computers.add((Computer) mapper.rowMap(result));
 			}
 		} catch (SQLException e) {
+			LOGGER.debug("Can't find all computer between [" + start +"-"+ (start+offset) +"]" );
 			e.printStackTrace();
 		}
 		return computers;
