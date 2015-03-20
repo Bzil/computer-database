@@ -74,7 +74,7 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="0"></td>
-							<td><a href="EditComputerServlet" onclick="">${computer.name}</a>
+							<td><a href="EditComputerServlet" onclick="">${computer.name}  ${computer.id}</a>
 							</td>
 							<td>${computer.introduced}</td>
 							<td>${computer.discontinued}</td>
@@ -93,7 +93,7 @@
 				<li><a href="#" aria-label="Previous"> <span
 						aria-hidden="true">&laquo;</span>
 				</a></li>
-				<c:forEach var="i" begin="1" end="${count / computerPage.offset}">
+				<c:forEach var="i" begin="1" end="${nbPage}">
 					<li><a href="dashboard?page=${i}">${i}</a></li>
 				</c:forEach>
 				<!--  <li><a href="#">1</a></li>

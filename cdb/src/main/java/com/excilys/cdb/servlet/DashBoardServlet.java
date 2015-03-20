@@ -1,6 +1,5 @@
 package com.excilys.cdb.servlet;
 
-import java.util.List;
 import java.io.IOException;
 
 import javax.servlet.ServletConfig;
@@ -10,13 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
-import com.excilys.cdb.servlet.dto.ComputerDTO;
-import com.excilys.cdb.servlet.dto.DTO;
 import com.excilys.cdb.util.ComputerPage;
-import com.excilys.cdb.util.Page;
 
 @WebServlet(urlPatterns = "/dashboard", loadOnStartup = 1)
 public class DashBoardServlet extends HttpServlet {
@@ -35,19 +30,29 @@ public class DashBoardServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ComputerPage computerPage = new ComputerPage();
+		// count of cumputer
 		int count = cs.count();
+
+		// size of list
 		if (request.getParameter("size") != null) {
 			computerPage.setOffset(Integer.parseInt(request
 					.getParameter("size")));
+		} else {
+			computerPage.setOffset(55);
 		}
+
+		// page id
 		if (request.getParameter("page") != null) {
-			computerPage
-					.setStart(Integer.parseInt(request.getParameter("page")));
+			computerPage.setStart((Integer.parseInt(request
+					.getParameter("page")) - 1) * computerPage.getOffset());
+		} else {
+			computerPage.setStart(0);
 		}
 
-		List<DTO<Computer>> computers = computerPage.paginate(
-				computerPage.getStart(), computerPage.getOffset());
-
+		computerPage
+				.paginate(computerPage.getStart(), computerPage.getOffset());
+		int nbPage = count / computerPage.getOffset();
+		request.setAttribute("nbPage", nbPage);
 		request.setAttribute("count", count);
 		request.setAttribute("computerPage", computerPage);
 		request.getRequestDispatcher("dashboard.jsp")

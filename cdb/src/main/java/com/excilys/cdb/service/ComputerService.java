@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.excilys.cdb.model.Computer;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Interface ComputerService.
  */

@@ -1,4 +1,4 @@
-package com.excilys.cdb.servlet.dto;
+package com.excilys.cdb.util.dto;
 
 import com.excilys.cdb.model.Company;
 
@@ -12,5 +12,10 @@ public class CompanyDTO implements DTO<Company>{
 		dto.id = company.getId();
 		dto.name = company.getName();
 		return dto;
+	}
+	
+	@Override
+	public String toString() {
+		return "Company [id=" + id + ", name=" + name + "]";
 	}
 }

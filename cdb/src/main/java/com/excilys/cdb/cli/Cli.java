@@ -7,18 +7,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-import com.excilys.cdb.model.Company;
+
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.service.CompanyService;
-import com.excilys.cdb.service.impl.CompanyServiceImpl;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
-import com.excilys.cdb.util.Page;
+import com.excilys.cdb.util.CompanyPage;
+import com.excilys.cdb.util.ComputerPage;
 
 public class Cli {
-
-	private static CompanyService companyService = CompanyServiceImpl.INSTANCE
-			.getInstance();
+ 
 	private static ComputerService computerService = ComputerServiceImpl.INSTANCE
 			.getInstance();
 
@@ -129,14 +126,12 @@ public class Cli {
 	}
 
 	private void showComputers() {
-		Page<Computer> pages = new Page<Computer>();
+		ComputerPage pages = new ComputerPage();
 		int start = 0;
 		int offset = 10;
-		List<Computer> computers;
 		boolean exit = false;
 		while (!exit) {
-			computers = computerService.findAll(start, offset);
-			pages.showPaginatedList(pages.paginate(computers, start, offset));
+			pages.showPaginatedList(pages.paginate(start, offset));
 			System.out.println("Show more ? [y/n]");
 			String choice = getChoice(toList("y", "n"));
 			switch (choice) {
@@ -151,14 +146,12 @@ public class Cli {
 	}
 
 	private void showCompanies() {
-		Page<Company> pages = new Page<Company>();
+		CompanyPage pages = new CompanyPage();
 		int start = 0;
 		int offset = 10;
-		List<Company> companies;
 		boolean exit = false;
 		while (!exit) {
-			companies = companyService.findAll(start, offset);
-			pages.showPaginatedList(pages.paginate(companies, start, offset));
+			pages.showPaginatedList(pages.paginate(start, offset));
 			System.out.println("Show more ? [y/n]");
 			String choice = getChoice(toList("y", "n"));
 			switch (choice) {

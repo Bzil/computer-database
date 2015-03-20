@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.cdb.service.Service;
-import com.excilys.cdb.servlet.dto.CompanyDTO;
-import com.excilys.cdb.servlet.dto.ComputerDTO;
-import com.excilys.cdb.servlet.dto.DTO;
+import com.excilys.cdb.util.dto.DTO;
 
 /**
  * The Class Page.
@@ -39,7 +37,7 @@ public abstract class Page<T> {
 	 * @return the list
 	 */
 	public List<DTO<T>> paginate(int start, int offset) {
-		if (start < 0 || start > offset) {
+		if (start < 0 || offset < 0) {
 			throw new IndexOutOfBoundsException();
 		}
 			
@@ -57,12 +55,12 @@ public abstract class Page<T> {
 	/**
 	 * Show paginated list.
 	 *
-	 * @param entities
+	 * @param list
 	 *            the entities
 	 */
-	public void showPaginatedList(List<T> entities) {
-		for (int i = 0; i < entities.size(); i++) {
-			System.out.println(entities.get(i));
+	public void showPaginatedList(List<DTO<T>> list) {
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i));
 		}
 	}
 

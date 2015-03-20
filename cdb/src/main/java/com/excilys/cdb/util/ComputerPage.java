@@ -3,7 +3,7 @@ package com.excilys.cdb.util;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
-import com.excilys.cdb.servlet.dto.ComputerDTO;
+import com.excilys.cdb.util.dto.ComputerDTO;
 
 public class ComputerPage extends Page<Computer> {
 
