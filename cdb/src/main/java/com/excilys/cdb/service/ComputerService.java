@@ -4,10 +4,11 @@ import java.util.List;
 
 import com.excilys.cdb.model.Computer;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Interface ComputerService.
  */
-public interface ComputerService {
+public interface ComputerService extends Service<Computer>{
 
 	/**
 	 * Find.
@@ -61,4 +62,11 @@ public interface ComputerService {
 	 * @return the computer
 	 */
 	public Computer update(Computer computer);
+	
+	/**
+	 * Count.
+	 *
+	 * @return c
+	 */
+	public int count();
 }

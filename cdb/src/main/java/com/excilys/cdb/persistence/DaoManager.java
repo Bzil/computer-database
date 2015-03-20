@@ -16,8 +16,9 @@ import org.slf4j.LoggerFactory;
  */
 public enum DaoManager implements AutoCloseable {
 	INSTANCE;
-
-	String propertiesFile = "src/main/resources/mysql.properties";
+	
+	
+	String propertiesFile = "mysql.properties";
 
 	/** The Constant LOOGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(DaoManager.class);
@@ -30,19 +31,25 @@ public enum DaoManager implements AutoCloseable {
 	/**
 	 * Gets the connection.
 	 *
-	 * @return the connection
+	 * @return the connection 
 	 */
 	public Connection getConnection() {
 		connection = null;
-		try (InputStream ips = new FileInputStream(propertiesFile);) {
+		try (
+				
+			InputStream ips = DaoManager.class.getClassLoader().getResourceAsStream(propertiesFile)) {
 			prop.load(ips);
 			String url = prop.getProperty("url");
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			connection = (Connection) DriverManager.getConnection(url, prop);
 			LOGGER.info("Connect to Database with this url : " + url);
 		} catch (IOException e) {
 			LOGGER.debug("Can't open/read mysql.properties");
 			System.err.println(e);
 		} catch (SQLException e) {
+			LOGGER.debug("Can't open new connection");
+			System.err.println(e);
+		} catch (Exception e) {
 			LOGGER.debug("Can't open new connection");
 			System.err.println(e);
 		}

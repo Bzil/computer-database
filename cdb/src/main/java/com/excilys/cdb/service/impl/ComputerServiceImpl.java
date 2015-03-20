@@ -91,9 +91,20 @@ public enum ComputerServiceImpl implements ComputerService {
 		return dao.update(computer);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.service.ComputerService#findAll(int, int)
+	 */
 	@Override
 	public List<Computer> findAll(int start, int offset) {
 		return dao.findAll(start, offset);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.service.ComputerService#count()
+	 */
+	@Override
+	public int count() {
+		return dao.count();
 	}
 
 }

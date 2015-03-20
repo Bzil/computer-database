@@ -2,7 +2,6 @@ package com.excilys.cdb.model;
 
 import java.time.LocalDateTime;
 
-
 /**
  * The Class Computer.
  */
@@ -37,8 +36,8 @@ public class Computer {
 	 * @param companyId
 	 *            the company id
 	 */
-	public Computer(int id, String name, LocalDateTime introduced, LocalDateTime discontinued,
-			int companyId) {
+	public Computer(int id, String name, LocalDateTime introduced,
+			LocalDateTime discontinued, int companyId) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -47,15 +46,17 @@ public class Computer {
 		this.companyId = companyId;
 	}
 
-	public Computer(String name, LocalDateTime introduced, LocalDateTime discontinued,
-			int companyId) {
+	public Computer(String name, LocalDateTime introduced,
+			LocalDateTime discontinued, int companyId) {
 		this(-1, name, introduced, discontinued, companyId);
 	}
-	
-	public Computer(String name){
+
+	public Computer(String name) {
 		this.name = name;
 	}
-	public Computer() {}
+
+	public Computer() {
+	}
 
 	/**
 	 * Gets the id.
@@ -211,7 +212,4 @@ public class Computer {
 		return true;
 	}
 
-	
-	
-	
 }

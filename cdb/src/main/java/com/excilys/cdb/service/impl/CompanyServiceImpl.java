@@ -98,4 +98,11 @@ public enum CompanyServiceImpl implements CompanyService {
 		return dao.findAll(start, offset);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.service.CompanyService#count()
+	 */
+	@Override
+	public int count() {
+		return dao.count();
+	}
 }

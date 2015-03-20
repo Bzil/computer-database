@@ -24,7 +24,7 @@ public class CompanyDaoTest {
 
 	@BeforeClass
 	public static void setUp() {
-		DaoManager.INSTANCE.propertiesFile = "src/test/resources/h2.properties";
+		DaoManager.INSTANCE.propertiesFile = "h2.properties";
 
 		try {
 			H2Util.executeSqlFile(H2Util.getConnection());

@@ -7,7 +7,7 @@ import com.excilys.cdb.model.Company;
 /**
  * The Interface CompanyService.
  */
-public interface CompanyService {
+public interface CompanyService extends Service<Company> {
 
 	/**
 	 * Find.
@@ -61,4 +61,11 @@ public interface CompanyService {
 	 * @return the company
 	 */
 	public Company update(Company company);
+	
+	/**
+	 * Count.
+	 *
+	 * @return c
+	 */
+	public int count();
 }
