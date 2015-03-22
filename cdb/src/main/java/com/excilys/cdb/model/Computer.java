@@ -20,7 +20,7 @@ public class Computer {
 	private LocalDateTime discontinued;
 
 	/** The compagny. */
-	private int companyId;
+	private Company company;
 
 	/**
 	 * Instantiates a new computer.
@@ -37,18 +37,18 @@ public class Computer {
 	 *            the company id
 	 */
 	public Computer(int id, String name, LocalDateTime introduced,
-			LocalDateTime discontinued, int companyId) {
+			LocalDateTime discontinued, Company company) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.companyId = companyId;
+		this.company = company;
 	}
 
 	public Computer(String name, LocalDateTime introduced,
-			LocalDateTime discontinued, int companyId) {
-		this(-1, name, introduced, discontinued, companyId);
+			LocalDateTime discontinued, Company company) {
+		this(-1, name, introduced, discontinued, company);
 	}
 
 	public Computer(String name) {
@@ -110,8 +110,8 @@ public class Computer {
 	 *
 	 * @return the company id
 	 */
-	public int getCompanyId() {
-		return companyId;
+	public Company getCompany() {
+		return company;
 	}
 
 	/**
@@ -120,8 +120,8 @@ public class Computer {
 	 * @param companyId
 	 *            the new company id
 	 */
-	public void setCompanyId(int companyId) {
-		this.companyId = companyId;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class Computer {
 		return new StringBuilder("Computer [id=").append(id).append(" name : ")
 				.append(name).append(" introduced : ").append(introduced)
 				.append(" discontinued : ").append(discontinued)
-				.append(" company id : ").append(companyId).append(" ]")
+				.append(" company : ").append(company).append(" ]")
 				.toString();
 	}
 
@@ -171,7 +171,7 @@ public class Computer {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + companyId;
+		result = prime * result + ((company == null) ? 0 : company.hashCode());
 		result = prime * result
 				+ ((discontinued == null) ? 0 : discontinued.hashCode());
 		result = prime * result + id;
@@ -190,7 +190,10 @@ public class Computer {
 		if (getClass() != obj.getClass())
 			return false;
 		Computer other = (Computer) obj;
-		if (companyId != other.companyId)
+		if (company == null) {
+			if (other.company != null)
+				return false;
+		} else if (!company.equals(other.company))
 			return false;
 		if (discontinued == null) {
 			if (other.discontinued != null)
@@ -212,4 +215,5 @@ public class Computer {
 		return true;
 	}
 
+	
 }

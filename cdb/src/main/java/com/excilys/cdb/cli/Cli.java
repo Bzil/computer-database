@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-
+import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
@@ -213,7 +213,8 @@ public class Cli {
 		System.out.println("Company Id");
 		buffer = getChoice();
 		if (!buffer.equals("null")) {
-			computer.setCompanyId(Integer.parseInt(buffer));
+			computer.setCompany(new Company());
+			computer.getCompany().setId(Integer.parseInt(buffer));
 		}
 		computer.setIntroduced(introduced);
 		computer.setDiscontinued(discontinued);
@@ -246,7 +247,10 @@ public class Cli {
 			System.out.println("Company Id");
 			buffer = getChoice();
 			if (!buffer.equals("null")) {
-				computer.setCompanyId(Integer.parseInt(buffer));
+				if(computer.getCompany() == null) {
+					computer.setCompany(new Company());
+				}
+				computer.getCompany().setId(Integer.parseInt(buffer));
 
 			}
 			System.out.println(computerService.update(computer));

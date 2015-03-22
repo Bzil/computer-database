@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.mapper.Mapper;
+import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDao;
 import com.excilys.cdb.persistence.DaoManager;
@@ -24,9 +25,10 @@ import com.excilys.cdb.persistence.DaoManager;
  */
 public enum ComputerDaoImpl implements ComputerDao {
 	INSTANCE;
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
-	
+
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(ComputerDaoImpl.class);
+
 	private ComputerDaoImpl() {
 	}
 
@@ -50,10 +52,11 @@ public enum ComputerDaoImpl implements ComputerDao {
 			ResultSet result = statement.executeQuery();
 			if (result.first()) {
 				computer = (Computer) mapper.rowMap(result);
+				computer.setCompany(findFromId(computer.getCompany().getId()));
 			}
 		} catch (SQLException e) {
-			LOGGER.debug("Can't execute select request with id " + id );
-			//e.printStackTrace();
+			LOGGER.debug("Can't execute select request with id " + id);
+			// e.printStackTrace();
 		}
 		return computer;
 	}
@@ -72,7 +75,6 @@ public enum ComputerDaoImpl implements ComputerDao {
 						.prepareStatement(
 								"INSERT INTO computer(name, introduced, discontinued, company_id) values (?, ?, ?, ?)",
 								Statement.RETURN_GENERATED_KEYS);) {
-			System.out.println(computer);
 			statement.setString(1, computer.getName());
 
 			if (computer.getIntroduced() != null) {
@@ -87,8 +89,9 @@ public enum ComputerDaoImpl implements ComputerDao {
 			} else {
 				statement.setNull(3, Types.TIMESTAMP);
 			}
-			if (computer.getCompanyId() != -1) {
-				statement.setInt(4, computer.getCompanyId());
+			if (computer.getCompany() != null
+					&& computer.getCompany().getId() != -1) {
+				statement.setInt(4, computer.getCompany().getId());
 			} else {
 				statement.setNull(4, Types.INTEGER);
 			}
@@ -101,8 +104,11 @@ public enum ComputerDaoImpl implements ComputerDao {
 
 		} catch (SQLException e) {
 			LOGGER.debug("Can't exectute create request of " + computer);
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
+		if( computer.getCompany() != null )
+			computer.setCompany(findFromId(computer.getCompany().getId()));
+
 		return computer;
 	}
 
@@ -131,8 +137,9 @@ public enum ComputerDaoImpl implements ComputerDao {
 			} else {
 				statement.setNull(3, Types.TIMESTAMP);
 			}
-			if (computer.getCompanyId() != -1) {
-				statement.setInt(4, computer.getCompanyId());
+			if (computer.getCompany() != null
+					&& computer.getCompany().getId() != -1) {
+				statement.setInt(4, computer.getCompany().getId());
 			} else {
 				statement.setNull(4, Types.INTEGER);
 			}
@@ -141,7 +148,7 @@ public enum ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			computer = null;
 			LOGGER.debug("Can't exceute update request of " + computer);
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 		return computer;
 	}
@@ -182,7 +189,7 @@ public enum ComputerDaoImpl implements ComputerDao {
 			count = res.getInt("count");
 		} catch (SQLException e) {
 			LOGGER.debug("Can't execute count request");
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 		return count;
 
@@ -201,11 +208,13 @@ public enum ComputerDaoImpl implements ComputerDao {
 				ResultSet result = connection.createStatement().executeQuery(
 						"SELECT * FROM computer");) {
 			while (result.next()) {
-				computers.add((Computer) mapper.rowMap(result));
+				Computer computer = (Computer) mapper.rowMap(result);
+				computer.setCompany(findFromId(computer.getCompany().getId()));
+				computers.add(computer);
 			}
 		} catch (SQLException e) {
 			LOGGER.debug("Can't find all computer");
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 		return computers;
 	}
@@ -226,12 +235,19 @@ public enum ComputerDaoImpl implements ComputerDao {
 			statement.setInt(2, offset);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				computers.add((Computer) mapper.rowMap(result));
+				Computer computer = (Computer) mapper.rowMap(result);
+				computer.setCompany(findFromId(computer.getCompany().getId()));
+				computers.add(computer);
 			}
 		} catch (SQLException e) {
-			LOGGER.debug("Can't find all computer between [" + start +"-"+ (start+offset) +"]" );
+			LOGGER.debug("Can't find all computer between [" + start + "-"
+					+ (start + offset) + "]");
 			e.printStackTrace();
 		}
 		return computers;
+	}
+
+	private Company findFromId(int id) {
+		return CompanyDaoImpl.getInstance().find(id);
 	}
 }

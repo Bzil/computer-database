@@ -232,6 +232,6 @@ public class CompanyDaoTest {
 		}
 		final List<Company> companies = CompanyDaoImpl.getInstance().findAll(0,2);
 		assertEquals(2, companies.size());
-		// assertEquals(companiesExpected, companies);
+		assertEquals(companiesExpected, companies);
 	}
 }

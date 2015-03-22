@@ -3,6 +3,7 @@ package com.excilys.cdb.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 
 /**
@@ -24,7 +25,8 @@ public class ComputerMapper implements Mapper<Computer> {
 		if(result.getTimestamp("discontinued") != null ) {
 			computer.setDiscontinued(result.getTimestamp("discontinued").toLocalDateTime());
 		}
-		computer.setCompanyId(result.getInt("company_id"));
+		computer.setCompany(new Company());
+		computer.getCompany().setId(result.getInt("company_id"));
 
 		return computer;
 	}

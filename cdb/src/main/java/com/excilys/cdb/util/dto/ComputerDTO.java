@@ -4,13 +4,13 @@ import java.time.LocalDateTime;
 
 import com.excilys.cdb.model.Computer;
 
-public class ComputerDTO implements DTO<Computer>{
+public class ComputerDTO implements DTO<Computer> {
 
 	public int id;
 	public String name;
 	public LocalDateTime introduced;
 	public LocalDateTime discontinued;
-	public int companyId;
+	public String companyName;
 
 	public static ComputerDTO toDTO(Computer computer) {
 		ComputerDTO dto = new ComputerDTO();
@@ -18,7 +18,7 @@ public class ComputerDTO implements DTO<Computer>{
 		dto.name = computer.getName();
 		dto.introduced = computer.getIntroduced();
 		dto.discontinued = computer.getDiscontinued();
-		dto.companyId = computer.getCompanyId();
+		dto.companyName = (computer.getCompany() != null ) ? computer.getCompany().getName() : "" ;
 		return dto;
 	}
 
@@ -38,16 +38,16 @@ public class ComputerDTO implements DTO<Computer>{
 		return discontinued;
 	}
 
-	public int getCompanyId() {
-		return companyId;
+	public String getCompanyName() {
+		return companyName;
 	}
-	
+
 	@Override
 	public String toString() {
 		return new StringBuilder("Computer [id=").append(id).append(" name : ")
 				.append(name).append(" introduced : ").append(introduced)
 				.append(" discontinued : ").append(discontinued)
-				.append(" company id : ").append(companyId).append(" ]")
+				.append(" company name : ").append(companyName).append(" ]")
 				.toString();
 	}
 
