@@ -17,7 +17,7 @@ public abstract class Page<T> {
 	/** The entities. */
 	private List<DTO<T>> entities = new ArrayList<>();
 
-	/** The from index. */
+	/** The index of T in base. */
 	private int start = 0;
 
 	/** The to index. */
@@ -37,7 +37,7 @@ public abstract class Page<T> {
 	 * @return the list
 	 */
 	public List<DTO<T>> paginate(int start, int offset) {
-		if (start < 0 || offset < 0) {
+		if (start < 0 || offset < 0 || start > offset ) {
 			throw new IndexOutOfBoundsException();
 		}
 			

@@ -1,40 +1,35 @@
 package com.excilys.cdb.util.dto;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.excilys.cdb.model.Computer;
 
 public class ComputerDTO implements DTO<Computer> {
 
-	public int id;
 	public String name;
-	public LocalDateTime introduced;
-	public LocalDateTime discontinued;
+	public String introduced;
+	public String discontinued;
 	public String companyName;
 
 	public static ComputerDTO toDTO(Computer computer) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		ComputerDTO dto = new ComputerDTO();
-		dto.id = computer.getId();
 		dto.name = computer.getName();
-		dto.introduced = computer.getIntroduced();
-		dto.discontinued = computer.getDiscontinued();
+		dto.introduced =   computer.getIntroduced() != null   ? computer.getIntroduced().format(formatter) : "";
+		dto.discontinued = computer.getDiscontinued() != null ? computer.getDiscontinued().format(formatter) : "";
 		dto.companyName = (computer.getCompany() != null ) ? computer.getCompany().getName() : "" ;
 		return dto;
-	}
-
-	public int getId() {
-		return id;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public LocalDateTime getIntroduced() {
+	public String getIntroduced() {
 		return introduced;
 	}
 
-	public LocalDateTime getDiscontinued() {
+	public String getDiscontinued() {
 		return discontinued;
 	}
 
@@ -44,7 +39,7 @@ public class ComputerDTO implements DTO<Computer> {
 
 	@Override
 	public String toString() {
-		return new StringBuilder("Computer [id=").append(id).append(" name : ")
+		return new StringBuilder("Computer [name : ")
 				.append(name).append(" introduced : ").append(introduced)
 				.append(" discontinued : ").append(discontinued)
 				.append(" company name : ").append(companyName).append(" ]")

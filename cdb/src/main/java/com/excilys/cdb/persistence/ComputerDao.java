@@ -18,6 +18,13 @@ public interface ComputerDao {
 	 */
 	public Computer find(int id);
 
+	
+	/**
+	 * @param name
+	 * @return
+	 */
+	public Computer find(String name);
+
 	/**
 	 * Find all.
 	 *

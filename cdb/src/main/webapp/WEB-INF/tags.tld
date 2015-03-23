@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+
+	<description>My tags</description>
+	<display-name>Tag</display-name>
+	<tlib-version>2.0</tlib-version>
+	<short-name>tags</short-name>
+
+	<tag>
+		<name>link</name>
+		<tag-class>com.excilys.cdb.servlet.tag.LinkTag</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>uri</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>pagination</name>
+		<tag-class>com.excilys.cdb.servlet.tag.PaginationTag</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>page</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>count</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+
+
+	<tag>
+		<name>Hello</name>
+		<tag-class>com.excilys.cdb.servlet.tag.HelloTag</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+
+</taglib>

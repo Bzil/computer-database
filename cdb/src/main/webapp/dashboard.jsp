@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="tag" uri="WEB-INF/tags.tld"%>
 <html>
 <head>
 <title>Computer Database</title>
@@ -34,7 +35,7 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer.jsp">Add
+					<a class="btn btn-success" id="addComputer" href="addComputer">Add
 						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
@@ -74,11 +75,11 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="0"></td>
-							<td><a href="EditComputerServlet" onclick="">${computer.name}  ${computer.id}</a>
+							<td><a href="EditComputerServlet" onclick="">${computer.name}</a>
 							</td>
 							<td>${computer.introduced}</td>
 							<td>${computer.discontinued}</td>
-							<td>${computer.companyId}</td>
+							<td>${computer.companyName}</td>
 						</tr>
 					</c:forEach>
 
@@ -90,20 +91,7 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
-				<li><a href="#" aria-label="Previous"> <span
-						aria-hidden="true">&laquo;</span>
-				</a></li>
-				<c:forEach var="i" begin="1" end="${nbPage}">
-					<li><a href="dashboard?page=${i}">${i}</a></li>
-				</c:forEach>
-				<!--  <li><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>	
-              <li><a href="#">5</a></li>
-              -->
-				<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-				</a></li>
+              	<tag:pagination count="${nbPage}" page="${page}" />
 			</ul>
 
 			<div class="btn-group btn-group-sm pull-right" role="group">

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.excilys.cdb.model.Computer;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Interface ComputerService.
  */
@@ -17,6 +18,14 @@ public interface ComputerService extends Service<Computer>{
 	 * @return the computer
 	 */
 	public Computer find(int id);
+	
+	/**
+	 * Find.
+	 *
+	 * @param name the name
+	 * @return the computer
+	 */
+	public Computer find(String name);	
 
 	/**
 	 * Find all.

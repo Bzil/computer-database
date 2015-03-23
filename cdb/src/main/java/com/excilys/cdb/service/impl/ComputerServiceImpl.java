@@ -7,6 +7,7 @@ import com.excilys.cdb.persistence.ComputerDao;
 import com.excilys.cdb.persistence.impl.ComputerDaoImpl;
 import com.excilys.cdb.service.ComputerService;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Enum ComputerServiceImpl.
  */
@@ -43,7 +44,14 @@ public enum ComputerServiceImpl implements ComputerService {
 	public Computer find(int id) {
 		return dao.find(id);
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.service.ComputerService#find(java.lang.String)
+	 */
+	@Override
+	public Computer find(String name){
+		return dao.find(name);
+	}
 	/*
 	 * (non-Javadoc)
 	 * 

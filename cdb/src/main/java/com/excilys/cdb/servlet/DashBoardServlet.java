@@ -27,9 +27,11 @@ public class DashBoardServlet extends HttpServlet {
 		cs = ComputerServiceImpl.INSTANCE.getInstance();
 	}
 
+	@Override 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ComputerPage computerPage = new ComputerPage();
+		int page = 0;
 		// count of cumputer
 		int count = cs.count();
 
@@ -43,6 +45,7 @@ public class DashBoardServlet extends HttpServlet {
 
 		// page id
 		if (request.getParameter("page") != null) {
+			page = Integer.parseInt(request.getParameter("page"));
 			computerPage.setStart((Integer.parseInt(request
 					.getParameter("page")) - 1) * computerPage.getOffset());
 		} else {
@@ -52,11 +55,19 @@ public class DashBoardServlet extends HttpServlet {
 		computerPage
 				.paginate(computerPage.getStart(), computerPage.getOffset());
 		int nbPage = count / computerPage.getOffset();
+
+		request.setAttribute("page", page);
 		request.setAttribute("nbPage", nbPage);
 		request.setAttribute("count", count);
 		request.setAttribute("computerPage", computerPage);
 		request.getRequestDispatcher("dashboard.jsp")
 				.forward(request, response);
 
+	}
+	
+	@Override 
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		this.doGet(request, response);
 	}
 }

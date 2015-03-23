@@ -60,6 +60,26 @@ public enum ComputerDaoImpl implements ComputerDao {
 		}
 		return computer;
 	}
+	
+	@Override
+	public Computer find(String name) {
+		Computer computer = null;
+		Mapper<Computer> mapper = new ComputerMapper();
+		try (Connection connection = DaoManager.INSTANCE.getConnection();
+				PreparedStatement statement = connection
+						.prepareStatement("SELECT * FROM computer WHERE name = ?");) {
+			statement.setString(1, name);
+			ResultSet result = statement.executeQuery();
+			if (result.first()) {
+				computer = (Computer) mapper.rowMap(result);
+				computer.setCompany(findFromId(computer.getCompany().getId()));
+			}
+		} catch (SQLException e) {
+			LOGGER.debug("Can't execute select request with name : " + name);
+			// e.printStackTrace();
+		}
+		return computer;
+	}
 
 	/*
 	 * (non-Javadoc)
