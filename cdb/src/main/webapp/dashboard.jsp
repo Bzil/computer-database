@@ -3,11 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="mylib" tagdir="/WEB-INF/tags"%>
-
-
-<%@include file="header.jsp" %>
-
-
+<%@ include file="header.jsp" %>
 	<section id="main">
 		<div class="container">
 			<h1 id="homeTitle">${page.count} Computers found</h1>
@@ -22,7 +18,7 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer">Add
+					<a class="btn btn-success" id="addComputer" href="controller?page=add">Add
 						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
@@ -62,7 +58,7 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="0"></td>
-							<td><a href="EditComputerServlet" onclick="">${computer.name}</a>
+							<td><a href="controller?page=edit&id=${computer.id}" onclick="">${computer.name}</a>
 							</td>
 							<td>${computer.introduced}</td>
 							<td>${computer.discontinued}</td>
@@ -79,9 +75,9 @@
 			<mylib:pagination end="${page.endPage}" active="${page.currentPage}" start="${page.startPage}"></mylib:pagination>
 			
 	</footer>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/dashboard.js"></script>
+	<script src="./js/jquery.min.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
+	<script src="./js/dashboard.js"></script>
 
 </body>
 </html>

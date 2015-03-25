@@ -12,8 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.cdb.util.ComputerPage;
+import com.excilys.cdb.util.validator.Validator;
 
-@WebServlet(urlPatterns = "/dashboard", loadOnStartup = 1)
+@WebServlet(urlPatterns = "/dashboard", loadOnStartup=1)
 public class DashBoardServlet extends HttpServlet {
 
 	/**
@@ -28,7 +29,14 @@ public class DashBoardServlet extends HttpServlet {
 	}
 
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		doPost(request, response);
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ComputerPage computerPage = new ComputerPage();
 		int page = 0;
@@ -37,7 +45,7 @@ public class DashBoardServlet extends HttpServlet {
 		computerPage.setCount(count);
 
 		// size of list
-		if (request.getParameter("size") != null) {
+		if (Validator.INSTANCE.isNumericString(request.getParameter("size"))) {
 			computerPage.setOffset(Integer.parseInt(request
 					.getParameter("size")));
 		} else {
@@ -45,11 +53,11 @@ public class DashBoardServlet extends HttpServlet {
 		}
 
 		// page id
-		if (request.getParameter("page") != null) {
-			page = Integer.parseInt(request.getParameter("page"));
+		if (Validator.INSTANCE.isNumericString(request.getParameter("id"))) {
+			page = Integer.parseInt(request.getParameter("id"));
 			computerPage.setCurrentPage(page);
 			computerPage.setStart((Integer.parseInt(request
-					.getParameter("page")) - 1) * computerPage.getOffset());
+					.getParameter("id")) - 1) * computerPage.getOffset());
 		} else {
 			computerPage.setStart(0);
 		}
@@ -60,14 +68,7 @@ public class DashBoardServlet extends HttpServlet {
 		computerPage.setPageNb(count / computerPage.getOffset());
 
 		request.setAttribute("page", computerPage);
-		request.getRequestDispatcher("dashboard.jsp")
+		request.getRequestDispatcher(ControllerServlet.DASHBOARD_JSP)
 				.forward(request, response);
-
-	}
-
-	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		this.doGet(request, response);
 	}
 }

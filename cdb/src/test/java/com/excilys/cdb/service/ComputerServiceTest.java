@@ -22,6 +22,7 @@ import com.excilys.cdb.persistence.impl.ComputerDaoImpl;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.cdb.util.dto.ComputerDTO;
 
+@Ignore
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ ComputerDaoImpl.class })
 public class ComputerServiceTest {

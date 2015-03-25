@@ -18,10 +18,10 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.excilys.cdb.manage.H2dbManager;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.impl.ComputerDaoImpl;
-import com.excilys.cdb.util.H2Util;
 
 public class ComputerDaoTest {
 	private static final String COMPUTERS_XML = "src/test/resources/computer/computer.xml";
@@ -32,7 +32,7 @@ public class ComputerDaoTest {
 		DaoManager.INSTANCE.propertiesFile = "h2.properties";
 
 		try {
-			H2Util.executeSqlFile(H2Util.getConnection());
+			H2dbManager.executeSqlFile(H2dbManager.getConnection());
 		} catch (IOException | SQLException e) {
 			System.err.println(e.getMessage());
 		}
@@ -40,13 +40,13 @@ public class ComputerDaoTest {
 
 	@After
 	public void tearDown() throws Exception {
-		H2Util.dbTester.onTearDown();
+		H2dbManager.dbTester.onTearDown();
 	}
 
 	@Test
 	public void testFindWithWrongValue() {
 		try {
-			H2Util.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 					COMPUTERS_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
@@ -61,7 +61,7 @@ public class ComputerDaoTest {
 				LocalDateTime.of(1991, 01, 01, 00, 00, 00), LocalDateTime.of(
 						1993, 02, 01, 00, 00, 00), new Company(1, "Apple Inc."));
 		try {
-			H2Util.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 					COMPUTERS_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
@@ -73,7 +73,7 @@ public class ComputerDaoTest {
 	@Test
 	public void testFindWhitoutData() {
 		try {
-			H2Util.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 					EMPTY_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
@@ -85,7 +85,7 @@ public class ComputerDaoTest {
 	@Test
 	public void testCountWhitoutData() {
 		try {
-			H2Util.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 					EMPTY_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
@@ -98,7 +98,7 @@ public class ComputerDaoTest {
 	@Test
 	public void testCountWhitData() {
 		try {
-			H2Util.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 					COMPUTERS_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
@@ -111,7 +111,7 @@ public class ComputerDaoTest {
 	@Test(expected = NullPointerException.class)
 	public void testCreateWithNullData() {
 		try {
-			H2Util.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 					COMPUTERS_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
@@ -122,7 +122,7 @@ public class ComputerDaoTest {
 	@Test(expected = AssertionError.class)
 	public void testCreateWithoutName() {
 		try {
-			H2Util.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 					EMPTY_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
@@ -137,7 +137,7 @@ public class ComputerDaoTest {
 		try {
 			try {
 				DaoManager.INSTANCE.getConnection().setAutoCommit(false);
-				H2Util.cleanlyInsert(new FlatXmlDataSetBuilder()
+				H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder()
 						.build(new File(COMPUTERS_XML)));
 				final Computer c = new Computer("Test");
 				c.setId(3);
@@ -159,7 +159,7 @@ public class ComputerDaoTest {
 	@Test(expected = NullPointerException.class)
 	public void testUpdateWhithNullData() {
 		try {
-			H2Util.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 					COMPUTERS_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
@@ -171,7 +171,7 @@ public class ComputerDaoTest {
 	@Test(expected = AssertionError.class)
 	public void testUpdateWithoutName() {
 		try {
-			H2Util.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 					COMPUTERS_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
@@ -185,7 +185,7 @@ public class ComputerDaoTest {
 	@Test
 	public void testFindAllWithoutData() {
 		try {
-			H2Util.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 					EMPTY_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
@@ -207,7 +207,7 @@ public class ComputerDaoTest {
 				LocalDateTime.of(1993, 02, 01, 00, 00, 00), new Company(1,
 						"Apple Inc.")));
 		try {
-			H2Util.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 					COMPUTERS_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
@@ -225,7 +225,7 @@ public class ComputerDaoTest {
 				LocalDateTime.of(1993, 02, 01, 00, 00, 00), new Company(1,
 						"Apple Inc.")));
 		try {
-			H2Util.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 					COMPUTERS_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");

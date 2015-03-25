@@ -1,4 +1,4 @@
-package com.excilys.cdb.util;
+package com.excilys.cdb.manage;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -16,7 +16,7 @@ import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
 
-public class H2Util {
+public class H2dbManager {
 
 	private static final String PROPERTIES_FILE = "src/test/resources/h2.properties";
 	private static final String SCHEMA = "src/test/resources/schema.sql";

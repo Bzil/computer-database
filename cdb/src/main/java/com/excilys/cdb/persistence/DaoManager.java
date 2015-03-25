@@ -10,6 +10,8 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jolbox.bonecp.BoneCP;
+
 /**
  * The Class DaoManager.
  */
@@ -24,7 +26,9 @@ public enum DaoManager implements AutoCloseable {
 
 	/** The connection. */
 	private Connection connection;
-
+	
+	private BoneCP pool = null;
+	
 	private final Properties prop = new Properties();
 
 	/**

@@ -2,14 +2,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@include file="header.jsp" %>
+<%@ include file="header.jsp" %>
 
     <section id="main">
         <div class="container">
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1>Add Computer</h1>
-                    <form action="addComputer" method="POST">
+                    <form action="controller?page=dashboard" method="POST">
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
@@ -34,16 +34,16 @@
                             </div>                  
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" value="Add" class="btn btn-primary" id="add" >
+                            <input type="submit" value="Add" class="btn btn-primary" id="buttonControl" >
                             or
-                            <a href="dashboard" class="btn btn-default">Cancel</a>
+                            <a href="controller?page=dashboard" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </section>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/add.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/validateField.js"></script>
 </body>
 </html>
