@@ -2,7 +2,9 @@ package com.excilys.cdb.service;
 
 import java.util.List;
 
-public interface Service<T> {
+import com.excilys.cdb.util.dto.DTO;
+
+public interface Service<T, D extends DTO<T>> {
 
 	/**
 	 * Find.
@@ -11,14 +13,14 @@ public interface Service<T> {
 	 *            the id
 	 * @return the t
 	 */
-	public T find(int id);
+	public D find(int id);
 
 	/**
 	 * Find all.
 	 *
 	 * @return the list
 	 */
-	public List<T> findAll();
+	public List<D> findAll();
 
 	/**
 	 * Find all.
@@ -29,7 +31,7 @@ public interface Service<T> {
 	 *            the offset
 	 * @return the list
 	 */
-	public List<T> findAll(int start, int offset);
+	public List<D> findAll(int start, int offset);
 
 	/**
 	 * Adds the.
@@ -38,7 +40,7 @@ public interface Service<T> {
 	 *            the t
 	 * @return the t
 	 */
-	public T add(T t);
+	public D add(T t);
 
 	/**
 	 * Delete.
@@ -55,7 +57,7 @@ public interface Service<T> {
 	 *            the t
 	 * @return the t
 	 */
-	public T update(T t);
+	public D update(T t);
 
 	/**
 	 * Count.

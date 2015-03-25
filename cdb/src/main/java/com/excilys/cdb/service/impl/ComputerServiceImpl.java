@@ -1,11 +1,13 @@
 package com.excilys.cdb.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDao;
 import com.excilys.cdb.persistence.impl.ComputerDaoImpl;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.util.dto.ComputerDTO;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -41,25 +43,56 @@ public enum ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#find(int)
 	 */
 	@Override
-	public Computer find(int id) {
-		return dao.find(id);
+	public ComputerDTO find(int id) {
+		Computer c = dao.find(id);
+		ComputerDTO dto = null;
+		if (c != null)
+			dto = ComputerDTO.toDTO(c);
+		return dto;
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.excilys.cdb.service.ComputerService#find(java.lang.String)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.excilys.cdb.service.ComputerService#find(String)
 	 */
 	@Override
-	public Computer find(String name){
-		return dao.find(name);
+	public ComputerDTO find(String name) {
+		Computer c = dao.find(name);
+		ComputerDTO dto = null;
+		if (c != null)
+			dto = ComputerDTO.toDTO(c);
+		return dto;
 	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see com.excilys.cdb.service.ComputerService#findAll()
 	 */
 	@Override
-	public List<Computer> findAll() {
-		return dao.findAll();
+	public List<ComputerDTO> findAll() {
+		List<Computer> companies = dao.findAll();
+		List<ComputerDTO> dtos = new ArrayList<>();
+		for (Computer c : companies)
+			dtos.add(ComputerDTO.toDTO(c));
+
+		return dtos;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.excilys.cdb.service.ComputerService#findAll(int, int)
+	 */
+	@Override
+	public List<ComputerDTO> findAll(int start, int offset) {
+		List<Computer> companies = dao.findAll(start, offset);
+		List<ComputerDTO> dtos = new ArrayList<>();
+		for (Computer c : companies)
+			dtos.add(ComputerDTO.toDTO(c));
+
+		return dtos;
 	}
 
 	/*
@@ -70,8 +103,12 @@ public enum ComputerServiceImpl implements ComputerService {
 	 * )
 	 */
 	@Override
-	public Computer add(Computer computer) {
-		return dao.create(computer);
+	public ComputerDTO add(Computer computer) {
+		Computer c = dao.create(computer);
+		ComputerDTO dto = null;
+		if (c != null)
+			dto = ComputerDTO.toDTO(c);
+		return dto;
 	}
 
 	/*
@@ -79,12 +116,11 @@ public enum ComputerServiceImpl implements ComputerService {
 	 * 
 	 * @see
 	 * com.excilys.cdb.service.ComputerService#delete(com.excilys.cdb.model.
-	 * Computer)
+	 * Computer )
 	 */
 	@Override
 	public void delete(Computer computer) {
 		dao.delete(computer);
-
 	}
 
 	/*
@@ -92,27 +128,24 @@ public enum ComputerServiceImpl implements ComputerService {
 	 * 
 	 * @see
 	 * com.excilys.cdb.service.ComputerService#update(com.excilys.cdb.model.
-	 * Computer)
+	 * Computer )
 	 */
 	@Override
-	public Computer update(Computer computer) {
-		return dao.update(computer);
+	public ComputerDTO update(Computer computer) {
+		Computer c = dao.update(computer);
+		ComputerDTO dto = null;
+		if (c != null)
+			dto = ComputerDTO.toDTO(c);
+		return dto;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.excilys.cdb.service.ComputerService#findAll(int, int)
-	 */
-	@Override
-	public List<Computer> findAll(int start, int offset) {
-		return dao.findAll(start, offset);
-	}
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.excilys.cdb.service.ComputerService#count()
 	 */
 	@Override
 	public int count() {
 		return dao.count();
 	}
-
 }

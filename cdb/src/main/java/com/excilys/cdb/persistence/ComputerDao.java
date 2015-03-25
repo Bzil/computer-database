@@ -9,19 +9,21 @@ import com.excilys.cdb.model.Computer;
  */
 public interface ComputerDao {
 
+
 	/**
 	 * Find.
 	 *
-	 * @param id
-	 *            the id
+	 * @param id the id
 	 * @return the computer
 	 */
 	public Computer find(int id);
 
 	
 	/**
-	 * @param name
-	 * @return
+	 * Find.
+	 *
+	 * @param name the name
+	 * @return the computer
 	 */
 	public Computer find(String name);
 

@@ -40,8 +40,7 @@ public class H2Util {
 	}
 
 	public static void cleanlyInsert(IDataSet dataSet) throws Exception {
-		dbTester = new JdbcDatabaseTester(jdbcDriver, jdbcUrl, user,
-				password);
+		dbTester = new JdbcDatabaseTester(jdbcDriver, jdbcUrl, user, password);
 		dbTester.setTearDownOperation(DatabaseOperation.DELETE_ALL);
 		dbTester.setDataSet(dataSet);
 		dbTester.onSetup();
@@ -73,7 +72,8 @@ public class H2Util {
 		br.close();
 	}
 
-	public static void executeSqlFile(Connection connection) throws IOException, SQLException {
+	public static void executeSqlFile(Connection connection)
+			throws IOException, SQLException {
 		executeSqlFile(SCHEMA, connection);
 	}
 

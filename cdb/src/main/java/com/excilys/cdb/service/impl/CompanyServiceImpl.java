@@ -1,11 +1,13 @@
 package com.excilys.cdb.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.CompanyDao;
 import com.excilys.cdb.persistence.impl.CompanyDaoImpl;
 import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.util.dto.CompanyDTO;
 
 /**
  * The Enum CompanyServiceImpl.
@@ -40,8 +42,12 @@ public enum CompanyServiceImpl implements CompanyService {
 	 * @see com.excilys.cdb.service.CompanyService#find(int)
 	 */
 	@Override
-	public Company find(int id) {
-		return dao.find(id);
+	public CompanyDTO find(int id) {
+		Company c = dao.find(id);
+		CompanyDTO dto = null;
+		if (c != null)
+			dto = CompanyDTO.toDTO(c);
+		return dto;
 	}
 
 	/*
@@ -50,8 +56,28 @@ public enum CompanyServiceImpl implements CompanyService {
 	 * @see com.excilys.cdb.service.CompanyService#findAll()
 	 */
 	@Override
-	public List<Company> findAll() {
-		return dao.findAll();
+	public List<CompanyDTO> findAll() {
+		List<Company> companies = dao.findAll();
+		List<CompanyDTO> dtos = new ArrayList<>();
+		for (Company c : companies)
+			dtos.add(CompanyDTO.toDTO(c));
+
+		return dtos;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.excilys.cdb.service.CompanyService#findAll(int, int)
+	 */
+	@Override
+	public List<CompanyDTO> findAll(int start, int offset) {
+		List<Company> companies = dao.findAll(start, offset);
+		List<CompanyDTO> dtos = new ArrayList<>();
+		for (Company c : companies)
+			dtos.add(CompanyDTO.toDTO(c));
+
+		return dtos;
 	}
 
 	/*
@@ -61,8 +87,12 @@ public enum CompanyServiceImpl implements CompanyService {
 	 * com.excilys.cdb.service.CompanyService#add(com.excilys.cdb.model.Company)
 	 */
 	@Override
-	public Company add(Company company) {
-		return dao.create(company);
+	public CompanyDTO add(Company company) {
+		Company c = dao.create(company);
+		CompanyDTO dto = null;
+		if (c != null)
+			dto = CompanyDTO.toDTO(c);
+		return dto;
 	}
 
 	/*
@@ -75,7 +105,6 @@ public enum CompanyServiceImpl implements CompanyService {
 	@Override
 	public void delete(Company company) {
 		dao.delete(company);
-
 	}
 
 	/*
@@ -86,19 +115,17 @@ public enum CompanyServiceImpl implements CompanyService {
 	 * )
 	 */
 	@Override
-	public Company update(Company company) {
-		return dao.update(company);
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.excilys.cdb.service.CompanyService#findAll(int, int)
-	 */
-	@Override
-	public List<Company> findAll(int start, int offset) {
-		return dao.findAll(start, offset);
+	public CompanyDTO update(Company company) {
+		Company c = dao.update(company);
+		CompanyDTO dto = null;
+		if (c != null)
+			dto = CompanyDTO.toDTO(c);
+		return dto;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.excilys.cdb.service.CompanyService#count()
 	 */
 	@Override

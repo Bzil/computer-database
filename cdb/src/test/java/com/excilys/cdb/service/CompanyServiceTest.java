@@ -7,12 +7,13 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.excilys.cdb.persistence.impl.CompanyDaoImpl;
 
-
 //@RunWith(PowerMockRunner.class)
 //@PrepareForTest( { CompanyDaoImpl.class })
 public class CompanyServiceTest {
 
-	public void setUp(){}
-	
-	public void tearDown(){}
+	public void setUp() {
+	}
+
+	public void tearDown() {
+	}
 }

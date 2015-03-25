@@ -9,14 +9,20 @@ import java.util.Scanner;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.service.impl.CompanyServiceImpl;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.cdb.util.CompanyPage;
 import com.excilys.cdb.util.ComputerPage;
+import com.excilys.cdb.util.dto.ComputerDTO;
 
 public class Cli {
- 
+
 	private static ComputerService computerService = ComputerServiceImpl.INSTANCE
+			.getInstance();
+
+	private static CompanyService companyService = CompanyServiceImpl.INSTANCE
 			.getInstance();
 
 	private static final String DATE_PATTERN = "^(0[1-9]|1[0-9]|2[0-8]|29((?=-([0][13-9]|1[0-2])|(?=-(0[1-9]|1[0-2])-([0-9]{2}(0[48]|[13579][26]|[2468][048])|([02468][048]|[13579][26])00))))|30(?=-(0[13-9]|1[0-2]))|31(?=-(0[13578]|1[02])))-(0[1-9]|1[0-2])-[0-9]{4}$";
@@ -126,12 +132,13 @@ public class Cli {
 	}
 
 	private void showComputers() {
-		ComputerPage pages = new ComputerPage();
+		ComputerPage cp = new ComputerPage();
 		int start = 0;
 		int offset = 10;
 		boolean exit = false;
 		while (!exit) {
-			pages.showPaginatedList(pages.paginate(start, offset));
+			cp.showEntities(computerService.findAll(start, offset));
+
 			System.out.println("Show more ? [y/n]");
 			String choice = getChoice(toList("y", "n"));
 			switch (choice) {
@@ -146,12 +153,13 @@ public class Cli {
 	}
 
 	private void showCompanies() {
-		CompanyPage pages = new CompanyPage();
+		CompanyPage cp = new CompanyPage();
 		int start = 0;
 		int offset = 10;
 		boolean exit = false;
 		while (!exit) {
-			pages.showPaginatedList(pages.paginate(start, offset));
+			cp.showEntities(companyService.findAll(start, offset));
+
 			System.out.println("Show more ? [y/n]");
 			String choice = getChoice(toList("y", "n"));
 			switch (choice) {
@@ -172,14 +180,14 @@ public class Cli {
 
 	private void deleteComputer() {
 		String choice = getChoice();
-		Computer computer = computerService.find(Integer.parseInt(choice));
+		ComputerDTO computer = computerService.find(Integer.parseInt(choice));
 		if (computer != null) {
 			System.out.println(computer);
 			System.out.println("Confirm deletion ? [y/n]");
 			String str = getChoice(toList("y", "n"));
 			switch (str) {
 			case "y":
-				computerService.delete(computer);
+				computerService.delete(ComputerDTO.fromDTO(computer));
 				System.out.println("Computer delete");
 				break;
 			case "n":
@@ -226,7 +234,8 @@ public class Cli {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
 				"dd-MM-uuuu HH:mm:ss", new Locale("fr"));
 		System.out.println("iD : ");
-		Computer computer = computerService.find(Integer.parseInt(getChoice()));
+		Computer computer = ComputerDTO.fromDTO(computerService.find(Integer
+				.parseInt(getChoice())));
 		if (computer != null) {
 			System.out.println("Introduced");
 			buffer = getChoiceDate();
@@ -247,7 +256,7 @@ public class Cli {
 			System.out.println("Company Id");
 			buffer = getChoice();
 			if (!buffer.equals("null")) {
-				if(computer.getCompany() == null) {
+				if (computer.getCompany() == null) {
 					computer.setCompany(new Company());
 				}
 				computer.getCompany().setId(Integer.parseInt(buffer));

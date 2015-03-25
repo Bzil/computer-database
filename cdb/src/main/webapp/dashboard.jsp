@@ -2,28 +2,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="tag" uri="WEB-INF/tags.tld"%>
-<html>
-<head>
-<title>Computer Database</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta charset="utf-8">
-<!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
-</head>
-<body>
-	<header class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<a class="navbar-brand" href="dashboard"> Application - Computer
-				Database </a>
-		</div>
-	</header>
+<%@ taglib prefix="mylib" tagdir="/WEB-INF/tags"%>
+
+
+<%@include file="header.jsp" %>
+
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${count} Computers found</h1>
+			<h1 id="homeTitle">${page.count} Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -71,7 +58,7 @@
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">
-					<c:forEach items="${computerPage.entities}" var="computer">
+					<c:forEach items="${page.entities}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="0"></td>
@@ -89,20 +76,8 @@
 	</section>
 
 	<footer class="navbar-fixed-bottom">
-		<div class="container text-center">
-			<ul class="pagination">
-              	<tag:pagination count="${nbPage}" page="${page}" />
-			</ul>
-
-			<div class="btn-group btn-group-sm pull-right" role="group">
-				<button type="button" class="btn btn-default"
-					onclick="document.location.href='dashboard?size=10'">10</button>
-				<button type="button" class="btn btn-default"
-					onclick="document.location.href='dashboard?size=50'">50</button>
-				<button type="button" class="btn btn-default"
-					onclick="document.location.href='dashboard?size=100'">100</button>
-			</div>
-		</div>
+			<mylib:pagination end="${page.endPage}" active="${page.currentPage}" start="${page.startPage}"></mylib:pagination>
+			
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

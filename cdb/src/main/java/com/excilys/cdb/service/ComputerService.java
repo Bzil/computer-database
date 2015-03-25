@@ -3,12 +3,12 @@ package com.excilys.cdb.service;
 import java.util.List;
 
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.util.dto.ComputerDTO;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Interface ComputerService.
  */
-public interface ComputerService extends Service<Computer>{
+public interface ComputerService extends Service<Computer, ComputerDTO> {
 
 	/**
 	 * Find.
@@ -17,22 +17,23 @@ public interface ComputerService extends Service<Computer>{
 	 *            the id
 	 * @return the computer
 	 */
-	public Computer find(int id);
-	
+	public ComputerDTO find(int id);
+
 	/**
 	 * Find.
 	 *
-	 * @param name the name
-	 * @return the computer
+	 * @param name
+	 *            the name
+	 * @return the computer dto
 	 */
-	public Computer find(String name);	
+	public ComputerDTO find(String name);
 
 	/**
 	 * Find all.
 	 *
 	 * @return the list
 	 */
-	public List<Computer> findAll();
+	public List<ComputerDTO> findAll();
 
 	/**
 	 * Find all.
@@ -43,7 +44,7 @@ public interface ComputerService extends Service<Computer>{
 	 *            the offset
 	 * @return the list
 	 */
-	public List<Computer> findAll(int start, int offset);
+	public List<ComputerDTO> findAll(int start, int offset);
 
 	/**
 	 * Adds the.
@@ -52,7 +53,7 @@ public interface ComputerService extends Service<Computer>{
 	 *            the computer
 	 * @return the computer
 	 */
-	public Computer add(Computer computer);
+	public ComputerDTO add(Computer computer);
 
 	/**
 	 * Delete.
@@ -69,8 +70,8 @@ public interface ComputerService extends Service<Computer>{
 	 *            the computer
 	 * @return the computer
 	 */
-	public Computer update(Computer computer);
-	
+	public ComputerDTO update(Computer computer);
+
 	/**
 	 * Count.
 	 *

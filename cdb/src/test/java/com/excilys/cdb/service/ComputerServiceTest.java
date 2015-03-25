@@ -6,7 +6,6 @@ import static org.junit.Assert.*;
 import java.time.LocalDateTime;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -21,40 +20,41 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDao;
 import com.excilys.cdb.persistence.impl.ComputerDaoImpl;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
+import com.excilys.cdb.util.dto.ComputerDTO;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest( { ComputerDaoImpl.class })
+@PrepareForTest({ ComputerDaoImpl.class })
 public class ComputerServiceTest {
-/*  http://stackoverflow.com/questions/15939023/how-to-mock-an-enum-singleton-class-using-mockito-powermock
- * */
+
 	private ComputerService service = null;
 
 	private ComputerDao mock = null;
-	
+
 	@Before
-	public void setUp(){ 
-		mock = Mockito.mock(ComputerDaoImpl.class); 
-		Whitebox.setInternalState(ComputerDao.class, "INSTANCE", mock);
-		service = ComputerServiceImpl.INSTANCE.getInstance(); 
+	public void setUp() {
+		mock = Mockito.mock(ComputerDaoImpl.class);
+		Whitebox.setInternalState(ComputerServiceImpl.class, "dao", mock);
+		service = ComputerServiceImpl.INSTANCE.getInstance();
 	}
-	
+
 	@After
-	public void tearDown(){ mock = null; }
+	public void tearDown() {
+		mock = null;
+	}
 
-
-	@Ignore
+	@Test
 	public void testFindReturnNull() {
 		when(mock.find(2)).thenReturn(null);
-		Computer computer = service.find(2);
-		Assert.assertNull(computer);
+		ComputerDTO computer = service.find(2);
+		assertNull(computer);
 		verify(mock, times(1)).find(eq(2));
 	}
-	
-	@Ignore
+
+	@Test
 	public void testFindReturnValue() {
 		when(mock.find(1)).thenReturn(getComputer());
-		Computer computer = service.find(1);
-		assertEquals(getComputer() , computer);
+		ComputerDTO computer = service.find(1);
+		assertEquals(ComputerDTO.toDTO(getComputer()), computer);
 		verify(mock, times(1)).find(eq(1));
 	}
 
@@ -78,13 +78,39 @@ public class ComputerServiceTest {
 
 	}
 
-	@Ignore
+	@Test
+	public void testUpdateWithNullParam() {
+		when(mock.update(any(Computer.class))).thenReturn(null);
+		ComputerDTO computer = service.update(null);
+		assertNull(computer);
+		verify(mock, times(1)).find(eq(2));
+	}
+
+	@Test
+	public void testUpdateReturnNull() {
+		when(mock.update(any(Computer.class))).thenReturn(null);
+		ComputerDTO computer = service.update(getComputer());
+		assertNull(computer);
+		verify(mock, times(1)).find(eq(2));
+	}
+
+	@Test
 	public void testUpdate() {
+		when(mock.update(any(Computer.class))).thenReturn(null);
+		ComputerDTO computer = service.update(getComputer());
+		assertEquals(ComputerDTO.toDTO(getComputer()), computer);
+		verify(mock, times(1)).find(eq(2));
 
 	}
-	
-	private static Computer getComputer(){
-		return new Computer(1, "TEST", LocalDateTime.of(1991, 01, 01, 00, 00, 00),
-		LocalDateTime.of(1993, 02, 01, 00, 00, 00), new Company(1, "Apple Inc."));
+
+	/**
+	 * Gets specific computer to mock dao.
+	 *
+	 * @return the computer
+	 */
+	private static Computer getComputer() {
+		return new Computer(1, "TEST", LocalDateTime.of(1991, 01, 01, 00, 00,
+				00), LocalDateTime.of(1993, 02, 01, 00, 00, 00), new Company(1,
+				"Apple Inc."));
 	}
 }

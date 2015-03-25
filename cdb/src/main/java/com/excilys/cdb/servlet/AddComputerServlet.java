@@ -12,13 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.service.impl.CompanyServiceImpl;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
-import com.excilys.cdb.validator.Validator;
+import com.excilys.cdb.util.dto.CompanyDTO;
+import com.excilys.cdb.util.validator.Validator;
 
 @WebServlet(urlPatterns = "/addComputer")
 public class AddComputerServlet extends HttpServlet {
@@ -30,14 +30,14 @@ public class AddComputerServlet extends HttpServlet {
 
 	private ComputerService computerService;
 	private CompanyService companyService;
-	
+
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		this.doPost(request, response);
 	}
-	
-	@Override 
+
+	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		companyService = CompanyServiceImpl.INSTANCE.getInstance();
@@ -52,17 +52,17 @@ public class AddComputerServlet extends HttpServlet {
 
 			LocalDateTime introduced = getLocalDateTime(introducedString);
 			LocalDateTime discontinued = getLocalDateTime(discontinuedString);
-			Company company = companyService.find(companyId);
+			CompanyDTO company = companyService.find(companyId);
 
 			Computer computer = new Computer(name, introduced, discontinued,
-					company);
+					CompanyDTO.fromDTO(company));
 
 			computerService.add(computer);
 		}
-		
-		List<Company> companies = companyService.findAll();
+
+		List<CompanyDTO> companies = companyService.findAll();
 		request.setAttribute("companies", companies);
-		
+
 		request.getRequestDispatcher("addComputer.jsp").forward(request,
 				response);
 

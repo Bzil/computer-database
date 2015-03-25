@@ -3,7 +3,6 @@ package com.excilys.cdb.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.cdb.service.Service;
 import com.excilys.cdb.util.dto.DTO;
 
 /**
@@ -12,63 +11,45 @@ import com.excilys.cdb.util.dto.DTO;
  * @param <T>
  *            the generic type
  */
-public abstract class Page<T> {
+public abstract class Page<T, D extends DTO<T>> {
 
 	/** The entities. */
-	private List<DTO<T>> entities = new ArrayList<>();
+	private List<D> entities = new ArrayList<>();
 
 	/** The index of T in base. */
 	private int start = 0;
 
 	/** The to index. */
 	private int offset = 0;
-	
-	private Service<T> service  = getService(); 
 
-	/**
-	 * Paginate.
-	 *
-	 * @param entites
-	 *            the entites
-	 * @param start
-	 *            the from index
-	 * @param offset
-	 *            the to index
-	 * @return the list
-	 */
-	public List<DTO<T>> paginate(int start, int offset) {
-		if (start < 0 || offset < 0 || start > offset ) {
-			throw new IndexOutOfBoundsException();
-		}
-			
-		for ( T t : service.findAll(start, offset)){
-			entities.add(getDTO(t));
-		}
-		return entities;	
-			
-	}
+	/** Count of items */
+	private int count;
+
+	/** The current page. */
+	private int currentPage = 1;
+
+	/** The page number */
+	private int pageNb;
+
+	private int startPage = 0;
+
+	private int endPage = 4;
+
+	private static final int OFFSET_PAGE = 3;
 
 	protected abstract DTO<T> getDTO(T t);
-	
-	protected abstract Service<T> getService();
 
-	/**
-	 * Show paginated list.
-	 *
-	 * @param list
-	 *            the entities
-	 */
-	public void showPaginatedList(List<DTO<T>> list) {
-		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i));
+	public void showEntities(List<D> list) {
+		for (D d : list) {
+			System.out.println(d);
 		}
 	}
 
-	public List<DTO<T>> getEntities() {
+	public List<D> getEntities() {
 		return entities;
 	}
 
-	public void setEntities(List<DTO<T>> entities) {
+	public void setEntities(List<D> entities) {
 		this.entities = entities;
 	}
 
@@ -88,10 +69,47 @@ public abstract class Page<T> {
 		this.offset = offset;
 	}
 
-	public void setService(Service<T> service) {
-		this.service = service;
+	public int getCurrentPage() {
+		return currentPage;
 	}
-	
-	
+
+	public void setCurrentPage(int currentPage) {
+		this.currentPage = currentPage;
+
+	}
+
+	public int getPageNb() {
+		return pageNb;
+	}
+
+	public void setPageNb(int pageNb) {
+		this.pageNb = pageNb;
+		if (currentPage - OFFSET_PAGE > 0) {
+			this.startPage = currentPage - OFFSET_PAGE;
+		} else {
+			this.startPage = 0;
+		}
+		if (currentPage + OFFSET_PAGE < pageNb) {
+			this.endPage = currentPage + OFFSET_PAGE;
+		} else {
+			this.endPage = pageNb;
+		}
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public int getStartPage() {
+		return startPage;
+	}
+
+	public int getEndPage() {
+		return endPage;
+	}
 
 }

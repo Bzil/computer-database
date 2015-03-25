@@ -3,11 +3,12 @@ package com.excilys.cdb.service;
 import java.util.List;
 
 import com.excilys.cdb.model.Company;
+import com.excilys.cdb.util.dto.CompanyDTO;
 
 /**
  * The Interface CompanyService.
  */
-public interface CompanyService extends Service<Company> {
+public interface CompanyService extends Service<Company, CompanyDTO> {
 
 	/**
 	 * Find.
@@ -16,14 +17,14 @@ public interface CompanyService extends Service<Company> {
 	 *            the id
 	 * @return the company
 	 */
-	public Company find(int id);
+	public CompanyDTO find(int id);
 
 	/**
 	 * Find all.
 	 *
 	 * @return the list
 	 */
-	public List<Company> findAll();
+	public List<CompanyDTO> findAll();
 
 	/**
 	 * Find all.
@@ -34,7 +35,7 @@ public interface CompanyService extends Service<Company> {
 	 *            the offset
 	 * @return the list
 	 */
-	public List<Company> findAll(int start, int offset);
+	public List<CompanyDTO> findAll(int start, int offset);
 
 	/**
 	 * Adds the.
@@ -43,7 +44,7 @@ public interface CompanyService extends Service<Company> {
 	 *            the company
 	 * @return the company
 	 */
-	public Company add(Company company);
+	public CompanyDTO add(Company company);
 
 	/**
 	 * Delete.
@@ -60,8 +61,8 @@ public interface CompanyService extends Service<Company> {
 	 *            the company
 	 * @return the company
 	 */
-	public Company update(Company company);
-	
+	public CompanyDTO update(Company company);
+
 	/**
 	 * Count.
 	 *

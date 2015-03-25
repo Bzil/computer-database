@@ -15,13 +15,13 @@ import org.slf4j.LoggerFactory;
  */
 public enum DaoManager implements AutoCloseable {
 	INSTANCE;
-	
-	
+
 	String propertiesFile = "mysql.properties";
 
 	/** The Constant LOOGER. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(DaoManager.class);
-	
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(DaoManager.class);
+
 	/** The connection. */
 	private Connection connection;
 
@@ -30,13 +30,14 @@ public enum DaoManager implements AutoCloseable {
 	/**
 	 * Gets the connection.
 	 *
-	 * @return the connection 
+	 * @return the connection
 	 */
 	public Connection getConnection() {
 		connection = null;
 		try (
-				
-			InputStream ips = DaoManager.class.getClassLoader().getResourceAsStream(propertiesFile)) {
+
+		InputStream ips = DaoManager.class.getClassLoader()
+				.getResourceAsStream(propertiesFile)) {
 			prop.load(ips);
 			String url = prop.getProperty("url");
 			Class.forName("com.mysql.jdbc.Driver").newInstance();

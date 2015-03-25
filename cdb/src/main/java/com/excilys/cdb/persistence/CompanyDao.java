@@ -24,12 +24,14 @@ public interface CompanyDao {
 	 * @return the list
 	 */
 	public List<Company> findAll();
-	
+
 	/**
 	 * Find all.
 	 *
-	 * @param start the start
-	 * @param offset the offset
+	 * @param start
+	 *            the start
+	 * @param offset
+	 *            the offset
 	 * @return the list
 	 */
 	public List<Company> findAll(int start, int offset);

@@ -58,8 +58,8 @@ public class ComputerDaoTest {
 	@Test
 	public void testFind() {
 		final Computer computerExpeted = new Computer(1, "TEST",
-				LocalDateTime.of(1991, 01, 01, 00, 00, 00), LocalDateTime.of(1993, 02, 01, 00, 00, 00), new Company(
-						1, "Apple Inc."));
+				LocalDateTime.of(1991, 01, 01, 00, 00, 00), LocalDateTime.of(
+						1993, 02, 01, 00, 00, 00), new Company(1, "Apple Inc."));
 		try {
 			H2Util.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 					COMPUTERS_XML)));
@@ -138,10 +138,11 @@ public class ComputerDaoTest {
 			try {
 				DaoManager.INSTANCE.getConnection().setAutoCommit(false);
 				H2Util.cleanlyInsert(new FlatXmlDataSetBuilder()
-				.build(new File(COMPUTERS_XML)));
+						.build(new File(COMPUTERS_XML)));
 				final Computer c = new Computer("Test");
 				c.setId(3);
-				final Computer computer = ComputerDaoImpl.getInstance().create(c);
+				final Computer computer = ComputerDaoImpl.getInstance().create(
+						c);
 				assertNotNull(computer);
 				assertEquals(c, computer);
 			} catch (Exception e) {
@@ -198,10 +199,13 @@ public class ComputerDaoTest {
 	public void testFindAllWithData() {
 		final List<Computer> computersExpected = new ArrayList<>();
 		computersExpected.add(new Computer(1, "TEST", LocalDateTime.of(1991,
-				01, 01, 00, 00, 00), LocalDateTime.of(1993, 02, 01, 00, 00, 00), new Company(1, "Apple Inc.")));
+				01, 01, 00, 00, 00),
+				LocalDateTime.of(1993, 02, 01, 00, 00, 00), new Company(1,
+						"Apple Inc.")));
 		computersExpected.add(new Computer(2, "TEST2", LocalDateTime.of(1992,
-				01, 01, 00, 00, 00), LocalDateTime.of(1993, 02, 01, 00, 00, 00), 
-				new Company(1, "Apple Inc.")));
+				01, 01, 00, 00, 00),
+				LocalDateTime.of(1993, 02, 01, 00, 00, 00), new Company(1,
+						"Apple Inc.")));
 		try {
 			H2Util.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
 					COMPUTERS_XML)));
@@ -213,19 +217,23 @@ public class ComputerDaoTest {
 		assertEquals(computersExpected, computers);
 	}
 
-	@Test public void testFindAllWithParamWithData() {
+	@Test
+	public void testFindAllWithParamWithData() {
 		final List<Computer> computersExpected = new ArrayList<>();
 		computersExpected.add(new Computer(1, "TEST", LocalDateTime.of(1991,
-				01, 01, 00, 00, 00), LocalDateTime.of(1993, 02, 01, 00, 00, 00), new Company(1, "Apple Inc.")));
-		try
-		{ 
-			H2Util.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(COMPUTERS_XML)));
+				01, 01, 00, 00, 00),
+				LocalDateTime.of(1993, 02, 01, 00, 00, 00), new Company(1,
+						"Apple Inc.")));
+		try {
+			H2Util.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
+					COMPUTERS_XML)));
 		} catch (Exception e) {
-			fail("Can't load data"); 
+			fail("Can't load data");
 		}
-		final List<Computer> computers = ComputerDaoImpl.getInstance().findAll(0,1); 
-		assertEquals(1,computers.size()); 
-		assertEquals(computersExpected, computers); 
+		final List<Computer> computers = ComputerDaoImpl.getInstance().findAll(
+				0, 1);
+		assertEquals(1, computers.size());
+		assertEquals(computersExpected, computers);
 	}
 
 }

@@ -10,11 +10,11 @@ public class Company {
 
 	/** company name. */
 	private String name;
-	
-	public Company(){
-		
+
+	public Company() {
+
 	}
-	
+
 	public Company(int id, String name) {
 		super();
 		this.id = id;
@@ -100,6 +100,5 @@ public class Company {
 			return false;
 		return true;
 	}
-	
 
 }

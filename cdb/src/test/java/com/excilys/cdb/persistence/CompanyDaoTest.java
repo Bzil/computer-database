@@ -175,7 +175,7 @@ public class CompanyDaoTest {
 		final Company company = CompanyDaoImpl.getInstance().update(c);
 		assertNull(company);
 	}
-	
+
 	@Test
 	public void testUpdateWithName() {
 		try {
@@ -184,7 +184,7 @@ public class CompanyDaoTest {
 		} catch (Exception e) {
 			fail("Can't load data");
 		}
-		Company c = new Company(1,"Test");
+		Company c = new Company(1, "Test");
 		final Company company = CompanyDaoImpl.getInstance().update(c);
 		assertNotNull(company);
 		assertEquals(company.getId(), c.getId());
@@ -230,7 +230,8 @@ public class CompanyDaoTest {
 		} catch (Exception e) {
 			fail("Can't load data");
 		}
-		final List<Company> companies = CompanyDaoImpl.getInstance().findAll(0,2);
+		final List<Company> companies = CompanyDaoImpl.getInstance().findAll(0,
+				2);
 		assertEquals(2, companies.size());
 		assertEquals(companiesExpected, companies);
 	}
