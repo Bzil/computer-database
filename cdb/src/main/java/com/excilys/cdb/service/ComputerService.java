@@ -26,7 +26,7 @@ public interface ComputerService extends Service<Computer, ComputerDTO> {
 	 *            the name
 	 * @return the computer dto
 	 */
-	public ComputerDTO find(String name);
+	public List<ComputerDTO> find(String name);
 
 	/**
 	 * Find all.

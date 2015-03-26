@@ -3,12 +3,14 @@ package com.excilys.cdb.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDao;
 import com.excilys.cdb.persistence.impl.ComputerDaoImpl;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.util.dto.ComputerDTO;
-
 
 /**
  * The Enum ComputerServiceImpl.
@@ -19,12 +21,15 @@ public enum ComputerServiceImpl implements ComputerService {
 	INSTANCE;
 
 	/** The dao. */
-	private static ComputerDao dao = ComputerDaoImpl.getInstance(); ;
-
+	private static ComputerDao dao = ComputerDaoImpl.getInstance();;
+	
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(ComputerServiceImpl.class);
 	/**
 	 * Instantiates a new computer service impl.
 	 */
-	private ComputerServiceImpl() {}
+	private ComputerServiceImpl() {
+	}
 
 	/**
 	 * Gets the single instance of ComputerServiceImpl.
@@ -44,8 +49,9 @@ public enum ComputerServiceImpl implements ComputerService {
 	public ComputerDTO find(int id) {
 		Computer c = dao.find(id);
 		ComputerDTO dto = null;
-		if (c != null)
+		if (c != null) {
 			dto = ComputerDTO.toDTO(c);
+		}
 		return dto;
 	}
 
@@ -55,12 +61,17 @@ public enum ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#find(String)
 	 */
 	@Override
-	public ComputerDTO find(String name) {
-		Computer c = dao.find(name);
-		ComputerDTO dto = null;
-		if (c != null)
-			dto = ComputerDTO.toDTO(c);
-		return dto;
+	public List<ComputerDTO> find(String name) {
+		List<Computer> computers = dao.find(name);
+		List<ComputerDTO> dtos = null;
+		if (!computers.isEmpty()) {
+			dtos = new ArrayList<>();
+			for (Computer c : computers){
+				dtos.add(ComputerDTO.toDTO(c));
+			}
+		}
+		LOGGER.info("Result of find by name "+ name + " is " + dtos);
+		return dtos;
 	}
 
 	/*
@@ -72,8 +83,9 @@ public enum ComputerServiceImpl implements ComputerService {
 	public List<ComputerDTO> findAll() {
 		List<Computer> companies = dao.findAll();
 		List<ComputerDTO> dtos = new ArrayList<>();
-		for (Computer c : companies)
+		for (Computer c : companies) {
 			dtos.add(ComputerDTO.toDTO(c));
+		}
 
 		return dtos;
 	}
@@ -87,9 +99,9 @@ public enum ComputerServiceImpl implements ComputerService {
 	public List<ComputerDTO> findAll(int start, int offset) {
 		List<Computer> companies = dao.findAll(start, offset);
 		List<ComputerDTO> dtos = new ArrayList<>();
-		for (Computer c : companies)
+		for (Computer c : companies) {
 			dtos.add(ComputerDTO.toDTO(c));
-
+		}
 		return dtos;
 	}
 
@@ -104,8 +116,9 @@ public enum ComputerServiceImpl implements ComputerService {
 	public ComputerDTO add(Computer computer) {
 		Computer c = dao.create(computer);
 		ComputerDTO dto = null;
-		if (c != null)
+		if (c != null) {
 			dto = ComputerDTO.toDTO(c);
+		}
 		return dto;
 	}
 
@@ -139,8 +152,9 @@ public enum ComputerServiceImpl implements ComputerService {
 	public ComputerDTO update(Computer computer) {
 		Computer c = dao.update(computer);
 		ComputerDTO dto = null;
-		if (c != null)
+		if (c != null) {
 			dto = ComputerDTO.toDTO(c);
+		}
 		return dto;
 	}
 

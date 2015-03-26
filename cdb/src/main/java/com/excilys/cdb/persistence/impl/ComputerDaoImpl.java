@@ -69,21 +69,22 @@ public enum ComputerDaoImpl implements ComputerDao {
 	}
 
 	@Override
-	public Computer find(String name) {
-		LOGGER.trace("Find company " + name);
-		Computer computer = null;
+	public List<Computer> find(String name) {
+		LOGGER.trace("Find computers by name : " + name);
+		List<Computer> computers = new ArrayList<>();
 		Mapper<Computer> mapper = new ComputerMapper();
 		Connection connection = null;
 		PreparedStatement statement = null;
 		try {
 			connection = DaoManager.INSTANCE.getConnection();
 			statement = connection
-					.prepareStatement("SELECT * FROM computer WHERE name = ?");
+					.prepareStatement("SELECT * FROM computer as c WHERE c.name LIKE '%?%'");
 			statement.setString(1, name);
 			ResultSet result = statement.executeQuery();
-			if (result.first()) {
-				computer = (Computer) mapper.rowMap(result);
+			while (result.next()) {
+				Computer computer = (Computer) mapper.rowMap(result);
 				computer.setCompany(findFromId(computer.getCompany().getId()));
+				computers.add(computer);
 			}
 			result.close();
 		} catch (SQLException e) {
@@ -92,7 +93,7 @@ public enum ComputerDaoImpl implements ComputerDao {
 		} finally {
 			DaoManager.INSTANCE.close(statement, connection);
 		}
-		return computer;
+		return computers;
 	}
 
 	/*

@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.cdb.util.ComputerPage;
+import com.excilys.cdb.util.dto.ComputerDTO;
 import com.excilys.cdb.util.validator.Validator;
 
 @WebServlet(urlPatterns = "/dashboard", loadOnStartup = 1)
@@ -39,14 +40,15 @@ public class DashBoardServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
 		doPost(request, response);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+
 		ComputerPage computerPage = new ComputerPage();
+		List<ComputerDTO> entities = null;
 
 		if (request.getParameter("selection") != null) {
 			List<Integer> list = getSelectionList(request);
@@ -63,7 +65,6 @@ public class DashBoardServlet extends HttpServlet {
 		int page = 0;
 		// count of cumputer
 		int count = cs.count();
-		computerPage.setCount(count);
 
 		// size of list
 		if (Validator.INSTANCE.isNumericString(request.getParameter("size"))) {
@@ -83,10 +84,19 @@ public class DashBoardServlet extends HttpServlet {
 		} else {
 			computerPage.setStart(0);
 		}
-
-		computerPage.setEntities(cs.findAll(computerPage.getStart(),
-				computerPage.getOffset()));
-
+		if (request.getParameter("search") != null) {
+			String search = request.getParameter("search");
+			LOGGER.info("Looking for : " + search);
+			entities = cs.find(search);
+			LOGGER.info("Result : " + entities);
+			count = entities.size();
+		} else {
+			entities = cs.findAll(computerPage.getStart(),
+					computerPage.getOffset());
+		}
+		
+		computerPage.setCount(count);
+		computerPage.setEntities(entities);
 		computerPage.setPageNb(count / computerPage.getOffset());
 		LOGGER.info("Show page : " + computerPage);
 		request.setAttribute("page", computerPage);

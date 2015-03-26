@@ -25,7 +25,7 @@ public interface ComputerDao {
 	 * @param name the name
 	 * @return the computer
 	 */
-	public Computer find(String name);
+	public List<Computer> find(String name);
 
 	/**
 	 * Find all.

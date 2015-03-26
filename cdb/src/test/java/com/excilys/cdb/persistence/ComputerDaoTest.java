@@ -16,6 +16,7 @@ import java.util.List;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.After;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.excilys.cdb.manage.H2dbManager;
@@ -69,6 +70,22 @@ public class ComputerDaoTest {
 		}
 		final Computer computer = ComputerDaoImpl.getInstance().find(1);
 		assertEquals(computerExpeted, computer);
+	}
+	
+	@Test
+	public void testFindByName() {
+		final List<Computer> computersExpeted = new ArrayList<>();
+		computersExpeted.add(new Computer(1, "TEST",
+				LocalDateTime.of(1991, 01, 01, 00, 00, 00), LocalDateTime.of(
+						1993, 02, 01, 00, 00, 00), new Company(1, "Apple Inc.")));
+		try {
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
+					COMPUTERS_XML)));
+		} catch (Exception e) {
+			fail("Can't load data");
+		}
+		final List<Computer> computers = ComputerDaoImpl.getInstance().find("apple");
+		assertEquals(computersExpeted, computers);
 	}
 
 	@Test
