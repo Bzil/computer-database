@@ -44,6 +44,7 @@ public enum CompanyServiceImpl implements CompanyService {
 	@Override
 	public CompanyDTO find(int id) {
 		Company c = dao.find(id);
+		System.out.println(c);
 		CompanyDTO dto = null;
 		if (c != null)
 			dto = CompanyDTO.toDTO(c);
@@ -104,7 +105,17 @@ public enum CompanyServiceImpl implements CompanyService {
 	 */
 	@Override
 	public void delete(Company company) {
-		dao.delete(company);
+		dao.delete(company.getId());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.excilys.cdb.service.Service#delete(int)
+	 */
+	@Override
+	public void delete(int id) {
+		dao.delete(id);
 	}
 
 	/*

@@ -9,7 +9,7 @@ import com.excilys.cdb.persistence.impl.ComputerDaoImpl;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.util.dto.ComputerDTO;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Enum ComputerServiceImpl.
  */
@@ -114,13 +114,20 @@ public enum ComputerServiceImpl implements ComputerService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.excilys.cdb.service.ComputerService#delete(com.excilys.cdb.model.
-	 * Computer )
+	 * @see com.excilys.cdb.service.ComputerService#delete(int)
+	 */
+	public void delete(Computer computer) {
+		dao.delete(computer.getId());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.excilys.cdb.service.Service#delete(int)
 	 */
 	@Override
-	public void delete(Computer computer) {
-		dao.delete(computer);
+	public void delete(int id) {
+		dao.delete(id);
 	}
 
 	/*

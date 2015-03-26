@@ -66,7 +66,7 @@ public interface ComputerDao {
 	 * @param computer
 	 *            the computer
 	 */
-	public void delete(Computer computer);
+	public void delete(int id);
 
 	/**
 	 * Count.

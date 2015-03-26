@@ -4,6 +4,12 @@ import java.util.List;
 
 import com.excilys.cdb.util.dto.DTO;
 
+/**
+ * The Interface Service.
+ *
+ * @param <T> the generic type
+ * @param <D> the generic type
+ */
 public interface Service<T, D extends DTO<T>> {
 
 	/**
@@ -49,6 +55,13 @@ public interface Service<T, D extends DTO<T>> {
 	 *            the t
 	 */
 	public void delete(T t);
+	
+	/**
+	 * Delete.
+	 *
+	 * @param id the id
+	 */
+	public void delete(int id);
 
 	/**
 	 * Update.

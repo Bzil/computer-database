@@ -60,7 +60,7 @@ public interface CompanyDao {
 	 * @param company
 	 *            the company
 	 */
-	public void delete(Company company);
+	public void delete(int id);
 
 	/**
 	 * Count.

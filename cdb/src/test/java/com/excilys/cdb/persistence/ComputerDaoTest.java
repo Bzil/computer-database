@@ -16,7 +16,6 @@ import java.util.List;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.After;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.excilys.cdb.manage.H2dbManager;

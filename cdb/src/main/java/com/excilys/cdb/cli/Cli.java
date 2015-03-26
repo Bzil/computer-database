@@ -15,6 +15,7 @@ import com.excilys.cdb.service.impl.CompanyServiceImpl;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.cdb.util.CompanyPage;
 import com.excilys.cdb.util.ComputerPage;
+import com.excilys.cdb.util.dto.CompanyDTO;
 import com.excilys.cdb.util.dto.ComputerDTO;
 
 public class Cli {
@@ -100,10 +101,11 @@ public class Cli {
 			System.out.println("4) Create a computer");
 			System.out.println("5) Update a computer");
 			System.out.println("6) Delete a computer");
+			System.out.println("7) Delete a company");
 			System.out.println("0) Quit");
-			System.out.println("Choose between 0 - 6 : ");
+			System.out.println("Choose between 0 - 7 : ");
 
-			switch (getChoice(toList("1", "2", "3", "4", "5", "6", "0"))) {
+			switch (getChoice(toList("1", "2", "3", "4", "5", "6", "7", "0"))) {
 			case "1":
 				showComputers();
 				break;
@@ -121,6 +123,9 @@ public class Cli {
 				break;
 			case "6":
 				deleteComputer();
+				break;
+			case "7":
+				deleteCompany();
 				break;
 			case "0":
 				System.out.println("Program ended.");
@@ -179,6 +184,7 @@ public class Cli {
 	}
 
 	private void deleteComputer() {
+		System.out.println("Choose computer id : ");
 		String choice = getChoice();
 		ComputerDTO computer = computerService.find(Integer.parseInt(choice));
 		if (computer != null) {
@@ -187,7 +193,7 @@ public class Cli {
 			String str = getChoice(toList("y", "n"));
 			switch (str) {
 			case "y":
-				computerService.delete(ComputerDTO.fromDTO(computer));
+				computerService.delete(computer.id);
 				System.out.println("Computer delete");
 				break;
 			case "n":
@@ -195,6 +201,27 @@ public class Cli {
 			}
 		} else {
 			System.out.println("Computer doesn't exist");
+		}
+	}
+
+	private void deleteCompany() {
+		System.out.println("Choose company id : ");
+		String choice = getChoice();
+		CompanyDTO company = companyService.find(Integer.parseInt(choice));
+		if (company != null) {
+			System.out.println(company);
+			System.out.println("Confirm deletion ? [y/n]");
+			String str = getChoice(toList("y", "n"));
+			switch (str) {
+			case "y":
+				companyService.delete(company.id);
+				System.out.println("Company delete");
+				break;
+			case "n":
+				return;
+			}
+		} else {
+			System.out.println("Company doesn't exist");
 		}
 	}
 

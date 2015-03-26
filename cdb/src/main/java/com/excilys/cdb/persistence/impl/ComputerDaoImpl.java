@@ -207,18 +207,18 @@ public enum ComputerDaoImpl implements ComputerDao {
 	 * Computer)
 	 */
 	@Override
-	public void delete(Computer computer) {
-		LOGGER.trace("Delete computer " + computer);
+	public void delete(int id) {
+		LOGGER.trace("Delete computer whit id + " + id);
 		Connection connection = null;
 		PreparedStatement statement = null;
 		try {
 			connection = DaoManager.INSTANCE.getConnection();
 			statement = connection
 					.prepareStatement("DELETE FROM computer WHERE id = ?");
-			statement.setInt(1, computer.getId());
-			statement.executeUpdate();
+			statement.setInt(1, id);
+			statement.execute();
 		} catch (SQLException e) {
-			LOGGER.debug("Can't execute delete request of " + computer);
+			LOGGER.debug("Can't execute delete computer id : " + id);
 			e.printStackTrace();
 		} finally {
 			DaoManager.INSTANCE.close(statement, connection);

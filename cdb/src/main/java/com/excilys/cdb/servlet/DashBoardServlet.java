@@ -1,6 +1,8 @@
 package com.excilys.cdb.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -17,17 +19,17 @@ import com.excilys.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.cdb.util.ComputerPage;
 import com.excilys.cdb.util.validator.Validator;
 
-@WebServlet(urlPatterns = "/dashboard", loadOnStartup=1)
+@WebServlet(urlPatterns = "/dashboard", loadOnStartup = 1)
 public class DashBoardServlet extends HttpServlet {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(DashBoardServlet.class);
-					
+
 	private ComputerService cs;
 
 	public void init(ServletConfig config) {
@@ -35,16 +37,29 @@ public class DashBoardServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
 		doPost(request, response);
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		ComputerPage computerPage = new ComputerPage();
+
+		if (request.getParameter("selection") != null) {
+			List<Integer> list = getSelectionList(request);
+			for (Integer i : list) {
+				try {
+					ComputerServiceImpl.INSTANCE.delete(i);
+					LOGGER.info("computer with id : " + i + " deleted");
+				} catch (Exception e) {
+					LOGGER.error("computer with id : " + i
+							+ " can not be deleted");
+				}
+			}
+		}
 		int page = 0;
 		// count of cumputer
 		int count = cs.count();
@@ -62,8 +77,9 @@ public class DashBoardServlet extends HttpServlet {
 		if (Validator.INSTANCE.isNumericString(request.getParameter("id"))) {
 			page = Integer.parseInt(request.getParameter("id"));
 			computerPage.setCurrentPage(page);
-			computerPage.setStart((Integer.parseInt(request
-					.getParameter("id")) - 1) * computerPage.getOffset());
+			computerPage
+					.setStart((Integer.parseInt(request.getParameter("id")) - 1)
+							* computerPage.getOffset());
 		} else {
 			computerPage.setStart(0);
 		}
@@ -74,7 +90,20 @@ public class DashBoardServlet extends HttpServlet {
 		computerPage.setPageNb(count / computerPage.getOffset());
 		LOGGER.info("Show page : " + computerPage);
 		request.setAttribute("page", computerPage);
-		request.getRequestDispatcher(ControllerServlet.DASHBOARD_JSP)
-				.forward(request, response);
+		request.getRequestDispatcher(ControllerServlet.DASHBOARD_JSP).forward(
+				request, response);
+	}
+
+	private List<Integer> getSelectionList(HttpServletRequest request) {
+		List<Integer> ret = null;
+		String selection = request.getParameter("selection");
+		if (!selection.equals("0")) {
+			ret = new ArrayList<>();
+			for (String s : selection.split(",")) {
+				ret.add(Integer.valueOf(s));
+			}
+		}
+		return ret;
+
 	}
 }

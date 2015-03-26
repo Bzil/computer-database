@@ -135,21 +135,34 @@ public enum CompanyDaoImpl implements CompanyDao {
 	 * )
 	 */
 	@Override
-	public void delete(Company company) {
-		LOGGER.trace("Delete company " + company);
+	public void delete(int id) {
+		LOGGER.trace("Delete company " + id);
 		Connection connection = null;
 		PreparedStatement statement = null;
 		try {
 			connection = DaoManager.INSTANCE.getConnection();
-			statement = connection
-					.prepareStatement("DELETE FROM company WHERE id = ?");
-			statement.setInt(1, company.getId());
-			statement.executeUpdate();
+			connection.setAutoCommit(false);
+			// Delete all the computer
+			statement = connection.prepareStatement("DELETE FROM computer WHERE company_id=?");
+			statement.setInt(1, id);
+			statement.execute();
+			// Delete the company
+			statement = connection.prepareStatement("DELETE FROM company WHERE id=?");
+			statement.setLong(1, id);
+			statement.execute();
+			
+			statement.close();
 		} catch (SQLException e) {
-			LOGGER.debug("Can't execute delete request of " + company);
-			e.printStackTrace();
+			LOGGER.debug("Can't execute delete " + id);
+			//e.printStackTrace();
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				LOGGER.error("Can't rollack connection after deletion try of " + id);
+				//e1.printStackTrace();
+			}
 		} finally {
-			DaoManager.INSTANCE.close(statement, connection);
+			DaoManager.INSTANCE.close(null, connection);
 		}
 	}
 
@@ -181,6 +194,9 @@ public enum CompanyDaoImpl implements CompanyDao {
 		return companies;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.persistence.CompanyDao#findAll(int, int)
+	 */
 	@Override
 	public List<Company> findAll(int start, int offset) {
 		List<Company> companies = new ArrayList<>();

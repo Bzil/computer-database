@@ -22,12 +22,11 @@ public enum DaoManager {
 
 	/** The properties file. */
 	String propertiesFile = "/config.properties";
-	
+
 	String driver = "com.mysql.jdbc.Driver";
 
 	/** The Constant LOOGER. */
-	private final Logger LOGGER = LoggerFactory
-			.getLogger(DaoManager.class);
+	private final Logger LOGGER = LoggerFactory.getLogger(DaoManager.class);
 
 	/** The pool. */
 	private BoneCP pool = null;
@@ -44,7 +43,7 @@ public enum DaoManager {
 			LOGGER.error("Can't open/read mysql.properties");
 			System.err.println(e);
 		} catch (RuntimeException e) {
-			LOGGER.error("Runtime : "+ this.getClass());
+			LOGGER.error("Runtime : " + this.getClass());
 			System.err.println(e);
 		} catch (ClassNotFoundException e) {
 			LOGGER.error("Class not found");
@@ -67,7 +66,6 @@ public enum DaoManager {
 		}
 	}
 
-
 	/**
 	 * Gets the connection.
 	 *
@@ -85,19 +83,26 @@ public enum DaoManager {
 	/**
 	 * Close connection.
 	 *
-	 * @param statement the statement
-	 * @param connection the connection
+	 * @param statement
+	 *            the statement
+	 * @param connection
+	 *            the connection
 	 */
 	public void close(Statement statement, Connection connection) {
 		try {
-			if (statement != null)
+			if (statement != null) {
 				statement.close();
+			}
 		} catch (SQLException e) {
 			LOGGER.warn("Can't close statement");
 		}
 		try {
-			if (connection != null)
+			if (connection != null) {
+				if (!connection.getAutoCommit()) {
+					connection.setAutoCommit(true);
+				}
 				connection.close();
+			}
 		} catch (SQLException e) {
 			LOGGER.warn("Can't close connection");
 		}
