@@ -105,7 +105,7 @@ public class Cli {
 			System.out.println("0) Quit");
 			System.out.println("Choose between 0 - 7 : ");
 
-			switch (getChoice(toList("1", "2", "3", "4", "5", "6", "7", "0"))) {
+			switch (getChoice(toList("1", "2", "3", "4", "5", "6", "7", "8", "0"))) {
 			case "1":
 				showComputers();
 				break;

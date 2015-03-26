@@ -31,7 +31,6 @@ public class ComputerMapper implements Mapper<Computer> {
 		}
 		computer.setCompany(new Company());
 		computer.getCompany().setId(result.getInt("company_id"));
-
 		return computer;
 	}
 
