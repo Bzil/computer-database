@@ -151,6 +151,7 @@ public enum CompanyDaoImpl implements CompanyDao {
 			statement.setLong(1, id);
 			statement.execute();
 			
+			connection.commit();
 			statement.close();
 		} catch (SQLException e) {
 			LOGGER.debug("Can't execute delete " + id);

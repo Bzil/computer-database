@@ -18,14 +18,12 @@ public enum CompanyServiceImpl implements CompanyService {
 	INSTANCE;
 
 	/** The dao. */
-	private CompanyDao dao;
+	private CompanyDao dao = CompanyDaoImpl.getInstance();
 
 	/**
 	 * Instantiates a new company service impl.
 	 */
-	private CompanyServiceImpl() {
-		dao = CompanyDaoImpl.getInstance();
-	}
+	private CompanyServiceImpl() {}
 
 	/**
 	 * Gets the single instance of CompanyServiceImpl.

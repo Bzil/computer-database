@@ -19,14 +19,12 @@ public enum ComputerServiceImpl implements ComputerService {
 	INSTANCE;
 
 	/** The dao. */
-	private ComputerDao dao;
+	private static ComputerDao dao = ComputerDaoImpl.getInstance(); ;
 
 	/**
 	 * Instantiates a new computer service impl.
 	 */
-	private ComputerServiceImpl() {
-		dao = ComputerDaoImpl.getInstance();
-	}
+	private ComputerServiceImpl() {}
 
 	/**
 	 * Gets the single instance of ComputerServiceImpl.

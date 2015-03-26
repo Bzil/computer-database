@@ -34,6 +34,7 @@
 		<validator.version>1.4.0</validator.version>
 		<logback.version>1.1.2</logback.version>
 		<bonecp.version>0.8.0.RELEASE</bonecp.version>
+		<selenium.version>2.45.0</selenium.version>
 	</properties>
 
 	<build>
@@ -178,6 +179,13 @@
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-api-mockito</artifactId>
 			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>${selenium.version}</version>
 			<scope>test</scope>
 		</dependency>
 
