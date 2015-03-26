@@ -112,4 +112,12 @@ public abstract class Page<T, D extends DTO<T>> {
 		return endPage;
 	}
 
+	@Override
+	public String toString() {
+		return "Page [start=" + start + ", offset=" + offset + ", count="
+				+ count + ", currentPage=" + currentPage + ", pageNb=" + pageNb
+				+ ", startPage=" + startPage + ", endPage=" + endPage + "]";
+	}
+	
+
 }

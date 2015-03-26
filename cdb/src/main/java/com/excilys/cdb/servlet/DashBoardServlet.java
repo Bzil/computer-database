@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.cdb.util.ComputerPage;
@@ -21,7 +24,10 @@ public class DashBoardServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(DashBoardServlet.class);
+					
 	private ComputerService cs;
 
 	public void init(ServletConfig config) {
@@ -66,7 +72,7 @@ public class DashBoardServlet extends HttpServlet {
 				computerPage.getOffset()));
 
 		computerPage.setPageNb(count / computerPage.getOffset());
-
+		LOGGER.info("Show page : " + computerPage);
 		request.setAttribute("page", computerPage);
 		request.getRequestDispatcher(ControllerServlet.DASHBOARD_JSP)
 				.forward(request, response);

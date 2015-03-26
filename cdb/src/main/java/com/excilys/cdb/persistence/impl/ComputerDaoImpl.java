@@ -46,9 +46,12 @@ public enum ComputerDaoImpl implements ComputerDao {
 		LOGGER.trace("Find company " + id);
 		Computer computer = null;
 		Mapper<Computer> mapper = new ComputerMapper();
-		try (Connection connection = DaoManager.INSTANCE.getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement("SELECT * FROM computer WHERE id = ?");) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = DaoManager.INSTANCE.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * FROM computer WHERE id = ?");
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
 			if (result.first()) {
@@ -59,6 +62,8 @@ public enum ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			LOGGER.debug("Can't execute select request with id " + id);
 			// e.printStackTrace();
+		} finally {
+			DaoManager.INSTANCE.close(statement, connection);
 		}
 		return computer;
 	}
@@ -68,9 +73,12 @@ public enum ComputerDaoImpl implements ComputerDao {
 		LOGGER.trace("Find company " + name);
 		Computer computer = null;
 		Mapper<Computer> mapper = new ComputerMapper();
-		try (Connection connection = DaoManager.INSTANCE.getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement("SELECT * FROM computer WHERE name = ?");) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = DaoManager.INSTANCE.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * FROM computer WHERE name = ?");
 			statement.setString(1, name);
 			ResultSet result = statement.executeQuery();
 			if (result.first()) {
@@ -81,6 +89,8 @@ public enum ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			LOGGER.debug("Can't execute select request with name : " + name);
 			// e.printStackTrace();
+		} finally {
+			DaoManager.INSTANCE.close(statement, connection);
 		}
 		return computer;
 	}
@@ -95,11 +105,14 @@ public enum ComputerDaoImpl implements ComputerDao {
 	@Override
 	public Computer create(Computer computer) {
 		LOGGER.trace("Create computer " + computer);
-		try (Connection connection = DaoManager.INSTANCE.getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement(
-								"INSERT INTO computer(name, introduced, discontinued, company_id) values (?, ?, ?, ?)",
-								Statement.RETURN_GENERATED_KEYS);) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = DaoManager.INSTANCE.getConnection();
+			statement = connection
+					.prepareStatement(
+							"INSERT INTO computer(name, introduced, discontinued, company_id) values (?, ?, ?, ?)",
+							Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, computer.getName());
 
 			if (computer.getIntroduced() != null) {
@@ -130,6 +143,8 @@ public enum ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			LOGGER.debug("Can't exectute create request of " + computer);
 			// e.printStackTrace();
+		} finally {
+			DaoManager.INSTANCE.close(statement, connection);
 		}
 		if (computer.getCompany() != null)
 			computer.setCompany(findFromId(computer.getCompany().getId()));
@@ -147,9 +162,12 @@ public enum ComputerDaoImpl implements ComputerDao {
 	@Override
 	public Computer update(Computer computer) {
 		LOGGER.trace("Update computer " + computer);
-		try (Connection connection = DaoManager.INSTANCE.getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement("UPDATE computer SET name = ? , introduced = ? , discontinued = ?, company_id = ? WHERE id = ? ");) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = DaoManager.INSTANCE.getConnection();
+			statement = connection
+					.prepareStatement("UPDATE computer SET name = ? , introduced = ? , discontinued = ?, company_id = ? WHERE id = ? ");
 			statement.setString(1, computer.getName());
 			if (computer.getIntroduced() != null) {
 				statement.setTimestamp(2,
@@ -175,6 +193,8 @@ public enum ComputerDaoImpl implements ComputerDao {
 			computer = null;
 			LOGGER.debug("Can't exceute update request of " + computer);
 			// e.printStackTrace();
+		} finally {
+			DaoManager.INSTANCE.close(statement, connection);
 		}
 		return computer;
 	}
@@ -189,14 +209,19 @@ public enum ComputerDaoImpl implements ComputerDao {
 	@Override
 	public void delete(Computer computer) {
 		LOGGER.trace("Delete computer " + computer);
-		try (Connection connection = DaoManager.INSTANCE.getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement("DELETE FROM computer WHERE id = ?");) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = DaoManager.INSTANCE.getConnection();
+			statement = connection
+					.prepareStatement("DELETE FROM computer WHERE id = ?");
 			statement.setInt(1, computer.getId());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			LOGGER.debug("Can't execute delete request of " + computer);
 			e.printStackTrace();
+		} finally {
+			DaoManager.INSTANCE.close(statement, connection);
 		}
 
 	}
@@ -209,14 +234,18 @@ public enum ComputerDaoImpl implements ComputerDao {
 	@Override
 	public int count() {
 		int count = -1;
-		try (Connection connection = DaoManager.INSTANCE.getConnection();
-				ResultSet result = connection.createStatement().executeQuery(
-						"SELECT COUNT(*) AS count FROM computer");) {
+		Connection connection = null;
+		try {
+			connection = DaoManager.INSTANCE.getConnection();
+			ResultSet result = connection.createStatement().executeQuery(
+					"SELECT COUNT(*) AS count FROM computer");
 			result.next();
 			count = result.getInt("count");
 		} catch (SQLException e) {
 			LOGGER.debug("Can't execute count request");
 			// e.printStackTrace();
+		} finally {
+			DaoManager.INSTANCE.close(null, connection);
 		}
 		return count;
 
@@ -231,9 +260,12 @@ public enum ComputerDaoImpl implements ComputerDao {
 	public List<Computer> findAll() {
 		List<Computer> computers = new ArrayList<>();
 		Mapper<Computer> mapper = new ComputerMapper();
-		try (Connection connection = DaoManager.INSTANCE.getConnection();
-				ResultSet result = connection.createStatement().executeQuery(
-						"SELECT * FROM computer");) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = DaoManager.INSTANCE.getConnection();
+			ResultSet result = connection.createStatement().executeQuery(
+					"SELECT * FROM computer");
 			while (result.next()) {
 				Computer computer = (Computer) mapper.rowMap(result);
 				computer.setCompany(findFromId(computer.getCompany().getId()));
@@ -243,6 +275,8 @@ public enum ComputerDaoImpl implements ComputerDao {
 		} catch (SQLException e) {
 			LOGGER.debug("Can't find all computer");
 			// e.printStackTrace();
+		} finally {
+			DaoManager.INSTANCE.close(statement, connection);
 		}
 		return computers;
 	}
@@ -256,9 +290,12 @@ public enum ComputerDaoImpl implements ComputerDao {
 	public List<Computer> findAll(int start, int offset) {
 		List<Computer> computers = new ArrayList<>();
 		Mapper<Computer> mapper = new ComputerMapper();
-		try (Connection connection = DaoManager.INSTANCE.getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement("SELECT * FROM computer LIMIT ?, ? ");) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = DaoManager.INSTANCE.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * FROM computer LIMIT ?, ? ");
 			statement.setInt(1, start);
 			statement.setInt(2, offset);
 			ResultSet result = statement.executeQuery();
@@ -272,6 +309,8 @@ public enum ComputerDaoImpl implements ComputerDao {
 			LOGGER.debug("Can't find all computer between [" + start + "-"
 					+ (start + offset) + "]");
 			e.printStackTrace();
+		} finally {
+			DaoManager.INSTANCE.close(statement, connection);
 		}
 		return computers;
 	}

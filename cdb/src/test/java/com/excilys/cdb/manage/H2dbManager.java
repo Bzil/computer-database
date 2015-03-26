@@ -16,9 +16,11 @@ import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
 
+import com.excilys.cdb.persistence.DaoManager;
+
 public class H2dbManager {
 
-	private static final String PROPERTIES_FILE = "src/test/resources/h2.properties";
+	private static final String PROPERTIES_FILE = "src/test/resources/config.properties";
 	private static final String SCHEMA = "src/test/resources/schema.sql";
 	public static IDatabaseTester dbTester;
 	public static String jdbcDriver;
@@ -78,11 +80,6 @@ public class H2dbManager {
 	}
 
 	public static Connection getConnection() throws IOException, SQLException {
-		final Properties properties = new Properties();
-		try (final InputStream is = new FileInputStream(PROPERTIES_FILE);) {
-			properties.load(is);
-			final String url = properties.getProperty("url");
-			return DriverManager.getConnection(url, properties);
-		}
+		return DaoManager.INSTANCE.getConnection();
 	}
 }

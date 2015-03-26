@@ -13,7 +13,7 @@
                     </div>
                     <h1>Edit Computer</h1>
 
-                    <form action="editComputer" method="POST">
+                    <form action="edit" method="POST">
                         <input type="hidden" value="${computer.id}" name="id"/>
                         <fieldset>
                             <div class="form-group">
@@ -23,12 +23,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduced date"
+                                <input type="date" class="form-control" id="introduced" name="introduced" placeholder="dd-mm-yyyy"
                                 value="<c:out value="${computer.introduced}"/>"/>
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date"
+                                <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="dd-mm-yyyy"
                                 value="<c:out value="${computer.discontinued}"/>"/>
                             </div>
                             <div class="form-group">
@@ -51,7 +51,7 @@
                         <div class="actions pull-right">
                             <input type="submit" value="Edit" class="btn btn-primary" id="buttonControl">
                             or
-                            <a href="controller?page=dashboard" class="btn btn-default">Cancel</a>
+                            <a href="dashboard" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>

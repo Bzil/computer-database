@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1>Add Computer</h1>
-                    <form action="controller?page=dashboard" method="POST">
+                    <form action="add" method="POST">
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
@@ -17,11 +17,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduced date">
+                                <input type="date" class="form-control" id="introduced" name="introduced" placeholder="dd-mm-yyyy">
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date">
+                                <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="dd-mm-yyyy">
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
@@ -36,7 +36,7 @@
                         <div class="actions pull-right">
                             <input type="submit" value="Add" class="btn btn-primary" id="buttonControl" >
                             or
-                            <a href="controller?page=dashboard" class="btn btn-default">Cancel</a>
+                            <a href="dashboard" class="btn btn-default">Cancel</a>
                         </div>
                     </form>
                 </div>

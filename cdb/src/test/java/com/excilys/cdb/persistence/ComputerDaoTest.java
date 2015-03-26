@@ -16,6 +16,7 @@ import java.util.List;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.After;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.excilys.cdb.manage.H2dbManager;
@@ -29,8 +30,9 @@ public class ComputerDaoTest {
 
 	@BeforeClass
 	public static void setUp() {
-		DaoManager.INSTANCE.propertiesFile = "h2.properties";
-
+		DaoManager.INSTANCE.propertiesFile = "/h2.properties";
+		DaoManager.INSTANCE.driver = "org.h2.Driver";
+		
 		try {
 			H2dbManager.executeSqlFile(H2dbManager.getConnection());
 		} catch (IOException | SQLException e) {

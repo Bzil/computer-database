@@ -9,9 +9,9 @@
 	description=""%>
 <c:choose>
 	<c:when test="${active == true}">
-		<a href="${target}&id=${page}" style="background: #dddddd;">${body}</a>
+		<a href="${target}?id=${page}" style="background: #dddddd;">${body}</a>
 	</c:when>
 	<c:otherwise>
-		<a href="${target}&id=${page}">${body}</a>
+		<a href="${target}?id=${page}">${body}</a>
 	</c:otherwise>
 </c:choose>

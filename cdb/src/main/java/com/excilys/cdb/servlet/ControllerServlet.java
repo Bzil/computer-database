@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebServlet(urlPatterns = {"/controller"}) 	
+//@WebServlet(urlPatterns = {"/controller"}) 	
 public class ControllerServlet extends HttpServlet {
 
 	/**
@@ -28,10 +28,10 @@ public class ControllerServlet extends HttpServlet {
 	public static final String DASHBOARD_SERV = "dashboard";
 
 	public static final String EDIT_JSP = "editComputer.jsp";
-	public static final String EDIT_SERV = "editComputer";
+	public static final String EDIT_SERV = "edit";
 
 	public static final String ADD_JSP = "addComputer.jsp";
-	public static final String ADD_SERV = "addComputer";
+	public static final String ADD_SERV = "add";
 
 	public static final String ERROR_404_JSP = "404.jsp";
 

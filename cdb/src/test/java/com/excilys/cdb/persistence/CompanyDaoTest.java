@@ -24,7 +24,7 @@ public class CompanyDaoTest {
 
 	@BeforeClass
 	public static void setUp() {
-		DaoManager.INSTANCE.propertiesFile = "h2.properties";
+		DaoManager.INSTANCE.driver = "org.h2.Driver";
 
 		try {
 			H2dbManager.executeSqlFile(H2dbManager.getConnection());
@@ -41,8 +41,8 @@ public class CompanyDaoTest {
 	@Test
 	public void testFindWithWrongValue() {
 		try {
-			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
-					COMPANIES_XML)));
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder()
+					.build(new File(COMPANIES_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
 		}
@@ -53,8 +53,8 @@ public class CompanyDaoTest {
 	@Test
 	public void testFind() {
 		try {
-			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
-					COMPANIES_XML)));
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder()
+					.build(new File(COMPANIES_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
 		}
@@ -66,8 +66,8 @@ public class CompanyDaoTest {
 	@Test
 	public void testFindWhitoutData() {
 		try {
-			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
-					EMPTY_XML)));
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder()
+					.build(new File(EMPTY_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
 		}
@@ -78,8 +78,8 @@ public class CompanyDaoTest {
 	@Test
 	public void testCountWhitoutData() {
 		try {
-			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
-					EMPTY_XML)));
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder()
+					.build(new File(EMPTY_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
 		}
@@ -91,8 +91,8 @@ public class CompanyDaoTest {
 	@Test
 	public void testCountWhitData() {
 		try {
-			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
-					COMPANIES_XML)));
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder()
+					.build(new File(COMPANIES_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
 		}
@@ -104,8 +104,8 @@ public class CompanyDaoTest {
 	@Test(expected = NullPointerException.class)
 	public void testCreateWithNullData() {
 		try {
-			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
-					COMPANIES_XML)));
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder()
+					.build(new File(COMPANIES_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
 		}
@@ -115,8 +115,8 @@ public class CompanyDaoTest {
 	@Test(expected = AssertionError.class)
 	public void testCreateWithoutName() {
 		try {
-			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
-					EMPTY_XML)));
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder()
+					.build(new File(EMPTY_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
 		}
@@ -153,8 +153,8 @@ public class CompanyDaoTest {
 	@Test(expected = NullPointerException.class)
 	public void testUpdateWhithNullData() {
 		try {
-			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
-					COMPANIES_XML)));
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder()
+					.build(new File(COMPANIES_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
 		}
@@ -165,8 +165,8 @@ public class CompanyDaoTest {
 	@Test(expected = AssertionError.class)
 	public void testUpdateWithoutName() {
 		try {
-			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
-					COMPANIES_XML)));
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder()
+					.build(new File(COMPANIES_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
 		}
@@ -179,8 +179,8 @@ public class CompanyDaoTest {
 	@Test
 	public void testUpdateWithName() {
 		try {
-			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
-					COMPANIES_XML)));
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder()
+					.build(new File(COMPANIES_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
 		}
@@ -194,8 +194,8 @@ public class CompanyDaoTest {
 	@Test
 	public void testFindAllWithoutData() {
 		try {
-			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
-					EMPTY_XML)));
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder()
+					.build(new File(EMPTY_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
 		}
@@ -210,8 +210,8 @@ public class CompanyDaoTest {
 		companiesExpected.add(new Company(2, "Dell"));
 		companiesExpected.add(new Company(3, "Apple Inc."));
 		try {
-			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
-					COMPANIES_XML)));
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder()
+					.build(new File(COMPANIES_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
 		}
@@ -225,8 +225,8 @@ public class CompanyDaoTest {
 		companiesExpected.add(new Company(1, "IBM"));
 		companiesExpected.add(new Company(2, "Dell"));
 		try {
-			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder().build(new File(
-					COMPANIES_XML)));
+			H2dbManager.cleanlyInsert(new FlatXmlDataSetBuilder()
+					.build(new File(COMPANIES_XML)));
 		} catch (Exception e) {
 			fail("Can't load data");
 		}
