@@ -43,7 +43,14 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name</th>
+						<th>Computer name 
+							<span style="float: right;">
+								<c:choose>
+									<c:when test="${page.orderBy == 'DESC'}"> &#x21E7; </c:when>
+									<c:otherwise> &#x21E9; </c:otherwise>
+								</c:choose>
+							</span>
+						</th>			
 						<th>Introduced date</th>
 						<!-- Table header for Discontinued Date -->
 						<th>Discontinued date</th>

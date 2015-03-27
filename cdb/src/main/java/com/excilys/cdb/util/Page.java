@@ -19,7 +19,7 @@ public abstract class Page<T, D extends DTO<T>> {
 	/** The index of T in base. */
 	private int start = 0;
 
-	/** The to index. */
+	/** Number of item by page. */
 	private int offset = 0;
 
 	/** Count of items */
@@ -34,6 +34,10 @@ public abstract class Page<T, D extends DTO<T>> {
 	private int startPage = 0;
 
 	private int endPage = 4;
+
+	private String search;
+
+	private String orderBy = "DESC";
 
 	private static final int OFFSET_PAGE = 3;
 
@@ -57,10 +61,6 @@ public abstract class Page<T, D extends DTO<T>> {
 		return start;
 	}
 
-	public void setStart(int start) {
-		this.start = start;
-	}
-
 	public int getOffset() {
 		return offset;
 	}
@@ -75,14 +75,15 @@ public abstract class Page<T, D extends DTO<T>> {
 
 	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
-
+		this.start = (currentPage > 1) ? (currentPage - 1) * offset : 0;
+		System.out.println("Start "+ start);
 	}
 
 	public int getPageNb() {
 		return pageNb;
 	}
 
-	public void setPageNb(int pageNb) {
+	private void setPageNb(int pageNb) {
 		this.pageNb = pageNb;
 		if (currentPage - OFFSET_PAGE > 0) {
 			this.startPage = currentPage - OFFSET_PAGE;
@@ -102,6 +103,7 @@ public abstract class Page<T, D extends DTO<T>> {
 
 	public void setCount(int count) {
 		this.count = count;
+		setPageNb((int) count / offset);
 	}
 
 	public int getStartPage() {
@@ -112,12 +114,31 @@ public abstract class Page<T, D extends DTO<T>> {
 		return endPage;
 	}
 
+	public String getSearch() {
+		return search;
+	}
+
+	public void setSearch(String search) {
+		this.search = search;
+	}
+
+	public String getOrderBy() {
+		return orderBy;
+	}
+
+	public void setOrderBy(String orderBy) {
+		if (orderBy.equals("ASC")) {
+			this.orderBy = orderBy;
+		} else {
+			this.orderBy = "DESC";
+		}
+	}
+
 	@Override
 	public String toString() {
 		return "Page [start=" + start + ", offset=" + offset + ", count="
 				+ count + ", currentPage=" + currentPage + ", pageNb=" + pageNb
 				+ ", startPage=" + startPage + ", endPage=" + endPage + "]";
 	}
-	
 
 }

@@ -56,8 +56,10 @@ public enum CompanyDaoImpl implements CompanyDao {
 			}
 			result.close();
 		} catch (SQLException e) {
-			LOGGER.debug("Can't execute select request with id " + id);
-			LOGGER.debug(e.toString());
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Can't execute select request with id " + id);
+				LOGGER.debug("Exception trace : ", e);
+			}
 		} finally {
 			DaoManager.INSTANCE.close(statement, connection);
 		}
@@ -90,8 +92,10 @@ public enum CompanyDaoImpl implements CompanyDao {
 			}
 			generatedKeys.close();
 		} catch (SQLException e) {
-			LOGGER.debug("Can't exectute create request of " + company);
-			e.printStackTrace();
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Can't exectute create request of " + company);
+				LOGGER.debug("Exception trace : ", e);
+			}
 		} finally {
 			DaoManager.INSTANCE.close(statement, connection);
 		}
@@ -118,9 +122,11 @@ public enum CompanyDaoImpl implements CompanyDao {
 			statement.setInt(2, company.getId());
 			statement.executeUpdate();
 		} catch (SQLException e) {
-			company = null;
-			LOGGER.debug("Can't exceute update request of " + company);
-			e.printStackTrace();
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Can't exceute update request of " + company);
+				company = null;
+				LOGGER.debug("Exception trace : ", e);
+			}
 		} finally {
 			DaoManager.INSTANCE.close(statement, connection);
 		}
@@ -143,24 +149,29 @@ public enum CompanyDaoImpl implements CompanyDao {
 			connection = DaoManager.INSTANCE.getConnection();
 			connection.setAutoCommit(false);
 			// Delete all the computer
-			statement = connection.prepareStatement("DELETE FROM computer WHERE company_id=?");
+			statement = connection
+					.prepareStatement("DELETE FROM computer WHERE company_id=?");
 			statement.setInt(1, id);
 			statement.execute();
 			// Delete the company
-			statement = connection.prepareStatement("DELETE FROM company WHERE id=?");
+			statement = connection
+					.prepareStatement("DELETE FROM company WHERE id=?");
 			statement.setLong(1, id);
 			statement.execute();
-			
+
 			connection.commit();
 			statement.close();
 		} catch (SQLException e) {
-			LOGGER.debug("Can't execute delete " + id);
-			//e.printStackTrace();
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Can't execute delete " + id);
+				LOGGER.debug("Exception trace : ", e);
+			}
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
-				LOGGER.error("Can't rollack connection after deletion try of " + id);
-				//e1.printStackTrace();
+				LOGGER.error("Can't rollack connection after deletion try of "
+						+ id);
+				// e1.printStackTrace();
 			}
 		} finally {
 			DaoManager.INSTANCE.close(null, connection);
@@ -188,14 +199,16 @@ public enum CompanyDaoImpl implements CompanyDao {
 			result.close();
 		} catch (SQLException e) {
 			LOGGER.debug("Can't find all computer");
-			e.printStackTrace();
+			LOGGER.debug("Exception trace : ", e);
 		} finally {
 			DaoManager.INSTANCE.close(statement, connection);
 		}
 		return companies;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.excilys.cdb.persistence.CompanyDao#findAll(int, int)
 	 */
 	@Override
@@ -217,9 +230,11 @@ public enum CompanyDaoImpl implements CompanyDao {
 			}
 			result.close();
 		} catch (SQLException e) {
-			LOGGER.debug("Can't find all computer between [" + start + "-"
-					+ (start + offset) + "]");
-			e.printStackTrace();
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Can't find all computer between [" + start + "-"
+						+ (start + offset) + "]");
+				LOGGER.debug("Exception trace : ", e);
+			}
 		} finally {
 			DaoManager.INSTANCE.close(statement, connection);
 		}
@@ -245,8 +260,10 @@ public enum CompanyDaoImpl implements CompanyDao {
 			count = result.getInt("count");
 			result.close();
 		} catch (SQLException e) {
-			LOGGER.debug("Can't execute count request");
-			e.printStackTrace();
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Can't execute count request");
+				LOGGER.debug("Exception trace : ", e);
+			}
 		} finally {
 			DaoManager.INSTANCE.close(statement, connection);
 		}

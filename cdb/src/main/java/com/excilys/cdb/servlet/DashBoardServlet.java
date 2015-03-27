@@ -32,6 +32,7 @@ public class DashBoardServlet extends HttpServlet {
 			.getLogger(DashBoardServlet.class);
 
 	private ComputerService cs;
+	private ComputerPage computerPage;
 
 	public void init(ServletConfig config) {
 		cs = ComputerServiceImpl.INSTANCE.getInstance();
@@ -46,10 +47,9 @@ public class DashBoardServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
-		ComputerPage computerPage = new ComputerPage();
+		computerPage = new ComputerPage();
 		List<ComputerDTO> entities = null;
-
+		// Deletion
 		if (request.getParameter("selection") != null) {
 			List<Integer> list = getSelectionList(request);
 			for (Integer i : list) {
@@ -62,10 +62,7 @@ public class DashBoardServlet extends HttpServlet {
 				}
 			}
 		}
-		int page = 0;
-		// count of cumputer
-		int count = cs.count();
-
+		
 		// size of list
 		if (Validator.INSTANCE.isNumericString(request.getParameter("size"))) {
 			computerPage.setOffset(Integer.parseInt(request
@@ -74,22 +71,27 @@ public class DashBoardServlet extends HttpServlet {
 			computerPage.setOffset(55);
 		}
 
-		// page id
+		// page index
+		int page = 1;
 		if (Validator.INSTANCE.isNumericString(request.getParameter("id"))) {
 			page = Integer.parseInt(request.getParameter("id"));
+			System.out.println("Page "+ page);
 			computerPage.setCurrentPage(page);
-			computerPage
-					.setStart((Integer.parseInt(request.getParameter("id")) - 1)
-							* computerPage.getOffset());
 		} else {
-			computerPage.setStart(0);
+			computerPage.setCurrentPage(page);
 		}
+		String options = "?id=".concat(String.valueOf(page));
+		// count of cumputer
+		int count = cs.count();
+		
+		// Search
 		if (request.getParameter("search") != null) {
 			String search = request.getParameter("search");
 			LOGGER.info("Looking for : " + search);
 			entities = cs.find(search);
-			LOGGER.info("Result : " + entities);
 			count = entities.size();
+			options = options.concat("search=").concat(search);
+			computerPage.setSearch(search);
 		} else {
 			entities = cs.findAll(computerPage.getStart(),
 					computerPage.getOffset());
@@ -97,10 +99,9 @@ public class DashBoardServlet extends HttpServlet {
 		
 		computerPage.setCount(count);
 		computerPage.setEntities(entities);
-		computerPage.setPageNb(count / computerPage.getOffset());
 		LOGGER.info("Show page : " + computerPage);
 		request.setAttribute("page", computerPage);
-		request.getRequestDispatcher(ControllerServlet.DASHBOARD_JSP).forward(
+		request.getRequestDispatcher(ServletList.DASHBOARD_JSP.toString()+ options).forward(
 				request, response);
 	}
 

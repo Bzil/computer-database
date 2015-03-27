@@ -35,6 +35,8 @@ public enum ComputerDaoImpl implements ComputerDao {
 	public static ComputerDao getInstance() {
 		return INSTANCE;
 	}
+	// TODO
+	//select * from computer where  name like '%%' order by name desc limit 0 , 15;
 
 	/*
 	 * (non-Javadoc)
@@ -60,8 +62,10 @@ public enum ComputerDaoImpl implements ComputerDao {
 			}
 			result.close();
 		} catch (SQLException e) {
-			LOGGER.debug("Can't execute select request with id " + id);
-			// e.printStackTrace();
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Can't execute select request with id " + id);
+				LOGGER.debug("Exception trace : ", e);
+			}
 		} finally {
 			DaoManager.INSTANCE.close(statement, connection);
 		}
@@ -70,7 +74,7 @@ public enum ComputerDaoImpl implements ComputerDao {
 
 	@Override
 	public List<Computer> find(String name) {
-		String correctName = "%"+name+"%";
+		String correctName = "%".concat(name.trim()).concat("%");
 		LOGGER.trace("Find computers by name : " + name);
 		List<Computer> computers = new ArrayList<>();
 		Mapper<Computer> mapper = new ComputerMapper();
@@ -89,8 +93,10 @@ public enum ComputerDaoImpl implements ComputerDao {
 			}
 			result.close();
 		} catch (SQLException e) {
-			LOGGER.debug("Can't execute select request with name : " + name);
-			// e.printStackTrace();
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Can't execute select request with name : " + name);
+				LOGGER.debug("Exception trace : ", e);
+			}
 		} finally {
 			DaoManager.INSTANCE.close(statement, connection);
 		}
@@ -143,8 +149,10 @@ public enum ComputerDaoImpl implements ComputerDao {
 			}
 			generatedKeys.close();
 		} catch (SQLException e) {
-			LOGGER.debug("Can't exectute create request of " + computer);
-			// e.printStackTrace();
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Can't exectute create request of " + computer);
+				LOGGER.debug("Exception trace : ", e);
+			}
 		} finally {
 			DaoManager.INSTANCE.close(statement, connection);
 		}
@@ -192,9 +200,11 @@ public enum ComputerDaoImpl implements ComputerDao {
 			statement.setInt(5, computer.getId());
 			statement.executeUpdate();
 		} catch (SQLException e) {
-			computer = null;
-			LOGGER.debug("Can't exceute update request of " + computer);
-			// e.printStackTrace();
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Can't exceute update request of " + computer);
+				computer = null;
+				LOGGER.debug("Exception trace : ", e);
+			}
 		} finally {
 			DaoManager.INSTANCE.close(statement, connection);
 		}
@@ -220,8 +230,10 @@ public enum ComputerDaoImpl implements ComputerDao {
 			statement.setInt(1, id);
 			statement.execute();
 		} catch (SQLException e) {
-			LOGGER.debug("Can't execute delete computer id : " + id);
-			e.printStackTrace();
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Can't execute delete computer id : " + id);
+				LOGGER.debug("Exception trace : ", e);
+			}
 		} finally {
 			DaoManager.INSTANCE.close(statement, connection);
 		}
@@ -244,8 +256,10 @@ public enum ComputerDaoImpl implements ComputerDao {
 			result.next();
 			count = result.getInt("count");
 		} catch (SQLException e) {
-			LOGGER.debug("Can't execute count request");
-			// e.printStackTrace();
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Can't execute count request");
+				LOGGER.debug("Exception trace : ", e);
+			}
 		} finally {
 			DaoManager.INSTANCE.close(null, connection);
 		}
@@ -275,8 +289,10 @@ public enum ComputerDaoImpl implements ComputerDao {
 			}
 			result.close();
 		} catch (SQLException e) {
-			LOGGER.debug("Can't find all computer");
-			// e.printStackTrace();
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Can't find all computer");
+				LOGGER.debug("Exception trace : ", e);
+			}
 		} finally {
 			DaoManager.INSTANCE.close(statement, connection);
 		}
@@ -308,9 +324,11 @@ public enum ComputerDaoImpl implements ComputerDao {
 			}
 			result.close();
 		} catch (SQLException e) {
-			LOGGER.debug("Can't find all computer between [" + start + "-"
-					+ (start + offset) + "]");
-			e.printStackTrace();
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Can't find all computer between [" + start + "-"
+						+ (start + offset) + "]");
+				LOGGER.debug("Exception trace : ", e);
+			}
 		} finally {
 			DaoManager.INSTANCE.close(statement, connection);
 		}

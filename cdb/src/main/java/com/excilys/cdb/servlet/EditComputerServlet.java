@@ -56,12 +56,12 @@ public class EditComputerServlet extends HttpServlet {
 
 			request.setAttribute("computer", dto);
 			request.setAttribute("companies", companies);
-			request.getRequestDispatcher(ControllerServlet.EDIT_JSP).forward(
+			request.getRequestDispatcher(ServletList.EDIT_JSP.toString()).forward(
 					request, response);
 		}
 
 		else {
-			request.getRequestDispatcher(ControllerServlet.ERROR_500_JSP)
+			request.getRequestDispatcher(ServletList.ERROR_500_JSP.toString())
 					.forward(request, response);
 		}
 	}
@@ -87,10 +87,10 @@ public class EditComputerServlet extends HttpServlet {
 					discontinued, CompanyDTO.fromDTO(company));
 			LOGGER.info("add update " + computer);
 			computerService.update(computer);
-			request.getRequestDispatcher(ControllerServlet.DASHBOARD_SERV)
+			request.getRequestDispatcher(ServletList.DASHBOARD_SERV.toString())
 					.forward(request, response);
 		} else {
-			request.getRequestDispatcher(ControllerServlet.ERROR_500_JSP)
+			request.getRequestDispatcher(ServletList.ERROR_500_JSP.toString())
 					.forward(request, response);
 		}
 	}

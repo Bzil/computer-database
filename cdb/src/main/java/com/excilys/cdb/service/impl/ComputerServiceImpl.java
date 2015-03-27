@@ -22,9 +22,10 @@ public enum ComputerServiceImpl implements ComputerService {
 
 	/** The dao. */
 	private static ComputerDao dao = ComputerDaoImpl.getInstance();;
-	
+
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ComputerServiceImpl.class);
+
 	/**
 	 * Instantiates a new computer service impl.
 	 */
@@ -47,6 +48,7 @@ public enum ComputerServiceImpl implements ComputerService {
 	 */
 	@Override
 	public ComputerDTO find(int id) {
+		LOGGER.info("Looking for computer " + id);
 		Computer c = dao.find(id);
 		ComputerDTO dto = null;
 		if (c != null) {
@@ -62,15 +64,12 @@ public enum ComputerServiceImpl implements ComputerService {
 	 */
 	@Override
 	public List<ComputerDTO> find(String name) {
+		LOGGER.info("Looking for computer " + name);
 		List<Computer> computers = dao.find(name);
-		List<ComputerDTO> dtos = null;
-		if (!computers.isEmpty()) {
-			dtos = new ArrayList<>();
-			for (Computer c : computers){
-				dtos.add(ComputerDTO.toDTO(c));
-			}
+		List<ComputerDTO> dtos = new ArrayList<>();
+		for (Computer c : computers) {
+			dtos.add(ComputerDTO.toDTO(c));
 		}
-		LOGGER.info("Result of find by name "+ name + " is " + dtos);
 		return dtos;
 	}
 
@@ -81,6 +80,7 @@ public enum ComputerServiceImpl implements ComputerService {
 	 */
 	@Override
 	public List<ComputerDTO> findAll() {
+		LOGGER.info("Looking for all computer");
 		List<Computer> companies = dao.findAll();
 		List<ComputerDTO> dtos = new ArrayList<>();
 		for (Computer c : companies) {
@@ -97,6 +97,7 @@ public enum ComputerServiceImpl implements ComputerService {
 	 */
 	@Override
 	public List<ComputerDTO> findAll(int start, int offset) {
+		LOGGER.info("Looking for all computer between %d - %d", start, offset);
 		List<Computer> companies = dao.findAll(start, offset);
 		List<ComputerDTO> dtos = new ArrayList<>();
 		for (Computer c : companies) {
@@ -114,6 +115,7 @@ public enum ComputerServiceImpl implements ComputerService {
 	 */
 	@Override
 	public ComputerDTO add(Computer computer) {
+		LOGGER.info("Create" + computer);
 		Computer c = dao.create(computer);
 		ComputerDTO dto = null;
 		if (c != null) {
@@ -128,6 +130,7 @@ public enum ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#delete(int)
 	 */
 	public void delete(Computer computer) {
+		LOGGER.info("Delete " + computer);
 		dao.delete(computer.getId());
 	}
 
@@ -138,6 +141,7 @@ public enum ComputerServiceImpl implements ComputerService {
 	 */
 	@Override
 	public void delete(int id) {
+		LOGGER.info("Delete computer with id " + id);
 		dao.delete(id);
 	}
 
@@ -150,6 +154,7 @@ public enum ComputerServiceImpl implements ComputerService {
 	 */
 	@Override
 	public ComputerDTO update(Computer computer) {
+		LOGGER.info("Update " + computer);
 		Computer c = dao.update(computer);
 		ComputerDTO dto = null;
 		if (c != null) {
@@ -165,6 +170,7 @@ public enum ComputerServiceImpl implements ComputerService {
 	 */
 	@Override
 	public int count() {
+		LOGGER.info("Count");
 		return dao.count();
 	}
 }

@@ -70,14 +70,14 @@ public class AddComputerServlet extends HttpServlet {
 				LOGGER.info("add computer " + computer);
 				computerService.add(computer);
 			} else {
-				request.getRequestDispatcher(ControllerServlet.ERROR_500_JSP)
+				request.getRequestDispatcher(ServletList.ERROR_500_JSP.toString())
 						.forward(request, response);
 			}
 		}
 
 		List<CompanyDTO> companies = companyService.findAll();
 		request.setAttribute("companies", companies);
-		request.getRequestDispatcher(ControllerServlet.ADD_JSP).forward(
+		request.getRequestDispatcher(ServletList.ADD_JSP.toString()).forward(
 				request, response);
 
 	}
