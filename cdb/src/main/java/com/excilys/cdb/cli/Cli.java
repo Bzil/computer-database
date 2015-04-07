@@ -142,7 +142,7 @@ public class Cli {
 		int offset = 10;
 		boolean exit = false;
 		while (!exit) {
-			cp.showEntities(computerService.findAll(start, offset));
+			cp.showEntities(computerService.findAll(start, offset, null));
 
 			System.out.println("Show more ? [y/n]");
 			String choice = getChoice(toList("y", "n"));
@@ -163,7 +163,7 @@ public class Cli {
 		int offset = 10;
 		boolean exit = false;
 		while (!exit) {
-			cp.showEntities(companyService.findAll(start, offset));
+			cp.showEntities(companyService.findAll(start, offset, null));
 
 			System.out.println("Show more ? [y/n]");
 			String choice = getChoice(toList("y", "n"));

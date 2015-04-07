@@ -75,7 +75,7 @@ public class AddComputerServlet extends HttpServlet {
 			}
 		}
 
-		List<CompanyDTO> companies = companyService.findAll();
+		List<CompanyDTO> companies = companyService.findAll(null);
 		request.setAttribute("companies", companies);
 		request.getRequestDispatcher(ServletList.ADD_JSP.toString()).forward(
 				request, response);

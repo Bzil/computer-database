@@ -3,7 +3,6 @@ package com.excilys.cdb.persistence;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -20,34 +19,52 @@ public enum DaoManager {
 	/** The instance. */
 	INSTANCE;
 
+	/** The Constant LOOGER. */
+	private final static Logger LOGGER = LoggerFactory
+			.getLogger(DaoManager.class);
+
+	/** The connection thread local. */
+	private static ThreadLocal<Connection> CONNECTION_THREAD_LOCAL = new ThreadLocal<Connection>() {
+		@Override
+		protected Connection initialValue() {
+			Connection connection = null;
+			try {
+				connection = pool.getConnection();
+			} catch (SQLException e) {
+				LOGGER.error(e.getStackTrace().toString());
+			}
+			return connection;
+		}
+	};
+
 	/** The properties file. */
 	String propertiesFile = "/config.properties";
 
+	/** The driver. */
 	String driver = "com.mysql.jdbc.Driver";
 
-	/** The Constant LOOGER. */
-	private final Logger LOGGER = LoggerFactory.getLogger(DaoManager.class);
-
 	/** The pool. */
-	private BoneCP pool = null;
+	private static BoneCP pool = null;
+
+	private boolean isTransactional = false;
 
 	/**
 	 * Instantiates a new dao manager.
 	 */
-	private DaoManager() {
+	private void init() {
 		Properties prop = new Properties();
 		try {
 			prop.load(this.getClass().getResourceAsStream(propertiesFile));
 			Class.forName(prop.getProperty("driver"));
 		} catch (IOException e) {
 			LOGGER.error("Can't open/read mysql.properties");
-			System.err.println(e);
+			LOGGER.error(e.getStackTrace().toString());
 		} catch (RuntimeException e) {
 			LOGGER.error("Runtime : " + this.getClass());
-			System.err.println(e);
+			LOGGER.error(e.getStackTrace().toString());
 		} catch (ClassNotFoundException e) {
 			LOGGER.error("Class not found");
-			System.err.println(e);
+			LOGGER.error(e.getStackTrace().toString());
 		}
 
 		BoneCPConfig config = new BoneCPConfig();
@@ -60,9 +77,8 @@ public enum DaoManager {
 		try {
 			pool = new BoneCP(config);
 		} catch (SQLException e) {
-			String error = "Could not connect to database";
-			LOGGER.error(error);
-			e.printStackTrace();
+			LOGGER.error("Could not connect to database");
+			LOGGER.error(e.getStackTrace().toString());
 		}
 	}
 
@@ -70,42 +86,90 @@ public enum DaoManager {
 	 * Gets the connection.
 	 *
 	 * @return the connection
+	 * @throws SQLException
 	 */
-	public Connection getConnection() {
-		try {
-			return pool.getConnection();
-		} catch (SQLException e) {
-			LOGGER.warn("Can't get connection");
+	public Connection getConnection() throws SQLException {
+		if (pool == null) {
+			init();
 		}
-		return null;
+		Connection connection = CONNECTION_THREAD_LOCAL.get();
+		if (connection == null) {
+			CONNECTION_THREAD_LOCAL.set(pool.getConnection());
+		} else {
+			isTransactional = true;
+			connection.setAutoCommit(false);
+		}
+
+		return connection;
 	}
 
 	/**
 	 * Close connection.
-	 *
-	 * @param statement
-	 *            the statement
-	 * @param connection
-	 *            the connection
 	 */
-	public void close(Statement statement, Connection connection) {
-		try {
-			if (statement != null) {
-				statement.close();
+	public void closeConnection() {
+		Connection connect = CONNECTION_THREAD_LOCAL.get();
+		if (!isTransactional && connect != null) {
+			try {
+				connect.setAutoCommit(true);
+				connect.close();
+			} catch (SQLException e) {
+				LOGGER.error("close connection failed");
+				LOGGER.error(e.getStackTrace().toString());
 			}
-		} catch (SQLException e) {
-			LOGGER.warn("Can't close statement");
-		}
-		try {
-			if (connection != null) {
-				if (!connection.getAutoCommit()) {
-					connection.setAutoCommit(true);
-				}
-				connection.close();
-			}
-		} catch (SQLException e) {
-			LOGGER.warn("Can't close connection");
+			CONNECTION_THREAD_LOCAL.remove();
+			LOGGER.info("close connection succeed");
 		}
 	}
 
+	/**
+	 * Start transaction.
+	 */
+	public void startTransaction() {
+		final Connection connection = CONNECTION_THREAD_LOCAL.get();
+		if (connection != null) {
+			try {
+				connection.setAutoCommit(false);
+				LOGGER.info("start transaction succeed");
+			} catch (SQLException e) {
+				LOGGER.error("start transaction failed");
+				LOGGER.error(e.getStackTrace().toString());
+			}
+		}
+	}
+
+	/**
+	 * Commit.
+	 */
+	public void commit() {
+		final Connection connection = CONNECTION_THREAD_LOCAL.get();
+		if (connection != null) {
+			try {
+				connection.commit();
+				LOGGER.info("commit succeed");
+				isTransactional = false;
+			} catch (SQLException e) {
+				LOGGER.error("commit failed");
+				LOGGER.error(e.getStackTrace().toString());
+			} finally {
+				closeConnection();
+			}
+		}
+	}
+
+	/**
+	 * Rollback.
+	 */
+	public void rollback() {
+		final Connection connection = CONNECTION_THREAD_LOCAL.get();
+		if (connection != null) {
+			try {
+				connection.rollback();
+				LOGGER.info("rollback succeed");
+			} catch (SQLException e) {
+				LOGGER.error("rollback failed");
+				LOGGER.error(e.getStackTrace().toString());
+			}
+		}
+
+	}
 }

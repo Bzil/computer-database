@@ -52,7 +52,7 @@ public class EditComputerServlet extends HttpServlet {
 
 			ComputerDTO dto = computerService.find(id);
 
-			List<CompanyDTO> companies = companyService.findAll();
+			List<CompanyDTO> companies = companyService.findAll(null);
 
 			request.setAttribute("computer", dto);
 			request.setAttribute("companies", companies);

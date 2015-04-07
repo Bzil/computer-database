@@ -39,6 +39,8 @@ public abstract class Page<T, D extends DTO<T>> {
 
 	private String orderBy = "DESC";
 
+	private String column = "";
+
 	private static final int OFFSET_PAGE = 3;
 
 	protected abstract DTO<T> getDTO(T t);
@@ -76,7 +78,6 @@ public abstract class Page<T, D extends DTO<T>> {
 	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
 		this.start = (currentPage > 1) ? (currentPage - 1) * offset : 0;
-		System.out.println("Start "+ start);
 	}
 
 	public int getPageNb() {
@@ -134,11 +135,20 @@ public abstract class Page<T, D extends DTO<T>> {
 		}
 	}
 
+	public String getColumn() {
+		return column;
+	}
+
+	public void setColumn(String column) {
+		this.column = column;
+	}
+
 	@Override
 	public String toString() {
 		return "Page [start=" + start + ", offset=" + offset + ", count="
 				+ count + ", currentPage=" + currentPage + ", pageNb=" + pageNb
-				+ ", startPage=" + startPage + ", endPage=" + endPage + "]";
+				+ ", startPage=" + startPage + ", endPage=" + endPage
+				+ ", search=" + search + ", orderBy=" + orderBy + ", column=" + column + "]";
 	}
 
 }

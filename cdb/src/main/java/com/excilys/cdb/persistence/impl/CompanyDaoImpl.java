@@ -55,13 +55,14 @@ public enum CompanyDaoImpl implements CompanyDao {
 				company = (Company) mapper.rowMap(result);
 			}
 			result.close();
+			statement.close();
 		} catch (SQLException e) {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Can't execute select request with id " + id);
 				LOGGER.debug("Exception trace : ", e);
 			}
 		} finally {
-			DaoManager.INSTANCE.close(statement, connection);
+			DaoManager.INSTANCE.closeConnection();
 		}
 		return company;
 	}
@@ -91,13 +92,14 @@ public enum CompanyDaoImpl implements CompanyDao {
 				company.setId(generatedKeys.getInt(1));
 			}
 			generatedKeys.close();
+			statement.close();
 		} catch (SQLException e) {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Can't exectute create request of " + company);
 				LOGGER.debug("Exception trace : ", e);
 			}
 		} finally {
-			DaoManager.INSTANCE.close(statement, connection);
+			DaoManager.INSTANCE.closeConnection();
 		}
 		return company;
 	}
@@ -121,6 +123,7 @@ public enum CompanyDaoImpl implements CompanyDao {
 			statement.setString(1, company.getName());
 			statement.setInt(2, company.getId());
 			statement.executeUpdate();
+			statement.close();
 		} catch (SQLException e) {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Can't exceute update request of " + company);
@@ -128,7 +131,7 @@ public enum CompanyDaoImpl implements CompanyDao {
 				LOGGER.debug("Exception trace : ", e);
 			}
 		} finally {
-			DaoManager.INSTANCE.close(statement, connection);
+			DaoManager.INSTANCE.closeConnection();
 		}
 		return company;
 	}
@@ -147,7 +150,7 @@ public enum CompanyDaoImpl implements CompanyDao {
 		PreparedStatement statement = null;
 		try {
 			connection = DaoManager.INSTANCE.getConnection();
-			connection.setAutoCommit(false);
+
 			// Delete all the computer
 			statement = connection
 					.prepareStatement("DELETE FROM computer WHERE company_id=?");
@@ -174,7 +177,7 @@ public enum CompanyDaoImpl implements CompanyDao {
 				// e1.printStackTrace();
 			}
 		} finally {
-			DaoManager.INSTANCE.close(null, connection);
+			DaoManager.INSTANCE.closeConnection();
 		}
 	}
 
@@ -201,7 +204,7 @@ public enum CompanyDaoImpl implements CompanyDao {
 			LOGGER.debug("Can't find all computer");
 			LOGGER.debug("Exception trace : ", e);
 		} finally {
-			DaoManager.INSTANCE.close(statement, connection);
+			DaoManager.INSTANCE.closeConnection();
 		}
 		return companies;
 	}
@@ -236,7 +239,7 @@ public enum CompanyDaoImpl implements CompanyDao {
 				LOGGER.debug("Exception trace : ", e);
 			}
 		} finally {
-			DaoManager.INSTANCE.close(statement, connection);
+			DaoManager.INSTANCE.closeConnection();
 		}
 		return companies;
 	}
@@ -265,7 +268,7 @@ public enum CompanyDaoImpl implements CompanyDao {
 				LOGGER.debug("Exception trace : ", e);
 			}
 		} finally {
-			DaoManager.INSTANCE.close(statement, connection);
+			DaoManager.INSTANCE.closeConnection();
 		}
 		return count;
 

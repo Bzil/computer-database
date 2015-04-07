@@ -3,6 +3,7 @@ package com.excilys.cdb.service;
 import java.util.List;
 
 import com.excilys.cdb.util.dto.DTO;
+import com.excilys.cdb.util.sort.SortCriteria;
 
 /**
  * The Interface Service.
@@ -26,7 +27,7 @@ public interface Service<T, D extends DTO<T>> {
 	 *
 	 * @return the list
 	 */
-	public List<D> findAll();
+	public List<D> findAll(SortCriteria criteria);
 
 	/**
 	 * Find all.
@@ -37,7 +38,7 @@ public interface Service<T, D extends DTO<T>> {
 	 *            the offset
 	 * @return the list
 	 */
-	public List<D> findAll(int start, int offset);
+	public List<D> findAll(int start, int offset, SortCriteria criteria);
 
 	/**
 	 * Adds the.

@@ -11,6 +11,7 @@ import com.excilys.cdb.persistence.ComputerDao;
 import com.excilys.cdb.persistence.impl.ComputerDaoImpl;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.util.dto.ComputerDTO;
+import com.excilys.cdb.util.sort.SortCriteria;
 
 /**
  * The Enum ComputerServiceImpl.
@@ -63,9 +64,9 @@ public enum ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#find(String)
 	 */
 	@Override
-	public List<ComputerDTO> find(String name) {
+	public List<ComputerDTO> find(String name, SortCriteria criteria) {
 		LOGGER.info("Looking for computer " + name);
-		List<Computer> computers = dao.find(name);
+		List<Computer> computers = dao.find(name, criteria);
 		List<ComputerDTO> dtos = new ArrayList<>();
 		for (Computer c : computers) {
 			dtos.add(ComputerDTO.toDTO(c));
@@ -79,9 +80,9 @@ public enum ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#findAll()
 	 */
 	@Override
-	public List<ComputerDTO> findAll() {
+	public List<ComputerDTO> findAll(SortCriteria criteria) {
 		LOGGER.info("Looking for all computer");
-		List<Computer> companies = dao.findAll();
+		List<Computer> companies = dao.findAll(criteria);
 		List<ComputerDTO> dtos = new ArrayList<>();
 		for (Computer c : companies) {
 			dtos.add(ComputerDTO.toDTO(c));
@@ -96,9 +97,11 @@ public enum ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#findAll(int, int)
 	 */
 	@Override
-	public List<ComputerDTO> findAll(int start, int offset) {
-		LOGGER.info("Looking for all computer between %d - %d", start, offset);
-		List<Computer> companies = dao.findAll(start, offset);
+	public List<ComputerDTO> findAll(int start, int offset,
+			SortCriteria criteria) {
+		LOGGER.info("Looking for all computer between " + start + " - "
+				+ offset);
+		List<Computer> companies = dao.findAll(start, offset, criteria);
 		List<ComputerDTO> dtos = new ArrayList<>();
 		for (Computer c : companies) {
 			dtos.add(ComputerDTO.toDTO(c));

@@ -86,7 +86,7 @@ public class ComputerDaoTest {
 		} catch (Exception e) {
 			fail("Can't load data");
 		}
-		final List<Computer> computers = ComputerDaoImpl.getInstance().find("TEST");
+		final List<Computer> computers = ComputerDaoImpl.getInstance().find("TEST", null);
 		assertEquals(computersExpeted, computers);
 	}
 
@@ -211,7 +211,7 @@ public class ComputerDaoTest {
 			fail("Can't load data");
 		}
 		final List<Computer> computers = ComputerDaoImpl.getInstance()
-				.findAll();
+				.findAll(null);
 		assertTrue(computers.isEmpty());
 	}
 
@@ -233,7 +233,7 @@ public class ComputerDaoTest {
 			fail("Can't load data");
 		}
 		final List<Computer> computers = ComputerDaoImpl.getInstance()
-				.findAll();
+				.findAll(null);
 		assertEquals(computersExpected, computers);
 	}
 
@@ -251,7 +251,7 @@ public class ComputerDaoTest {
 			fail("Can't load data");
 		}
 		final List<Computer> computers = ComputerDaoImpl.getInstance().findAll(
-				0, 1);
+				0, 1, null);
 		assertEquals(1, computers.size());
 		assertEquals(computersExpected, computers);
 	}

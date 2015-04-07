@@ -18,6 +18,9 @@ import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.cdb.util.ComputerPage;
 import com.excilys.cdb.util.dto.ComputerDTO;
+import com.excilys.cdb.util.sort.SortColumn;
+import com.excilys.cdb.util.sort.SortCriteria;
+import com.excilys.cdb.util.sort.SortDirection;
 import com.excilys.cdb.util.validator.Validator;
 
 @WebServlet(urlPatterns = "/dashboard", loadOnStartup = 1)
@@ -32,7 +35,6 @@ public class DashBoardServlet extends HttpServlet {
 			.getLogger(DashBoardServlet.class);
 
 	private ComputerService cs;
-	private ComputerPage computerPage;
 
 	public void init(ServletConfig config) {
 		cs = ComputerServiceImpl.INSTANCE.getInstance();
@@ -47,8 +49,9 @@ public class DashBoardServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		computerPage = new ComputerPage();
+		ComputerPage computerPage = new ComputerPage();
 		List<ComputerDTO> entities = null;
+
 		// Deletion
 		if (request.getParameter("selection") != null) {
 			List<Integer> list = getSelectionList(request);
@@ -62,7 +65,7 @@ public class DashBoardServlet extends HttpServlet {
 				}
 			}
 		}
-		
+
 		// size of list
 		if (Validator.INSTANCE.isNumericString(request.getParameter("size"))) {
 			computerPage.setOffset(Integer.parseInt(request
@@ -75,7 +78,6 @@ public class DashBoardServlet extends HttpServlet {
 		int page = 1;
 		if (Validator.INSTANCE.isNumericString(request.getParameter("id"))) {
 			page = Integer.parseInt(request.getParameter("id"));
-			System.out.println("Page "+ page);
 			computerPage.setCurrentPage(page);
 		} else {
 			computerPage.setCurrentPage(page);
@@ -83,25 +85,34 @@ public class DashBoardServlet extends HttpServlet {
 		String options = "?id=".concat(String.valueOf(page));
 		// count of cumputer
 		int count = cs.count();
-		
+
+		// Sort criteria
+		SortCriteria criteria = getSortCriteria(request);
+		if (criteria != null) {
+			options = options.concat("&column=").concat(criteria.getColumn())
+					.concat("&dir=").concat(criteria.getDirection());
+			computerPage.setOrderBy(criteria.getDirection());
+			computerPage.setColumn(criteria.getColumn());
+		}
 		// Search
-		if (request.getParameter("search") != null) {
+		if (request.getParameter("search") != null && !request.getParameter("search").trim().isEmpty()) {
 			String search = request.getParameter("search");
 			LOGGER.info("Looking for : " + search);
-			entities = cs.find(search);
+			entities = cs.find(search, criteria);
 			count = entities.size();
-			options = options.concat("search=").concat(search);
+			options = options.concat("&search=").concat(search);
 			computerPage.setSearch(search);
 		} else {
 			entities = cs.findAll(computerPage.getStart(),
-					computerPage.getOffset());
+					computerPage.getOffset(), criteria);
 		}
-		
+
 		computerPage.setCount(count);
 		computerPage.setEntities(entities);
 		LOGGER.info("Show page : " + computerPage);
 		request.setAttribute("page", computerPage);
-		request.getRequestDispatcher(ServletList.DASHBOARD_JSP.toString()+ options).forward(
+		request.getRequestDispatcher(
+				ServletList.DASHBOARD_JSP.toString() + options).forward(
 				request, response);
 	}
 
@@ -116,5 +127,22 @@ public class DashBoardServlet extends HttpServlet {
 		}
 		return ret;
 
+	}
+
+	private SortCriteria getSortCriteria(HttpServletRequest request) {
+		String column = request.getParameter("column");
+		String dir = request.getParameter("dir");
+
+		SortCriteria sort = null;
+		if (column != null && dir != null && !column.trim().isEmpty()
+				&& !dir.trim().isEmpty()) {
+			try {
+				sort = new SortCriteria(SortColumn.valueOf(column.trim()
+						.toUpperCase()), SortDirection.valueOf(dir.trim()));
+			} catch (IllegalArgumentException e) {
+				sort = null;
+			}
+		}
+		return sort;
 	}
 }

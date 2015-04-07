@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.util.dto.ComputerDTO;
+import com.excilys.cdb.util.sort.SortCriteria;
 
 /**
  * The Interface ComputerService.
@@ -26,14 +27,14 @@ public interface ComputerService extends Service<Computer, ComputerDTO> {
 	 *            the name
 	 * @return the computer dto
 	 */
-	public List<ComputerDTO> find(String name);
+	public List<ComputerDTO> find(String name, SortCriteria criteria);
 
 	/**
 	 * Find all.
 	 *
 	 * @return the list
 	 */
-	public List<ComputerDTO> findAll();
+	public List<ComputerDTO> findAll(SortCriteria criteria);
 
 	/**
 	 * Find all.
@@ -44,7 +45,7 @@ public interface ComputerService extends Service<Computer, ComputerDTO> {
 	 *            the offset
 	 * @return the list
 	 */
-	public List<ComputerDTO> findAll(int start, int offset);
+	public List<ComputerDTO> findAll(int start, int offset, SortCriteria criteria);
 
 	/**
 	 * Adds the.

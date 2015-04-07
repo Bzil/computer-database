@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.util.dto.CompanyDTO;
+import com.excilys.cdb.util.sort.SortCriteria;
 
 /**
  * The Interface CompanyService.
@@ -24,7 +25,7 @@ public interface CompanyService extends Service<Company, CompanyDTO> {
 	 *
 	 * @return the list
 	 */
-	public List<CompanyDTO> findAll();
+	public List<CompanyDTO> findAll(SortCriteria criteria);
 
 	/**
 	 * Find all.
@@ -35,7 +36,7 @@ public interface CompanyService extends Service<Company, CompanyDTO> {
 	 *            the offset
 	 * @return the list
 	 */
-	public List<CompanyDTO> findAll(int start, int offset);
+	public List<CompanyDTO> findAll(int start, int offset, SortCriteria criteria);
 
 	/**
 	 * Adds the.

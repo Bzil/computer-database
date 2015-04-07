@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.cdb.model.Company;
+import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.CompanyDao;
+import com.excilys.cdb.persistence.DaoManager;
 import com.excilys.cdb.persistence.impl.CompanyDaoImpl;
+import com.excilys.cdb.persistence.impl.ComputerDaoImpl;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.util.dto.CompanyDTO;
+import com.excilys.cdb.util.sort.SortCriteria;
 
 /**
  * The Enum CompanyServiceImpl.
@@ -23,7 +27,8 @@ public enum CompanyServiceImpl implements CompanyService {
 	/**
 	 * Instantiates a new company service impl.
 	 */
-	private CompanyServiceImpl() {}
+	private CompanyServiceImpl() {
+	}
 
 	/**
 	 * Gets the single instance of CompanyServiceImpl.
@@ -42,7 +47,6 @@ public enum CompanyServiceImpl implements CompanyService {
 	@Override
 	public CompanyDTO find(int id) {
 		Company c = dao.find(id);
-		System.out.println(c);
 		CompanyDTO dto = null;
 		if (c != null)
 			dto = CompanyDTO.toDTO(c);
@@ -55,7 +59,7 @@ public enum CompanyServiceImpl implements CompanyService {
 	 * @see com.excilys.cdb.service.CompanyService#findAll()
 	 */
 	@Override
-	public List<CompanyDTO> findAll() {
+	public List<CompanyDTO> findAll(SortCriteria criteria) {
 		List<Company> companies = dao.findAll();
 		List<CompanyDTO> dtos = new ArrayList<>();
 		for (Company c : companies)
@@ -70,7 +74,7 @@ public enum CompanyServiceImpl implements CompanyService {
 	 * @see com.excilys.cdb.service.CompanyService#findAll(int, int)
 	 */
 	@Override
-	public List<CompanyDTO> findAll(int start, int offset) {
+	public List<CompanyDTO> findAll(int start, int offset, SortCriteria criteria) {
 		List<Company> companies = dao.findAll(start, offset);
 		List<CompanyDTO> dtos = new ArrayList<>();
 		for (Company c : companies)
@@ -103,7 +107,15 @@ public enum CompanyServiceImpl implements CompanyService {
 	 */
 	@Override
 	public void delete(Company company) {
+		List<Computer> computers = ComputerDaoImpl.getInstance().findByCompanyId(company.getId());
+		
+		for (Computer c : computers) {
+			ComputerDaoImpl.getInstance().delete(c.getId());
+		}
+		
 		dao.delete(company.getId());
+		
+		DaoManager.INSTANCE.commit();
 	}
 
 	/*

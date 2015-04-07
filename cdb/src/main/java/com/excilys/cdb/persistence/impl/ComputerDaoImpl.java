@@ -19,25 +19,36 @@ import com.excilys.cdb.persistence.ComputerDao;
 import com.excilys.cdb.persistence.DaoManager;
 import com.excilys.cdb.util.mapper.ComputerMapper;
 import com.excilys.cdb.util.mapper.Mapper;
+import com.excilys.cdb.util.sort.SortCriteria;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class ComputerDaoImpl.
  */
 public enum ComputerDaoImpl implements ComputerDao {
+	
+	/** The instance. */
 	INSTANCE;
 
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ComputerDaoImpl.class);
 
+	/**
+	 * Instantiates a new computer dao impl.
+	 */
 	private ComputerDaoImpl() {
 	}
 
+	/**
+	 * Gets the single instance of ComputerDaoImpl.
+	 *
+	 * @return single instance of ComputerDaoImpl
+	 */
 	public static ComputerDao getInstance() {
 		return INSTANCE;
 	}
-	// TODO
-	//select * from computer where  name like '%%' order by name desc limit 0 , 15;
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -61,20 +72,28 @@ public enum ComputerDaoImpl implements ComputerDao {
 				computer.setCompany(findFromId(computer.getCompany().getId()));
 			}
 			result.close();
+			statement.close();
 		} catch (SQLException e) {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Can't execute select request with id " + id);
 				LOGGER.debug("Exception trace : ", e);
 			}
 		} finally {
-			DaoManager.INSTANCE.close(statement, connection);
+			DaoManager.INSTANCE.closeConnection();
 		}
 		return computer;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.persistence.ComputerDao#find(java.lang.String, com.excilys.cdb.util.sort.SortCriteria)
+	 */
 	@Override
-	public List<Computer> find(String name) {
+	public List<Computer> find(String name, SortCriteria criteria) {
 		String correctName = "%".concat(name.trim()).concat("%");
+		String req =  "SELECT * FROM computer as c WHERE c.name LIKE ? ";
+		if( criteria != null ) {
+			req = req.concat(criteria.toString());
+		}
 		LOGGER.trace("Find computers by name : " + name);
 		List<Computer> computers = new ArrayList<>();
 		Mapper<Computer> mapper = new ComputerMapper();
@@ -83,7 +102,7 @@ public enum ComputerDaoImpl implements ComputerDao {
 		try {
 			connection = DaoManager.INSTANCE.getConnection();
 			statement = connection
-					.prepareStatement("SELECT * FROM computer as c WHERE c.name LIKE ?");
+					.prepareStatement(req);
 			statement.setString(1, correctName);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
@@ -92,13 +111,48 @@ public enum ComputerDaoImpl implements ComputerDao {
 				computers.add(computer);
 			}
 			result.close();
+			statement.close();
 		} catch (SQLException e) {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Can't execute select request with name : " + name);
 				LOGGER.debug("Exception trace : ", e);
 			}
 		} finally {
-			DaoManager.INSTANCE.close(statement, connection);
+			DaoManager.INSTANCE.closeConnection();
+		}
+		return computers;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.persistence.ComputerDao#findByCompanyId(int)
+	 */
+	@Override
+	public List<Computer> findByCompanyId(int companyId) {
+		LOGGER.trace("Find computers by company id : " + companyId);
+		List<Computer> computers = new ArrayList<>();
+		Mapper<Computer> mapper = new ComputerMapper();
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = DaoManager.INSTANCE.getConnection();
+			statement = connection
+					.prepareStatement("SELECT * FROM computer as c WHERE c.company_id = ? ");
+			statement.setInt(1, companyId);
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				Computer computer = (Computer) mapper.rowMap(result);
+				computer.setCompany(findFromId(computer.getCompany().getId()));
+				computers.add(computer);
+			}
+			result.close();
+			statement.close();
+		} catch (SQLException e) {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Can't execute select request with this company id : " + companyId);
+				LOGGER.debug("Exception trace : ", e);
+			}
+		} finally {
+			DaoManager.INSTANCE.closeConnection();
 		}
 		return computers;
 	}
@@ -148,13 +202,14 @@ public enum ComputerDaoImpl implements ComputerDao {
 				computer.setId(generatedKeys.getInt(1));
 			}
 			generatedKeys.close();
+			statement.close();
 		} catch (SQLException e) {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Can't exectute create request of " + computer);
 				LOGGER.debug("Exception trace : ", e);
 			}
 		} finally {
-			DaoManager.INSTANCE.close(statement, connection);
+			DaoManager.INSTANCE.closeConnection();
 		}
 		if (computer.getCompany() != null)
 			computer.setCompany(findFromId(computer.getCompany().getId()));
@@ -199,6 +254,7 @@ public enum ComputerDaoImpl implements ComputerDao {
 			}
 			statement.setInt(5, computer.getId());
 			statement.executeUpdate();
+			statement.close();
 		} catch (SQLException e) {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Can't exceute update request of " + computer);
@@ -206,7 +262,7 @@ public enum ComputerDaoImpl implements ComputerDao {
 				LOGGER.debug("Exception trace : ", e);
 			}
 		} finally {
-			DaoManager.INSTANCE.close(statement, connection);
+			DaoManager.INSTANCE.closeConnection();
 		}
 		return computer;
 	}
@@ -229,13 +285,14 @@ public enum ComputerDaoImpl implements ComputerDao {
 					.prepareStatement("DELETE FROM computer WHERE id = ?");
 			statement.setInt(1, id);
 			statement.execute();
+			statement.close();
 		} catch (SQLException e) {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Can't execute delete computer id : " + id);
 				LOGGER.debug("Exception trace : ", e);
 			}
 		} finally {
-			DaoManager.INSTANCE.close(statement, connection);
+			DaoManager.INSTANCE.closeConnection();
 		}
 
 	}
@@ -255,13 +312,14 @@ public enum ComputerDaoImpl implements ComputerDao {
 					"SELECT COUNT(*) AS count FROM computer");
 			result.next();
 			count = result.getInt("count");
+			result.close();
 		} catch (SQLException e) {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Can't execute count request");
 				LOGGER.debug("Exception trace : ", e);
 			}
 		} finally {
-			DaoManager.INSTANCE.close(null, connection);
+			DaoManager.INSTANCE.closeConnection();
 		}
 		return count;
 
@@ -273,15 +331,18 @@ public enum ComputerDaoImpl implements ComputerDao {
 	 * @see com.excilys.cdb.persistence.ComputerDao#findAll()
 	 */
 	@Override
-	public List<Computer> findAll() {
+	public List<Computer> findAll(SortCriteria criteria) {
+		String req = "SELECT * FROM computer";
+		if ( criteria != null ) {
+			req = req.concat(criteria.toString());
+		}
+		System.out.println("FIND ALL " + req);
 		List<Computer> computers = new ArrayList<>();
 		Mapper<Computer> mapper = new ComputerMapper();
 		Connection connection = null;
-		PreparedStatement statement = null;
 		try {
 			connection = DaoManager.INSTANCE.getConnection();
-			ResultSet result = connection.createStatement().executeQuery(
-					"SELECT * FROM computer");
+			ResultSet result = connection.createStatement().executeQuery(req);
 			while (result.next()) {
 				Computer computer = (Computer) mapper.rowMap(result);
 				computer.setCompany(findFromId(computer.getCompany().getId()));
@@ -294,7 +355,7 @@ public enum ComputerDaoImpl implements ComputerDao {
 				LOGGER.debug("Exception trace : ", e);
 			}
 		} finally {
-			DaoManager.INSTANCE.close(statement, connection);
+			DaoManager.INSTANCE.closeConnection();
 		}
 		return computers;
 	}
@@ -305,7 +366,13 @@ public enum ComputerDaoImpl implements ComputerDao {
 	 * @see com.excilys.cdb.persistence.ComputerDao#findAll(int, int)
 	 */
 	@Override
-	public List<Computer> findAll(int start, int offset) {
+	public List<Computer> findAll(int start, int offset, SortCriteria criteria) {
+		StringBuilder req = new StringBuilder("SELECT * FROM computer ");
+		if ( criteria != null ) {
+			req.append(criteria.toString());
+		}
+		req.append(" LIMIT ?, ? ");
+		System.out.println("FIND ALL OFFSET " + req.toString());
 		List<Computer> computers = new ArrayList<>();
 		Mapper<Computer> mapper = new ComputerMapper();
 		Connection connection = null;
@@ -313,7 +380,7 @@ public enum ComputerDaoImpl implements ComputerDao {
 		try {
 			connection = DaoManager.INSTANCE.getConnection();
 			statement = connection
-					.prepareStatement("SELECT * FROM computer LIMIT ?, ? ");
+					.prepareStatement(req.toString());
 			statement.setInt(1, start);
 			statement.setInt(2, offset);
 			ResultSet result = statement.executeQuery();
@@ -323,6 +390,7 @@ public enum ComputerDaoImpl implements ComputerDao {
 				computers.add(computer);
 			}
 			result.close();
+			statement.close();
 		} catch (SQLException e) {
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Can't find all computer between [" + start + "-"
@@ -330,11 +398,17 @@ public enum ComputerDaoImpl implements ComputerDao {
 				LOGGER.debug("Exception trace : ", e);
 			}
 		} finally {
-			DaoManager.INSTANCE.close(statement, connection);
+			DaoManager.INSTANCE.closeConnection();
 		}
 		return computers;
 	}
 
+	/**
+	 * Find from id.
+	 *
+	 * @param id the id
+	 * @return the company
+	 */
 	private Company findFromId(int id) {
 		return CompanyDaoImpl.getInstance().find(id);
 	}

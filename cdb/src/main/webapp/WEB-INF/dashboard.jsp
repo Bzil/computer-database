@@ -46,16 +46,53 @@
 						<th>Computer name 
 							<span style="float: right;">
 								<c:choose>
-									<c:when test="${page.orderBy == 'DESC'}"> &#x21E7; </c:when>
-									<c:otherwise> &#x21E9; </c:otherwise>
+									<c:when test="${page.orderBy == 'DESC' && page.column == 'NAME'}">
+									 	<mylib:link body="&#x21E7;" page="${page.currentPage}" active="false" target="dashboard" search="${page.search}" column="name" dir="ASC" size="${page.offset}"/> 
+									</c:when>
+									<c:otherwise>
+										<mylib:link body="&#x21E9;" page="${page.currentPage}" active="false" target="dashboard" search="${page.search}" column="name" dir="DESC" size="${page.offset}"/> 
+									</c:otherwise>
 								</c:choose>
 							</span>
 						</th>			
-						<th>Introduced date</th>
+						<th>Introduced date
+							<span style="float: right;">
+								<c:choose>
+									<c:when test="${page.orderBy == 'DESC' && page.column == 'INTRODUCED'}">
+									 	<mylib:link body="&#x21E7;" page="${page.currentPage}" active="false" target="dashboard" search="${page.search}" column="introduced" dir="ASC" size="${page.offset}"/> 
+									</c:when>
+									<c:otherwise>
+										<mylib:link body="&#x21E9;" page="${page.currentPage}" active="false" target="dashboard" search="${page.search}" column="introduced" dir="DESC" size="${page.offset}"/> 
+									</c:otherwise>
+								</c:choose>
+							</span>
+						</th>
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date</th>
+						<th>Discontinued date
+							<span style="float: right;">
+								<c:choose>
+									<c:when test="${page.orderBy == 'DESC' && page.column == 'DISCONTINUED'}">
+									 	<mylib:link body="&#x21E7;" page="${page.currentPage}" active="false" target="dashboard" search="${page.search}" column="discontinued" dir="ASC" size="${page.offset}"/> 
+									</c:when>
+									<c:otherwise>
+										<mylib:link body="&#x21E9;" page="${page.currentPage}" active="false" target="dashboard" search="${page.search}" column="discontinued" dir="DESC" size="${page.offset}"/> 
+									</c:otherwise>
+								</c:choose>
+							</span>
+						</th>
 						<!-- Table header for Company -->
-						<th>Company</th>
+						<th>Company
+							<span style="float: right;">
+								<c:choose>
+									<c:when test="${page.orderBy == 'DESC' && page.column == 'COMPANY_ID'}">
+									 	<mylib:link body="&#x21E7;" page="${page.currentPage}" active="false" target="dashboard" search="${page.search}" column="company_id" dir="ASC" size="${page.offset}"/> 
+									</c:when>
+									<c:otherwise>
+										<mylib:link body="&#x21E9;" page="${page.currentPage}" active="false" target="dashboard" search="${page.search}" column="company_id" dir="DESC" size="${page.offset}"/> 
+									</c:otherwise>
+								</c:choose>
+							</span>
+						</th>
 
 					</tr>
 				</thead>

@@ -16,4 +16,15 @@ public class SortCriteria {
 	public String toString() {
 		return "ORDER BY " + column + " " + direction;
 	}
+
+	public String getColumn() {
+		return column.name();
+	}
+
+	public String getDirection() {
+		return direction.name();
+	}
 }
+
+
+

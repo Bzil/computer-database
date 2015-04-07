@@ -3,6 +3,7 @@ package com.excilys.cdb.persistence;
 import java.util.List;
 
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.util.sort.SortCriteria;
 
 /**
  * The Interface ComputerDao.
@@ -25,14 +26,22 @@ public interface ComputerDao {
 	 * @param name the name
 	 * @return the computer
 	 */
-	public List<Computer> find(String name);
+	public List<Computer> find(String name, SortCriteria criteria);
+	
+	/**
+	 * Find.
+	 *
+	 * @param companyId the company id
+	 * @return the computer
+	 */
+	public List<Computer> findByCompanyId(int companyId);
 
 	/**
 	 * Find all.
 	 *
 	 * @return the list
 	 */
-	public List<Computer> findAll();
+	public List<Computer> findAll(SortCriteria criteria);
 	
 	/**
 	 * Find all.
@@ -41,7 +50,7 @@ public interface ComputerDao {
 	 * @param offset the offset
 	 * @return the list
 	 */
-	public List<Computer> findAll(int start, int offset);
+	public List<Computer> findAll(int start, int offset, SortCriteria criteria);
 	/**
 	 * Creates the.
 	 *
