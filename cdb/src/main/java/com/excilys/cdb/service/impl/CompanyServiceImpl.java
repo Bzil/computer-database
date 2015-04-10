@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.model.Company;
-import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.CompanyDao;
 import com.excilys.cdb.persistence.ComputerDao;
 import com.excilys.cdb.persistence.DaoManager;
@@ -34,7 +33,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.CompanyService#find(int)
 	 */
 	@Override
@@ -52,37 +51,39 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.CompanyService#findAll()
 	 */
 	@Override
 	public List<CompanyDTO> findAll(SortCriteria criteria) {
 		List<Company> companies = companyDao.findAll();
 		List<CompanyDTO> dtos = new ArrayList<>();
-		for (Company c : companies)
+		for (Company c : companies) {
 			dtos.add(CompanyDTO.toDTO(c));
+		}
 
 		return dtos;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.CompanyService#findAll(int, int)
 	 */
 	@Override
 	public List<CompanyDTO> findAll(int start, int offset, SortCriteria criteria) {
 		List<Company> companies = companyDao.findAll(start, offset);
 		List<CompanyDTO> dtos = new ArrayList<>();
-		for (Company c : companies)
+		for (Company c : companies) {
 			dtos.add(CompanyDTO.toDTO(c));
+		}
 
 		return dtos;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.service.CompanyService#add(com.excilys.cdb.model.Company)
 	 */
@@ -90,14 +91,15 @@ public class CompanyServiceImpl implements CompanyService {
 	public CompanyDTO add(Company company) {
 		Company c = companyDao.create(company);
 		CompanyDTO dto = null;
-		if (c != null)
+		if (c != null) {
 			dto = CompanyDTO.toDTO(c);
+		}
 		return dto;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.service.CompanyService#delete(com.excilys.cdb.model.Company
 	 * )
@@ -105,15 +107,20 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	@Transactional
 	public void delete(Company company) {
+
+		/*
+		 * final List<Computer> computers =
+		 * computerDao.findByCompanyId(company.getId()); for (Computer computer
+		 * : computers) { computerDao.delete(computer.getId()); }
+		 */
 		computerDao.delete(company.getId());
 
 		companyDao.delete(company.getId());
-		;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.Service#delete(int)
 	 */
 	@Override
@@ -123,7 +130,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.service.CompanyService#update(com.excilys.cdb.model.Company
 	 * )
@@ -132,14 +139,15 @@ public class CompanyServiceImpl implements CompanyService {
 	public CompanyDTO update(Company company) {
 		Company c = companyDao.update(company);
 		CompanyDTO dto = null;
-		if (c != null)
+		if (c != null) {
 			dto = CompanyDTO.toDTO(c);
+		}
 		return dto;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.CompanyService#count()
 	 */
 	@Override
