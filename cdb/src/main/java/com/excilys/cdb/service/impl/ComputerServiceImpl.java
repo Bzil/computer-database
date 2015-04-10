@@ -5,10 +5,11 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDao;
-import com.excilys.cdb.persistence.impl.ComputerDaoImpl;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.util.dto.ComputerDTO;
 import com.excilys.cdb.util.sort.SortCriteria;
@@ -16,30 +17,18 @@ import com.excilys.cdb.util.sort.SortCriteria;
 /**
  * The Enum ComputerServiceImpl.
  */
-public enum ComputerServiceImpl implements ComputerService {
-
-	/** The instance. */
-	INSTANCE;
+@Service
+public class ComputerServiceImpl implements ComputerService {
 
 	/** The dao. */
-	private static ComputerDao dao = ComputerDaoImpl.getInstance();;
+	@Autowired
+	private ComputerDao dao;
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ComputerServiceImpl.class);
-
-	/**
-	 * Instantiates a new computer service impl.
-	 */
-	private ComputerServiceImpl() {
-	}
-
-	/**
-	 * Gets the single instance of ComputerServiceImpl.
-	 *
-	 * @return single instance of ComputerServiceImpl
-	 */
-	public ComputerService getInstance() {
-		return INSTANCE;
+	
+	
+	public ComputerServiceImpl() {
 	}
 
 	/*
@@ -117,6 +106,7 @@ public enum ComputerServiceImpl implements ComputerService {
 	 * )
 	 */
 	@Override
+	
 	public ComputerDTO add(Computer computer) {
 		LOGGER.info("Create" + computer);
 		Computer c = dao.create(computer);
@@ -132,6 +122,8 @@ public enum ComputerServiceImpl implements ComputerService {
 	 * 
 	 * @see com.excilys.cdb.service.ComputerService#delete(int)
 	 */
+	@Override
+	
 	public void delete(Computer computer) {
 		LOGGER.info("Delete " + computer);
 		dao.delete(computer.getId());
@@ -147,6 +139,12 @@ public enum ComputerServiceImpl implements ComputerService {
 		LOGGER.info("Delete computer with id " + id);
 		dao.delete(id);
 	}
+	
+	@Override
+	public void deleteByCompanyId(int companyId) {
+		LOGGER.info("Delete computer with id " + companyId);
+		dao.deleteByCompanyId(companyId);
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -156,6 +154,7 @@ public enum ComputerServiceImpl implements ComputerService {
 	 * Computer )
 	 */
 	@Override
+	
 	public ComputerDTO update(Computer computer) {
 		LOGGER.info("Update " + computer);
 		Computer c = dao.update(computer);

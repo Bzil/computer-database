@@ -11,7 +11,7 @@ import com.excilys.cdb.util.sort.SortCriteria;
  * @param <T> the generic type
  * @param <D> the generic type
  */
-public interface Service<T, D extends DTO<T>> {
+public interface ServiceCommons<T, D extends DTO<T>> {
 
 	/**
 	 * Find.

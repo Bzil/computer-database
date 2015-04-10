@@ -2,33 +2,33 @@ package com.excilys.cdb.persistence.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
-import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDao;
-import com.excilys.cdb.persistence.DaoManager;
 import com.excilys.cdb.util.mapper.ComputerMapper;
-import com.excilys.cdb.util.mapper.Mapper;
 import com.excilys.cdb.util.sort.SortCriteria;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ComputerDaoImpl.
  */
-public enum ComputerDaoImpl implements ComputerDao {
-	
-	/** The instance. */
-	INSTANCE;
+// TODO put sql req into static string
+// TODO get primary key CRUD @see javadoc
+@Repository
+public class ComputerDaoImpl implements ComputerDao {
 
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory
@@ -40,15 +40,12 @@ public enum ComputerDaoImpl implements ComputerDao {
 	private ComputerDaoImpl() {
 	}
 
-	/**
-	 * Gets the single instance of ComputerDaoImpl.
-	 *
-	 * @return single instance of ComputerDaoImpl
-	 */
-	public static ComputerDao getInstance() {
-		return INSTANCE;
-	}
-	
+	@Autowired
+	private ComputerMapper mapper;
+
+	@Autowired
+	private JdbcTemplate jdbc;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -56,105 +53,39 @@ public enum ComputerDaoImpl implements ComputerDao {
 	 */
 	@Override
 	public Computer find(int id) {
-		LOGGER.trace("Find company " + id);
-		Computer computer = null;
-		Mapper<Computer> mapper = new ComputerMapper();
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			connection = DaoManager.INSTANCE.getConnection();
-			statement = connection
-					.prepareStatement("SELECT * FROM computer WHERE id = ?");
-			statement.setInt(1, id);
-			ResultSet result = statement.executeQuery();
-			if (result.first()) {
-				computer = (Computer) mapper.rowMap(result);
-				computer.setCompany(findFromId(computer.getCompany().getId()));
-			}
-			result.close();
-			statement.close();
-		} catch (SQLException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Can't execute select request with id " + id);
-				LOGGER.debug("Exception trace : ", e);
-			}
-		} finally {
-			DaoManager.INSTANCE.closeConnection();
-		}
-		return computer;
+		LOGGER.info("Find computer " + id);
+		String sql = "SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id WHERE compu.id = ? ";
+		return jdbc.queryForObject(sql, new Object[] { id }, mapper);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.excilys.cdb.persistence.ComputerDao#find(java.lang.String, com.excilys.cdb.util.sort.SortCriteria)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.excilys.cdb.persistence.ComputerDao#find(java.lang.String,
+	 * com.excilys.cdb.util.sort.SortCriteria)
 	 */
 	@Override
 	public List<Computer> find(String name, SortCriteria criteria) {
+		LOGGER.info("Find computers by name : " + name);
 		String correctName = "%".concat(name.trim()).concat("%");
-		String req =  "SELECT * FROM computer as c WHERE c.name LIKE ? ";
-		if( criteria != null ) {
-			req = req.concat(criteria.toString());
+		String sql = "SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id WHERE compu.name LIKE ? ";
+
+		if (criteria != null) {
+			sql = sql.concat(criteria.toString());
 		}
-		LOGGER.trace("Find computers by name : " + name);
-		List<Computer> computers = new ArrayList<>();
-		Mapper<Computer> mapper = new ComputerMapper();
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			connection = DaoManager.INSTANCE.getConnection();
-			statement = connection
-					.prepareStatement(req);
-			statement.setString(1, correctName);
-			ResultSet result = statement.executeQuery();
-			while (result.next()) {
-				Computer computer = (Computer) mapper.rowMap(result);
-				computer.setCompany(findFromId(computer.getCompany().getId()));
-				computers.add(computer);
-			}
-			result.close();
-			statement.close();
-		} catch (SQLException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Can't execute select request with name : " + name);
-				LOGGER.debug("Exception trace : ", e);
-			}
-		} finally {
-			DaoManager.INSTANCE.closeConnection();
-		}
-		return computers;
+		return jdbc.query(sql, new Object[] { correctName }, mapper);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#findByCompanyId(int)
 	 */
 	@Override
 	public List<Computer> findByCompanyId(int companyId) {
-		LOGGER.trace("Find computers by company id : " + companyId);
-		List<Computer> computers = new ArrayList<>();
-		Mapper<Computer> mapper = new ComputerMapper();
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			connection = DaoManager.INSTANCE.getConnection();
-			statement = connection
-					.prepareStatement("SELECT * FROM computer as c WHERE c.company_id = ? ");
-			statement.setInt(1, companyId);
-			ResultSet result = statement.executeQuery();
-			while (result.next()) {
-				Computer computer = (Computer) mapper.rowMap(result);
-				computer.setCompany(findFromId(computer.getCompany().getId()));
-				computers.add(computer);
-			}
-			result.close();
-			statement.close();
-		} catch (SQLException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Can't execute select request with this company id : " + companyId);
-				LOGGER.debug("Exception trace : ", e);
-			}
-		} finally {
-			DaoManager.INSTANCE.closeConnection();
-		}
-		return computers;
+		LOGGER.info("Find computers by company id : " + companyId);
+		String sql = "SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id WHERE compu.company_id = ? ";
+		return jdbc.query(sql, new Object[] { companyId }, mapper);
 	}
 
 	/*
@@ -166,54 +97,44 @@ public enum ComputerDaoImpl implements ComputerDao {
 	 */
 	@Override
 	public Computer create(Computer computer) {
-		LOGGER.trace("Create computer " + computer);
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			connection = DaoManager.INSTANCE.getConnection();
-			statement = connection
-					.prepareStatement(
-							"INSERT INTO computer(name, introduced, discontinued, company_id) values (?, ?, ?, ?)",
-							Statement.RETURN_GENERATED_KEYS);
-			statement.setString(1, computer.getName());
-
-			if (computer.getIntroduced() != null) {
-				statement.setTimestamp(2,
-						Timestamp.valueOf((computer.getIntroduced())));
-			} else {
-				statement.setNull(2, Types.TIMESTAMP);
+		LOGGER.debug("Create computer info");
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		String sql = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
+		PreparedStatementCreator psc = new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(
+					Connection connection) throws SQLException {
+				PreparedStatement statement = connection
+						.prepareStatement(sql.toString(),
+								Statement.RETURN_GENERATED_KEYS);
+				if (computer.getName().trim().isEmpty()) {
+					throw new NullPointerException();
+				}
+				statement.setString(1, computer.getName().trim());
+				if (computer.getIntroduced() != null) {
+					statement.setTimestamp(2,
+							Timestamp.valueOf(computer.getIntroduced()));
+				} else {
+					statement.setNull(2, Types.TIMESTAMP);
+				}
+				if (computer.getDiscontinued() != null) {
+					statement.setTimestamp(3,
+							Timestamp.valueOf(computer.getDiscontinued()));
+				} else {
+					statement.setNull(3, Types.TIMESTAMP);
+				}
+				if (computer.getCompany() != null
+						&& computer.getCompany().getId() > 0) {
+					statement.setLong(4, computer.getCompany().getId());
+				} else {
+					statement.setNull(4, Types.INTEGER);
+				}
+				return statement;
 			}
-			if (computer.getDiscontinued() != null) {
-				statement.setTimestamp(3,
-						Timestamp.valueOf((computer.getDiscontinued())));
-			} else {
-				statement.setNull(3, Types.TIMESTAMP);
-			}
-			if (computer.getCompany() != null
-					&& computer.getCompany().getId() != -1) {
-				statement.setInt(4, computer.getCompany().getId());
-			} else {
-				statement.setNull(4, Types.INTEGER);
-			}
-			statement.executeUpdate();
-			// get keys
-			ResultSet generatedKeys = statement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				computer.setId(generatedKeys.getInt(1));
-			}
-			generatedKeys.close();
-			statement.close();
-		} catch (SQLException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Can't exectute create request of " + computer);
-				LOGGER.debug("Exception trace : ", e);
-			}
-		} finally {
-			DaoManager.INSTANCE.closeConnection();
-		}
-		if (computer.getCompany() != null)
-			computer.setCompany(findFromId(computer.getCompany().getId()));
-
+		};
+		jdbc.update(psc, keyHolder);
+		computer.setId(keyHolder.getKey().intValue());
+		LOGGER.debug("Create computer " + computer);
 		return computer;
 	}
 
@@ -226,44 +147,18 @@ public enum ComputerDaoImpl implements ComputerDao {
 	 */
 	@Override
 	public Computer update(Computer computer) {
-		LOGGER.trace("Update computer " + computer);
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			connection = DaoManager.INSTANCE.getConnection();
-			statement = connection
-					.prepareStatement("UPDATE computer SET name = ? , introduced = ? , discontinued = ?, company_id = ? WHERE id = ? ");
-			statement.setString(1, computer.getName());
-			if (computer.getIntroduced() != null) {
-				statement.setTimestamp(2,
-						Timestamp.valueOf(computer.getIntroduced()));
-			} else {
-				statement.setNull(2, Types.TIMESTAMP);
-			}
-			if (computer.getDiscontinued() != null) {
-				statement.setTimestamp(3,
-						Timestamp.valueOf(computer.getDiscontinued()));
-			} else {
-				statement.setNull(3, Types.TIMESTAMP);
-			}
-			if (computer.getCompany() != null
-					&& computer.getCompany().getId() != -1) {
-				statement.setInt(4, computer.getCompany().getId());
-			} else {
-				statement.setNull(4, Types.INTEGER);
-			}
-			statement.setInt(5, computer.getId());
-			statement.executeUpdate();
-			statement.close();
-		} catch (SQLException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Can't exceute update request of " + computer);
-				computer = null;
-				LOGGER.debug("Exception trace : ", e);
-			}
-		} finally {
-			DaoManager.INSTANCE.closeConnection();
-		}
+		LOGGER.info("Update computer " + computer);
+		jdbc.update(
+				"UPDATE computer SET name = ? , introduced = ? , discontinued = ?, company_id = ? WHERE id = ? ",
+				new Object[] {
+						computer.getName(),
+						computer.getIntroduced() != null ? Timestamp
+								.valueOf((computer.getIntroduced())) : null,
+						computer.getDiscontinued() != null ? Timestamp
+								.valueOf((computer.getDiscontinued())) : null,
+						computer.getCompany() != null
+								&& computer.getCompany().getId() > 0 ? computer
+								.getCompany().getId() : null, computer.getId() });
 		return computer;
 	}
 
@@ -276,25 +171,19 @@ public enum ComputerDaoImpl implements ComputerDao {
 	 */
 	@Override
 	public void delete(int id) {
-		LOGGER.trace("Delete computer whit id + " + id);
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			connection = DaoManager.INSTANCE.getConnection();
-			statement = connection
-					.prepareStatement("DELETE FROM computer WHERE id = ?");
-			statement.setInt(1, id);
-			statement.execute();
-			statement.close();
-		} catch (SQLException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Can't execute delete computer id : " + id);
-				LOGGER.debug("Exception trace : ", e);
-			}
-		} finally {
-			DaoManager.INSTANCE.closeConnection();
-		}
+		LOGGER.info("Delete computer whit id + " + id);
+		jdbc.update("DELETE FROM computer WHERE id = ?", id);
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.excilys.cdb.persistence.ComputerDao#deleteByCompanyId(int)
+	 */
+	@Override
+	public void deleteByCompanyId(int companyId) {
+		LOGGER.info("Delete computer whit company id + " + companyId);
+		jdbc.update("DELETE FROM computer WHERE company_id = ?", companyId);
 	}
 
 	/*
@@ -304,25 +193,8 @@ public enum ComputerDaoImpl implements ComputerDao {
 	 */
 	@Override
 	public int count() {
-		int count = -1;
-		Connection connection = null;
-		try {
-			connection = DaoManager.INSTANCE.getConnection();
-			ResultSet result = connection.createStatement().executeQuery(
-					"SELECT COUNT(*) AS count FROM computer");
-			result.next();
-			count = result.getInt("count");
-			result.close();
-		} catch (SQLException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Can't execute count request");
-				LOGGER.debug("Exception trace : ", e);
-			}
-		} finally {
-			DaoManager.INSTANCE.closeConnection();
-		}
-		return count;
-
+		String sql = "SELECT COUNT(*) AS count FROM computer";
+		return jdbc.queryForObject(sql, Integer.class);
 	}
 
 	/*
@@ -332,32 +204,11 @@ public enum ComputerDaoImpl implements ComputerDao {
 	 */
 	@Override
 	public List<Computer> findAll(SortCriteria criteria) {
-		String req = "SELECT * FROM computer";
-		if ( criteria != null ) {
-			req = req.concat(criteria.toString());
+		String sql = "SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id ";
+		if (criteria != null) {
+			sql = sql.concat(criteria.toString());
 		}
-		System.out.println("FIND ALL " + req);
-		List<Computer> computers = new ArrayList<>();
-		Mapper<Computer> mapper = new ComputerMapper();
-		Connection connection = null;
-		try {
-			connection = DaoManager.INSTANCE.getConnection();
-			ResultSet result = connection.createStatement().executeQuery(req);
-			while (result.next()) {
-				Computer computer = (Computer) mapper.rowMap(result);
-				computer.setCompany(findFromId(computer.getCompany().getId()));
-				computers.add(computer);
-			}
-			result.close();
-		} catch (SQLException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Can't find all computer");
-				LOGGER.debug("Exception trace : ", e);
-			}
-		} finally {
-			DaoManager.INSTANCE.closeConnection();
-		}
-		return computers;
+		return jdbc.query(sql, mapper);
 	}
 
 	/*
@@ -367,50 +218,14 @@ public enum ComputerDaoImpl implements ComputerDao {
 	 */
 	@Override
 	public List<Computer> findAll(int start, int offset, SortCriteria criteria) {
-		StringBuilder req = new StringBuilder("SELECT * FROM computer ");
-		if ( criteria != null ) {
+		StringBuffer req = new StringBuffer(
+				"SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id ");
+		if (criteria != null) {
 			req.append(criteria.toString());
 		}
 		req.append(" LIMIT ?, ? ");
-		System.out.println("FIND ALL OFFSET " + req.toString());
-		List<Computer> computers = new ArrayList<>();
-		Mapper<Computer> mapper = new ComputerMapper();
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			connection = DaoManager.INSTANCE.getConnection();
-			statement = connection
-					.prepareStatement(req.toString());
-			statement.setInt(1, start);
-			statement.setInt(2, offset);
-			ResultSet result = statement.executeQuery();
-			while (result.next()) {
-				Computer computer = (Computer) mapper.rowMap(result);
-				computer.setCompany(findFromId(computer.getCompany().getId()));
-				computers.add(computer);
-			}
-			result.close();
-			statement.close();
-		} catch (SQLException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Can't find all computer between [" + start + "-"
-						+ (start + offset) + "]");
-				LOGGER.debug("Exception trace : ", e);
-			}
-		} finally {
-			DaoManager.INSTANCE.closeConnection();
-		}
-		return computers;
-	}
-
-	/**
-	 * Find from id.
-	 *
-	 * @param id the id
-	 * @return the company
-	 */
-	private Company findFromId(int id) {
-		return CompanyDaoImpl.getInstance().find(id);
+		return jdbc.query(req.toString(), new Object[] { start, offset },
+				mapper);
 	}
 
 }

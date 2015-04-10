@@ -7,24 +7,28 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
+
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.service.impl.CompanyServiceImpl;
-import com.excilys.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.cdb.util.CompanyPage;
 import com.excilys.cdb.util.ComputerPage;
 import com.excilys.cdb.util.dto.CompanyDTO;
 import com.excilys.cdb.util.dto.ComputerDTO;
 
+@Component
 public class Cli {
 
-	private static ComputerService computerService = ComputerServiceImpl.INSTANCE
-			.getInstance();
+	@Autowired
+	private ComputerService computerService;
 
-	private static CompanyService companyService = CompanyServiceImpl.INSTANCE
-			.getInstance();
+	@Autowired
+	private CompanyService companyService;
 
 	private static final String DATE_PATTERN = "^(0[1-9]|1[0-9]|2[0-8]|29((?=-([0][13-9]|1[0-2])|(?=-(0[1-9]|1[0-2])-([0-9]{2}(0[48]|[13579][26]|[2468][048])|([02468][048]|[13579][26])00))))|30(?=-(0[13-9]|1[0-2]))|31(?=-(0[13578]|1[02])))-(0[1-9]|1[0-2])-[0-9]{4}$";
 
@@ -44,7 +48,7 @@ public class Cli {
 	private String getChoice() {
 		Scanner scanner = new Scanner(System.in);
 		String choice = null;
-
+		
 		while (choice == null || !isNumeric(choice)) {
 			System.out.println("Make your choice :");
 			choice = scanner.nextLine().trim();
@@ -68,6 +72,7 @@ public class Cli {
 	private String getString() {
 		Scanner scanner = new Scanner(System.in);
 		String str = null;
+		
 		while (str == null || str.trim().isEmpty()) {
 			System.out.println("Write your string : ");
 			str = scanner.nextLine().trim();
@@ -105,7 +110,8 @@ public class Cli {
 			System.out.println("0) Quit");
 			System.out.println("Choose between 0 - 7 : ");
 
-			switch (getChoice(toList("1", "2", "3", "4", "5", "6", "7", "8", "0"))) {
+			switch (getChoice(toList("1", "2", "3", "4", "5", "6", "7", "8",
+					"0"))) {
 			case "1":
 				showComputers();
 				break;
@@ -296,7 +302,9 @@ public class Cli {
 	}
 
 	public static void main(String[] args) {
-		Cli cli = new Cli();
+		@SuppressWarnings("resource")
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:context-cli.xml");
+		Cli cli = ctx.getBean(Cli.class);
 		cli.mainCli();
 	}
 }

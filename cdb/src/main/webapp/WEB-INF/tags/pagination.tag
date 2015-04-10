@@ -31,7 +31,7 @@
 			
 		</c:forEach>
 		
-		<c:if test="${active < page.pageNb}">
+		<c:if test="${active < page.pageNb }">
 			<li>
 				<mylib:link body="&rsaquo;" target="dashboard" page="${active +1}" size="${page.offset}" active="false"></mylib:link>
 			</li>

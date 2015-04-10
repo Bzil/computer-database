@@ -9,7 +9,7 @@ import com.excilys.cdb.util.sort.SortCriteria;
 /**
  * The Interface CompanyService.
  */
-public interface CompanyService extends Service<Company, CompanyDTO> {
+public interface CompanyService extends ServiceCommons<Company, CompanyDTO> {
 
 	/**
 	 * Find.

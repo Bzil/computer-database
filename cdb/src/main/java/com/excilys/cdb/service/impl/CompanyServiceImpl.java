@@ -3,12 +3,15 @@ package com.excilys.cdb.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.CompanyDao;
+import com.excilys.cdb.persistence.ComputerDao;
 import com.excilys.cdb.persistence.DaoManager;
-import com.excilys.cdb.persistence.impl.CompanyDaoImpl;
-import com.excilys.cdb.persistence.impl.ComputerDaoImpl;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.util.dto.CompanyDTO;
 import com.excilys.cdb.util.sort.SortCriteria;
@@ -16,28 +19,18 @@ import com.excilys.cdb.util.sort.SortCriteria;
 /**
  * The Enum CompanyServiceImpl.
  */
-public enum CompanyServiceImpl implements CompanyService {
-
-	/** The instance. */
-	INSTANCE;
+@Service
+public class CompanyServiceImpl implements CompanyService {
 
 	/** The dao. */
-	private CompanyDao dao = CompanyDaoImpl.getInstance();
+	@Autowired
+	private CompanyDao companyDao;
 
-	/**
-	 * Instantiates a new company service impl.
-	 */
-	private CompanyServiceImpl() {
-	}
+	@Autowired
+	private ComputerDao computerDao;
 
-	/**
-	 * Gets the single instance of CompanyServiceImpl.
-	 *
-	 * @return single instance of CompanyServiceImpl
-	 */
-	public CompanyService getInstance() {
-		return INSTANCE;
-	}
+	@Autowired
+	private DaoManager manager;
 
 	/*
 	 * (non-Javadoc)
@@ -46,10 +39,14 @@ public enum CompanyServiceImpl implements CompanyService {
 	 */
 	@Override
 	public CompanyDTO find(int id) {
-		Company c = dao.find(id);
 		CompanyDTO dto = null;
-		if (c != null)
-			dto = CompanyDTO.toDTO(c);
+		if (id > 0) {
+			Company c = companyDao.find(id);
+
+			if (c != null) {
+				dto = CompanyDTO.toDTO(c);
+			}
+		}
 		return dto;
 	}
 
@@ -60,7 +57,7 @@ public enum CompanyServiceImpl implements CompanyService {
 	 */
 	@Override
 	public List<CompanyDTO> findAll(SortCriteria criteria) {
-		List<Company> companies = dao.findAll();
+		List<Company> companies = companyDao.findAll();
 		List<CompanyDTO> dtos = new ArrayList<>();
 		for (Company c : companies)
 			dtos.add(CompanyDTO.toDTO(c));
@@ -75,7 +72,7 @@ public enum CompanyServiceImpl implements CompanyService {
 	 */
 	@Override
 	public List<CompanyDTO> findAll(int start, int offset, SortCriteria criteria) {
-		List<Company> companies = dao.findAll(start, offset);
+		List<Company> companies = companyDao.findAll(start, offset);
 		List<CompanyDTO> dtos = new ArrayList<>();
 		for (Company c : companies)
 			dtos.add(CompanyDTO.toDTO(c));
@@ -91,7 +88,7 @@ public enum CompanyServiceImpl implements CompanyService {
 	 */
 	@Override
 	public CompanyDTO add(Company company) {
-		Company c = dao.create(company);
+		Company c = companyDao.create(company);
 		CompanyDTO dto = null;
 		if (c != null)
 			dto = CompanyDTO.toDTO(c);
@@ -106,16 +103,12 @@ public enum CompanyServiceImpl implements CompanyService {
 	 * )
 	 */
 	@Override
+	@Transactional
 	public void delete(Company company) {
-		List<Computer> computers = ComputerDaoImpl.getInstance().findByCompanyId(company.getId());
-		
-		for (Computer c : computers) {
-			ComputerDaoImpl.getInstance().delete(c.getId());
-		}
-		
-		dao.delete(company.getId());
-		
-		DaoManager.INSTANCE.commit();
+		computerDao.delete(company.getId());
+
+		companyDao.delete(company.getId());
+		;
 	}
 
 	/*
@@ -125,7 +118,7 @@ public enum CompanyServiceImpl implements CompanyService {
 	 */
 	@Override
 	public void delete(int id) {
-		dao.delete(id);
+		companyDao.delete(id);
 	}
 
 	/*
@@ -137,7 +130,7 @@ public enum CompanyServiceImpl implements CompanyService {
 	 */
 	@Override
 	public CompanyDTO update(Company company) {
-		Company c = dao.update(company);
+		Company c = companyDao.update(company);
 		CompanyDTO dto = null;
 		if (c != null)
 			dto = CompanyDTO.toDTO(c);
@@ -151,6 +144,6 @@ public enum CompanyServiceImpl implements CompanyService {
 	 */
 	@Override
 	public int count() {
-		return dao.count();
+		return companyDao.count();
 	}
 }

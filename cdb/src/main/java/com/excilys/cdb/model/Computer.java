@@ -25,16 +25,11 @@ public class Computer {
 	/**
 	 * Instantiates a new computer.
 	 *
-	 * @param id
-	 *            the id
-	 * @param name
-	 *            the name
-	 * @param introduced
-	 *            the introducedgetTime
-	 * @param discontinued
-	 *            the discontinued
-	 * @param companyId
-	 *            the company id
+	 * @param id            the id
+	 * @param name            the name
+	 * @param introduced            the introducedgetTime
+	 * @param discontinued            the discontinued
+	 * @param company the company
 	 */
 	public Computer(int id, String name, LocalDateTime introduced,
 			LocalDateTime discontinued, Company company) {
@@ -46,15 +41,31 @@ public class Computer {
 		this.company = company;
 	}
 
+	/**
+	 * Instantiates a new computer.
+	 *
+	 * @param name the name
+	 * @param introduced the introduced
+	 * @param discontinued the discontinued
+	 * @param company the company
+	 */
 	public Computer(String name, LocalDateTime introduced,
 			LocalDateTime discontinued, Company company) {
 		this(-1, name, introduced, discontinued, company);
 	}
 
+	/**
+	 * Instantiates a new computer.
+	 *
+	 * @param name the name
+	 */
 	public Computer(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Instantiates a new computer.
+	 */
 	public Computer() {
 	}
 
@@ -117,8 +128,7 @@ public class Computer {
 	/**
 	 * Sets the company id.
 	 *
-	 * @param companyId
-	 *            the new company id
+	 * @param company the new company
 	 */
 	public void setCompany(Company company) {
 		this.company = company;
@@ -167,6 +177,9 @@ public class Computer {
 				.toString();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -181,6 +194,9 @@ public class Computer {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

@@ -9,6 +9,7 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1>Add Computer</h1>
+                    <h2 style="color : #4DA585;"> ${add}</h2>
                     <form action="add" method="POST">
                         <fieldset>
                             <div class="form-group">

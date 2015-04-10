@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.excilys.cdb.service;
 
 import java.util.List;
@@ -9,7 +12,7 @@ import com.excilys.cdb.util.sort.SortCriteria;
 /**
  * The Interface ComputerService.
  */
-public interface ComputerService extends Service<Computer, ComputerDTO> {
+public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
 
 	/**
 	 * Find.
@@ -63,6 +66,14 @@ public interface ComputerService extends Service<Computer, ComputerDTO> {
 	 *            the computer
 	 */
 	public void delete(Computer computer);
+	
+	
+	/**
+	 * Delete by company id.
+	 *
+	 * @param companyId the company id
+	 */
+	public void deleteByCompanyId(int companyId);
 
 	/**
 	 * Update.

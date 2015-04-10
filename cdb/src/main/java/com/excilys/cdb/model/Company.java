@@ -11,16 +11,30 @@ public class Company {
 	/** company name. */
 	private String name;
 
+	/**
+	 * Instantiates a new company.
+	 */
 	public Company() {
 
 	}
 
+	/**
+	 * Instantiates a new company.
+	 *
+	 * @param id the id
+	 * @param name the name
+	 */
 	public Company(int id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
 	}
 
+	/**
+	 * Instantiates a new company.
+	 *
+	 * @param name the name
+	 */
 	public Company(String name) {
 		this(-1, name);
 	}
@@ -73,6 +87,9 @@ public class Company {
 		this.name = name;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -82,6 +99,9 @@ public class Company {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

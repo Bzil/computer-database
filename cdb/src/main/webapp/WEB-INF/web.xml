@@ -1,10 +1,42 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
           http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-    version="3.0">
+	version="3.0">
 	<display-name>Computer DataBase</display-name>
 
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
+
+	<!-- Custom error pages -->
+	<error-page>
+		<error-code>403</error-code>
+		<location>/WEB-INF/403.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/404.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/WEB-INF/500.jsp</location>
+	</error-page>
+
+	<!-- Spring Context -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/context-application.xml</param-value>
+	</context-param>
+
+	<!-- Active Spring profile -->
+	<context-param>
+		<param-name>spring.profiles.active</param-name>
+		<param-value>app</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+
 </web-app>

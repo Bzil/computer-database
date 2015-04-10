@@ -8,23 +8,21 @@ import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.service.impl.CompanyServiceImpl;
-import com.excilys.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.cdb.util.dto.CompanyDTO;
 import com.excilys.cdb.util.validator.Validator;
 
 @WebServlet(urlPatterns = "/add")
-public class AddComputerServlet extends HttpServlet {
+public class AddComputerServlet extends AbstractServlet {
 
 	/**
 	 * 
@@ -33,8 +31,11 @@ public class AddComputerServlet extends HttpServlet {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AddComputerServlet.class);
-
+	
+	@Autowired
 	private ComputerService computerService;
+	
+	@Autowired
 	private CompanyService companyService;
 
 	@Override
@@ -46,11 +47,10 @@ public class AddComputerServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		companyService = CompanyServiceImpl.INSTANCE.getInstance();
+		String forward = ServletList.ADD_JSP.toString();
 		if (request.getParameter("computerName") != null) {
 			String name = request.getParameter("computerName").trim();
 			if (!name.isEmpty()) {
-				computerService = ComputerServiceImpl.INSTANCE.getInstance();
 				String introducedString = request.getParameter("introduced")
 						.trim();
 				String discontinuedString = request
@@ -69,6 +69,7 @@ public class AddComputerServlet extends HttpServlet {
 						.fromDTO(company));
 				LOGGER.info("add computer " + computer);
 				computerService.add(computer);
+				request.setAttribute("add", "Success");
 			} else {
 				request.getRequestDispatcher(ServletList.ERROR_500_JSP.toString())
 						.forward(request, response);
@@ -77,9 +78,8 @@ public class AddComputerServlet extends HttpServlet {
 
 		List<CompanyDTO> companies = companyService.findAll(null);
 		request.setAttribute("companies", companies);
-		request.getRequestDispatcher(ServletList.ADD_JSP.toString()).forward(
+		request.getRequestDispatcher(forward).forward(
 				request, response);
-
 	}
 
 	private LocalDateTime getLocalDateTime(String str) {

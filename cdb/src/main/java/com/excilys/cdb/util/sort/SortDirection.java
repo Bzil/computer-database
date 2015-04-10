@@ -1,15 +1,33 @@
 package com.excilys.cdb.util.sort;
 
+/**
+ * The Enum SortDirection.
+ */
 public enum SortDirection {
-	ASC("ASC"), DESC("DESC");
 
+	/** The asc. */
+	ASC("ASC"),
+	/** The desc. */
+	DESC("DESC");
+
+	/** The name. */
 	private String name;
 
+	/**
+	 * Instantiates a new sort direction.
+	 *
+	 * @param name
+	 *            the name
+	 */
 	private SortDirection(String name) {
 		this.name = name;
 	}
 
-	public String getName() {
+	/* (non-Javadoc)
+	 * @see java.lang.Enum#toString()
+	 */
+	@Override
+	public String toString() {
 		return name;
 	}
 

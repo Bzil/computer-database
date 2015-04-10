@@ -4,18 +4,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.cdb.util.ComputerPage;
 import com.excilys.cdb.util.dto.ComputerDTO;
 import com.excilys.cdb.util.sort.SortColumn;
@@ -24,7 +22,7 @@ import com.excilys.cdb.util.sort.SortDirection;
 import com.excilys.cdb.util.validator.Validator;
 
 @WebServlet(urlPatterns = "/dashboard", loadOnStartup = 1)
-public class DashBoardServlet extends HttpServlet {
+public class DashBoardServlet extends AbstractServlet {
 
 	/**
 	 * 
@@ -34,11 +32,8 @@ public class DashBoardServlet extends HttpServlet {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(DashBoardServlet.class);
 
-	private ComputerService cs;
-
-	public void init(ServletConfig config) {
-		cs = ComputerServiceImpl.INSTANCE.getInstance();
-	}
+	@Autowired
+	private ComputerService computerService;
 
 	@Override
 	protected void doGet(HttpServletRequest request,
@@ -57,7 +52,7 @@ public class DashBoardServlet extends HttpServlet {
 			List<Integer> list = getSelectionList(request);
 			for (Integer i : list) {
 				try {
-					ComputerServiceImpl.INSTANCE.delete(i);
+					computerService.delete(i);
 					LOGGER.info("computer with id : " + i + " deleted");
 				} catch (Exception e) {
 					LOGGER.error("computer with id : " + i
@@ -65,7 +60,6 @@ public class DashBoardServlet extends HttpServlet {
 				}
 			}
 		}
-
 		// size of list
 		if (Validator.INSTANCE.isNumericString(request.getParameter("size"))) {
 			computerPage.setOffset(Integer.parseInt(request
@@ -84,7 +78,7 @@ public class DashBoardServlet extends HttpServlet {
 		}
 		String options = "?id=".concat(String.valueOf(page));
 		// count of cumputer
-		int count = cs.count();
+		int count = computerService.count();
 
 		// Sort criteria
 		SortCriteria criteria = getSortCriteria(request);
@@ -95,18 +89,19 @@ public class DashBoardServlet extends HttpServlet {
 			computerPage.setColumn(criteria.getColumn());
 		}
 		// Search
-		if (request.getParameter("search") != null && !request.getParameter("search").trim().isEmpty()) {
+		if (request.getParameter("search") != null
+				&& !request.getParameter("search").trim().isEmpty()) {
 			String search = request.getParameter("search");
 			LOGGER.info("Looking for : " + search);
-			entities = cs.find(search, criteria);
+			entities = computerService.find(search, criteria);
 			count = entities.size();
 			options = options.concat("&search=").concat(search);
 			computerPage.setSearch(search);
 		} else {
-			entities = cs.findAll(computerPage.getStart(),
+			entities = computerService.findAll(computerPage.getStart(),
 					computerPage.getOffset(), criteria);
 		}
-
+		LOGGER.info("count" + count);
 		computerPage.setCount(count);
 		computerPage.setEntities(entities);
 		LOGGER.info("Show page : " + computerPage);

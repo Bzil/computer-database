@@ -8,34 +8,37 @@ import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.service.impl.CompanyServiceImpl;
-import com.excilys.cdb.service.impl.ComputerServiceImpl;
 import com.excilys.cdb.util.dto.CompanyDTO;
 import com.excilys.cdb.util.dto.ComputerDTO;
 import com.excilys.cdb.util.validator.Validator;
 
 @WebServlet(urlPatterns = "/edit")
-public class EditComputerServlet extends HttpServlet {
+public class EditComputerServlet extends AbstractServlet {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(EditComputerServlet.class);
+	
+	@Autowired
 	private ComputerService computerService;
+	
+	@Autowired
 	private CompanyService companyService;
-
+	
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -47,9 +50,6 @@ public class EditComputerServlet extends HttpServlet {
 		}
 
 		if (id > 0) {
-			companyService = CompanyServiceImpl.INSTANCE.getInstance();
-			computerService = ComputerServiceImpl.INSTANCE.getInstance();
-
 			ComputerDTO dto = computerService.find(id);
 
 			List<CompanyDTO> companies = companyService.findAll(null);
@@ -70,7 +70,6 @@ public class EditComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		if (request.getParameter("computerName") != null) {
-			computerService = ComputerServiceImpl.INSTANCE.getInstance();
 			int id = Integer.parseInt(request.getParameter("id").trim());
 			String name = request.getParameter("computerName").trim();
 			String introducedString = request.getParameter("introduced").trim();
@@ -105,5 +104,15 @@ public class EditComputerServlet extends HttpServlet {
 		}
 		return date;
 	}
+
+	protected void setComputerService(ComputerService computerService) {
+		this.computerService = computerService;
+	}
+
+	protected void setCompanyService(CompanyService companyService) {
+		this.companyService = companyService;
+	}
+	
+	
 
 }

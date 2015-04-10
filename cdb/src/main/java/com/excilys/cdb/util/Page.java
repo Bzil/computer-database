@@ -104,7 +104,8 @@ public abstract class Page<T, D extends DTO<T>> {
 
 	public void setCount(int count) {
 		this.count = count;
-		setPageNb((int) count / offset);
+		int nb = (int) count / offset;
+		setPageNb(count < offset ? 1 : count % nb == 0 ? nb : nb + 1);
 	}
 
 	public int getStartPage() {
@@ -148,7 +149,8 @@ public abstract class Page<T, D extends DTO<T>> {
 		return "Page [start=" + start + ", offset=" + offset + ", count="
 				+ count + ", currentPage=" + currentPage + ", pageNb=" + pageNb
 				+ ", startPage=" + startPage + ", endPage=" + endPage
-				+ ", search=" + search + ", orderBy=" + orderBy + ", column=" + column + "]";
+				+ ", search=" + search + ", orderBy=" + orderBy + ", column="
+				+ column + "]";
 	}
 
 }

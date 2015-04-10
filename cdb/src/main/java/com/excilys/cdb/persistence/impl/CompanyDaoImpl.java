@@ -1,27 +1,25 @@
 package com.excilys.cdb.persistence.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.CompanyDao;
 import com.excilys.cdb.persistence.DaoManager;
 import com.excilys.cdb.util.mapper.CompanyMapper;
-import com.excilys.cdb.util.mapper.Mapper;
 
 /**
  * The Class CompanyDaoImpl.
  */
-public enum CompanyDaoImpl implements CompanyDao {
-	INSTANCE;
+@Repository
+public class CompanyDaoImpl implements CompanyDao {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(CompanyDaoImpl.class);
@@ -29,9 +27,14 @@ public enum CompanyDaoImpl implements CompanyDao {
 	private CompanyDaoImpl() {
 	}
 
-	public static CompanyDao getInstance() {
-		return INSTANCE;
-	}
+	@Autowired
+	private DaoManager manager;
+
+	@Autowired
+	private CompanyMapper mapper;
+	
+	@Autowired
+	private JdbcTemplate jdbc;
 
 	/*
 	 * (non-Javadoc)
@@ -40,31 +43,9 @@ public enum CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public Company find(int id) {
-		LOGGER.trace("Find company with id " + id);
-		Company company = null;
-		Connection connection = null;
-		PreparedStatement statement = null;
-		Mapper<Company> mapper = new CompanyMapper();
-		try {
-			connection = DaoManager.INSTANCE.getConnection();
-			statement = connection
-					.prepareStatement("SELECT * FROM company WHERE id = ?");
-			statement.setInt(1, id);
-			ResultSet result = statement.executeQuery();
-			if (result.first()) {
-				company = (Company) mapper.rowMap(result);
-			}
-			result.close();
-			statement.close();
-		} catch (SQLException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Can't execute select request with id " + id);
-				LOGGER.debug("Exception trace : ", e);
-			}
-		} finally {
-			DaoManager.INSTANCE.closeConnection();
-		}
-		return company;
+		LOGGER.info("Find company with id " + id);
+		String sql = "SELECT * FROM company WHERE id = ?";
+		return jdbc.queryForObject(sql, new Object[] { id }, mapper);
 	}
 
 	/*
@@ -76,31 +57,11 @@ public enum CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public Company create(Company company) {
-		LOGGER.trace("Create company " + company);
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			connection = DaoManager.INSTANCE.getConnection();
-			statement = connection.prepareStatement(
-					"INSERT INTO company(name) values (?)",
-					Statement.RETURN_GENERATED_KEYS);
-			statement.setString(1, company.getName());
-			statement.executeUpdate();
-			// get keys
-			ResultSet generatedKeys = statement.getGeneratedKeys();
-			if (generatedKeys.next()) {
-				company.setId(generatedKeys.getInt(1));
-			}
-			generatedKeys.close();
-			statement.close();
-		} catch (SQLException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Can't exectute create request of " + company);
-				LOGGER.debug("Exception trace : ", e);
-			}
-		} finally {
-			DaoManager.INSTANCE.closeConnection();
-		}
+		LOGGER.info("Create company " + company);
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		jdbc.update("INSERT INTO company(name) values (?)",
+				company.getName(), keyHolder );
+		company.setId(keyHolder.getKey().intValue());
 		return company;
 	}
 
@@ -113,26 +74,12 @@ public enum CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public Company update(Company company) {
-		LOGGER.trace("Update company " + company);
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			connection = DaoManager.INSTANCE.getConnection();
-			statement = connection
-					.prepareStatement("UPDATE company SET name = ? WHERE id = ?");
-			statement.setString(1, company.getName());
-			statement.setInt(2, company.getId());
-			statement.executeUpdate();
-			statement.close();
-		} catch (SQLException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Can't exceute update request of " + company);
-				company = null;
-				LOGGER.debug("Exception trace : ", e);
-			}
-		} finally {
-			DaoManager.INSTANCE.closeConnection();
-		}
+		LOGGER.info("Update company " + company);
+		jdbc.update("UPDATE company SET name = ? WHERE id = ?",  new Object[] {
+				company.getName(),
+				company.getId()
+		});
+
 		return company;
 	}
 
@@ -145,40 +92,8 @@ public enum CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public void delete(int id) {
-		LOGGER.trace("Delete company " + id);
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			connection = DaoManager.INSTANCE.getConnection();
-
-			// Delete all the computer
-			statement = connection
-					.prepareStatement("DELETE FROM computer WHERE company_id=?");
-			statement.setInt(1, id);
-			statement.execute();
-			// Delete the company
-			statement = connection
-					.prepareStatement("DELETE FROM company WHERE id=?");
-			statement.setLong(1, id);
-			statement.execute();
-
-			connection.commit();
-			statement.close();
-		} catch (SQLException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Can't execute delete " + id);
-				LOGGER.debug("Exception trace : ", e);
-			}
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				LOGGER.error("Can't rollack connection after deletion try of "
-						+ id);
-				// e1.printStackTrace();
-			}
-		} finally {
-			DaoManager.INSTANCE.closeConnection();
-		}
+		LOGGER.info("Delete company " + id);
+		jdbc.update("DELETE FROM computer WHERE company_id=?", id);
 	}
 
 	/*
@@ -188,25 +103,8 @@ public enum CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public List<Company> findAll() {
-		List<Company> companies = new ArrayList<>();
-		Mapper<Company> mapper = new CompanyMapper();
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			connection = DaoManager.INSTANCE.getConnection();
-			statement = connection.prepareStatement("SELECT * FROM company");
-			ResultSet result = statement.executeQuery();
-			while (result.next()) {
-				companies.add((Company) mapper.rowMap(result));
-			}
-			result.close();
-		} catch (SQLException e) {
-			LOGGER.debug("Can't find all computer");
-			LOGGER.debug("Exception trace : ", e);
-		} finally {
-			DaoManager.INSTANCE.closeConnection();
-		}
-		return companies;
+			String sql = "SELECT * FROM company";
+			return jdbc.query(sql, mapper);
 	}
 
 	/*
@@ -216,32 +114,8 @@ public enum CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public List<Company> findAll(int start, int offset) {
-		List<Company> companies = new ArrayList<>();
-		Mapper<Company> mapper = new CompanyMapper();
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			connection = DaoManager.INSTANCE.getConnection();
-
-			statement = connection
-					.prepareStatement("SELECT * FROM company LIMIT ?, ? ");
-			statement.setInt(1, start);
-			statement.setInt(2, offset);
-			ResultSet result = statement.executeQuery();
-			while (result.next()) {
-				companies.add((Company) mapper.rowMap(result));
-			}
-			result.close();
-		} catch (SQLException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Can't find all computer between [" + start + "-"
-						+ (start + offset) + "]");
-				LOGGER.debug("Exception trace : ", e);
-			}
-		} finally {
-			DaoManager.INSTANCE.closeConnection();
-		}
-		return companies;
+		String sql = "SELECT * FROM company LIMIT ?, ? ";
+			return jdbc.query(sql, new Object[] { start, offset }, mapper);
 	}
 
 	/*
@@ -251,26 +125,8 @@ public enum CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public int count() {
-		int count = -1;
-		Connection connection = null;
-		PreparedStatement statement = null;
-		try {
-			connection = DaoManager.INSTANCE.getConnection();
-			statement = connection
-					.prepareStatement("SELECT COUNT(*) AS count FROM company");
-			ResultSet result = statement.executeQuery();
-			result.next();
-			count = result.getInt("count");
-			result.close();
-		} catch (SQLException e) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Can't execute count request");
-				LOGGER.debug("Exception trace : ", e);
-			}
-		} finally {
-			DaoManager.INSTANCE.closeConnection();
-		}
-		return count;
+		String sql =  "SELECT COUNT(*) AS count FROM company";
+		return jdbc.queryForObject(sql, Integer.class);
 
 	}
 

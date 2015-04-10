@@ -9,32 +9,49 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<!-- PLugins -->
+		<!-- Project information -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- Java version -->
+		<java.version>1.8</java.version>
+
+		<!-- Plugins -->
 		<compiler.version>3.1</compiler.version>
 		<exec.version>1.3.2</exec.version>
 		<war.version>2.5</war.version>
-		<tomcat7.version>2.2</tomcat7.version>
 
+		<!-- Tomcat -->
+		<tomcat7.version>2.2</tomcat7.version>
+		<tomcat7.path>/cdb</tomcat7.path>
 		<tomcat7.server>cdbServer</tomcat7.server>
 		<tomcat7.url>http://localhost:8080/manager/text</tomcat7.url>
-		<tomcat7.path>/cdb</tomcat7.path>
+
 		<!-- Depedencies -->
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.8</java.version>
+		<!-- Log -->
+		<logback.version>1.1.2</logback.version>
+		<slf4j.version>1.7.10</slf4j.version>
+
+		<!-- Test -->
 		<powermock.version>1.6.2</powermock.version>
 		<junit.version>4.12</junit.version>
-		<slf4j.version>1.7.1</slf4j.version>
 		<dbunit.version>2.5.0</dbunit.version>
 		<h2.version>1.4.186</h2.version>
+		<selenium.version>2.45.0</selenium.version>
+
+
+		<!-- Connection -->
 		<mysql.version>5.1.34</mysql.version>
+		<commons.dbcp2.version>2.1</commons.dbcp2.version>
+		<bonecp.version>0.8.0.RELEASE</bonecp.version>
+
+		<!-- Javax - Jsp -->
 		<javax.version>3.1.0</javax.version>
 		<javax.jsp.version>2.2</javax.jsp.version>
 		<jstl.version>1.1.2</jstl.version>
 		<taglibs.version>1.1.2</taglibs.version>
 		<validator.version>1.4.0</validator.version>
-		<logback.version>1.1.2</logback.version>
-		<bonecp.version>0.8.0.RELEASE</bonecp.version>
-		<selenium.version>2.45.0</selenium.version>
+
+		<!-- Spring -->
+		<spring.version>4.1.5.RELEASE</spring.version>
 	</properties>
 
 	<build>
@@ -88,6 +105,45 @@
 
 	<dependencies>
 
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+
+		<!-- Servelt + jsp -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -114,18 +170,33 @@
 			<version>${jstl.version}</version>
 		</dependency>
 
+		<!-- Connection -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
+			<groupId>com.jolbox</groupId>
+			<artifactId>bonecp</artifactId>
+			<version>${bonecp.version}</version>
 		</dependency>
 
+		<!-- DBCP connection pooling -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>${commons.dbcp2.version}</version>
+		</dependency>
+
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
@@ -139,14 +210,15 @@
 			<version>${validator.version}</version>
 		</dependency>
 
+		<!-- Test -->
+
 		<dependency>
-			<groupId>com.jolbox</groupId>
-			<artifactId>bonecp</artifactId>
-			<version>${bonecp.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 
 
-		<!-- TEST -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -159,6 +231,12 @@
 			<artifactId>dbunit</artifactId>
 			<version>${dbunit.version}</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
