@@ -1,27 +1,5 @@
 package com.excilys.cdb.persistence;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.junit.After;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import com.excilys.cdb.manage.H2dbManager;
-import com.excilys.cdb.model.Company;
-import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.persistence.impl.ComputerDaoImpl;
 
 public class ComputerDaoTest {
 //	private static final String COMPUTERS_XML = "src/test/resources/computer/computer.xml";

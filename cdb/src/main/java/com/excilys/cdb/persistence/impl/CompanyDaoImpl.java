@@ -6,8 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.Company;
@@ -32,7 +30,7 @@ public class CompanyDaoImpl implements CompanyDao {
 
 	@Autowired
 	private CompanyMapper mapper;
-	
+
 	@Autowired
 	private JdbcTemplate jdbc;
 
@@ -42,45 +40,10 @@ public class CompanyDaoImpl implements CompanyDao {
 	 * @see com.excilys.cdb.persistence.CompanyDao#find(int)
 	 */
 	@Override
-	public Company find(int id) {
+	public Company find(final int id) {
 		LOGGER.info("Find company with id " + id);
-		String sql = "SELECT * FROM company WHERE id = ?";
+		final String sql = "SELECT * FROM company WHERE id = ?";
 		return jdbc.queryForObject(sql, new Object[] { id }, mapper);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.excilys.cdb.persistence.CompanyDao#create(com.excilys.cdb.model.Compagny
-	 * )
-	 */
-	@Override
-	public Company create(Company company) {
-		LOGGER.info("Create company " + company);
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-		jdbc.update("INSERT INTO company(name) values (?)",
-				company.getName(), keyHolder );
-		company.setId(keyHolder.getKey().intValue());
-		return company;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.excilys.cdb.persistence.CompanyDao#update(com.excilys.cdb.model.Compagny
-	 * )
-	 */
-	@Override
-	public Company update(Company company) {
-		LOGGER.info("Update company " + company);
-		jdbc.update("UPDATE company SET name = ? WHERE id = ?",  new Object[] {
-				company.getName(),
-				company.getId()
-		});
-
-		return company;
 	}
 
 	/*
@@ -91,7 +54,7 @@ public class CompanyDaoImpl implements CompanyDao {
 	 * )
 	 */
 	@Override
-	public void delete(int id) {
+	public void delete(final int id) {
 		LOGGER.info("Delete company " + id);
 		jdbc.update("DELETE FROM computer WHERE company_id=?", id);
 	}
@@ -103,8 +66,8 @@ public class CompanyDaoImpl implements CompanyDao {
 	 */
 	@Override
 	public List<Company> findAll() {
-			String sql = "SELECT * FROM company";
-			return jdbc.query(sql, mapper);
+		final String sql = "SELECT * FROM company";
+		return jdbc.query(sql, mapper);
 	}
 
 	/*
@@ -113,21 +76,9 @@ public class CompanyDaoImpl implements CompanyDao {
 	 * @see com.excilys.cdb.persistence.CompanyDao#findAll(int, int)
 	 */
 	@Override
-	public List<Company> findAll(int start, int offset) {
-		String sql = "SELECT * FROM company LIMIT ?, ? ";
-			return jdbc.query(sql, new Object[] { start, offset }, mapper);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.excilys.cdb.persistence.CompanyDao#count()
-	 */
-	@Override
-	public int count() {
-		String sql =  "SELECT COUNT(*) AS count FROM company";
-		return jdbc.queryForObject(sql, Integer.class);
-
+	public List<Company> findAll(final int start, final int offset) {
+		final String sql = "SELECT * FROM company LIMIT ?, ? ";
+		return jdbc.query(sql, new Object[] { start, offset }, mapper);
 	}
 
 }

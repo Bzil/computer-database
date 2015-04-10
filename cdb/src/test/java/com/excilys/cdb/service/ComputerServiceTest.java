@@ -1,30 +1,10 @@
 package com.excilys.cdb.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.time.LocalDateTime;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
 
-import com.excilys.cdb.model.Company;
-import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.persistence.ComputerDao;
 import com.excilys.cdb.persistence.impl.ComputerDaoImpl;
-import com.excilys.cdb.service.impl.ComputerServiceImpl;
-import com.excilys.cdb.util.dto.ComputerDTO;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ ComputerDaoImpl.class })

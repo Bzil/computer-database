@@ -19,14 +19,4 @@ public class DaoManager {
 	public Connection getConnection() throws SQLException {
 		return dataSource.getConnection();
 	}
-	
-	public void closeConnection() {
-		try {
-			dataSource.getConnection().close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 }

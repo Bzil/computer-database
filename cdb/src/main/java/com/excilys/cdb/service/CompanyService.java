@@ -18,6 +18,7 @@ public interface CompanyService extends ServiceCommons<Company, CompanyDTO> {
 	 *            the id
 	 * @return the company
 	 */
+	@Override
 	public CompanyDTO find(int id);
 
 	/**
@@ -25,6 +26,7 @@ public interface CompanyService extends ServiceCommons<Company, CompanyDTO> {
 	 *
 	 * @return the list
 	 */
+	@Override
 	public List<CompanyDTO> findAll(SortCriteria criteria);
 
 	/**
@@ -36,16 +38,8 @@ public interface CompanyService extends ServiceCommons<Company, CompanyDTO> {
 	 *            the offset
 	 * @return the list
 	 */
+	@Override
 	public List<CompanyDTO> findAll(int start, int offset, SortCriteria criteria);
-
-	/**
-	 * Adds the.
-	 *
-	 * @param company
-	 *            the company
-	 * @return the company
-	 */
-	public CompanyDTO add(Company company);
 
 	/**
 	 * Delete.
@@ -53,21 +47,7 @@ public interface CompanyService extends ServiceCommons<Company, CompanyDTO> {
 	 * @param company
 	 *            the company
 	 */
+	@Override
 	public void delete(Company company);
 
-	/**
-	 * Update.
-	 *
-	 * @param company
-	 *            the company
-	 * @return the company
-	 */
-	public CompanyDTO update(Company company);
-
-	/**
-	 * Count.
-	 *
-	 * @return c
-	 */
-	public int count();
 }

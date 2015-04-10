@@ -33,14 +33,14 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.service.CompanyService#find(int)
 	 */
 	@Override
-	public CompanyDTO find(int id) {
+	public CompanyDTO find(final int id) {
 		CompanyDTO dto = null;
 		if (id > 0) {
-			Company c = companyDao.find(id);
+			final Company c = companyDao.find(id);
 
 			if (c != null) {
 				dto = CompanyDTO.toDTO(c);
@@ -51,14 +51,14 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.service.CompanyService#findAll()
 	 */
 	@Override
-	public List<CompanyDTO> findAll(SortCriteria criteria) {
-		List<Company> companies = companyDao.findAll();
-		List<CompanyDTO> dtos = new ArrayList<>();
-		for (Company c : companies) {
+	public List<CompanyDTO> findAll(final SortCriteria criteria) {
+		final List<Company> companies = companyDao.findAll();
+		final List<CompanyDTO> dtos = new ArrayList<>();
+		for (final Company c : companies) {
 			dtos.add(CompanyDTO.toDTO(c));
 		}
 
@@ -67,14 +67,15 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.service.CompanyService#findAll(int, int)
 	 */
 	@Override
-	public List<CompanyDTO> findAll(int start, int offset, SortCriteria criteria) {
-		List<Company> companies = companyDao.findAll(start, offset);
-		List<CompanyDTO> dtos = new ArrayList<>();
-		for (Company c : companies) {
+	public List<CompanyDTO> findAll(final int start, final int offset,
+			final SortCriteria criteria) {
+		final List<Company> companies = companyDao.findAll(start, offset);
+		final List<CompanyDTO> dtos = new ArrayList<>();
+		for (final Company c : companies) {
 			dtos.add(CompanyDTO.toDTO(c));
 		}
 
@@ -83,30 +84,14 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see
-	 * com.excilys.cdb.service.CompanyService#add(com.excilys.cdb.model.Company)
-	 */
-	@Override
-	public CompanyDTO add(Company company) {
-		Company c = companyDao.create(company);
-		CompanyDTO dto = null;
-		if (c != null) {
-			dto = CompanyDTO.toDTO(c);
-		}
-		return dto;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * com.excilys.cdb.service.CompanyService#delete(com.excilys.cdb.model.Company
 	 * )
 	 */
 	@Override
 	@Transactional
-	public void delete(Company company) {
+	public void delete(final Company company) {
 
 		/*
 		 * final List<Computer> computers =
@@ -120,38 +105,12 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.service.Service#delete(int)
 	 */
 	@Override
-	public void delete(int id) {
+	public void delete(final int id) {
 		companyDao.delete(id);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * com.excilys.cdb.service.CompanyService#update(com.excilys.cdb.model.Company
-	 * )
-	 */
-	@Override
-	public CompanyDTO update(Company company) {
-		Company c = companyDao.update(company);
-		CompanyDTO dto = null;
-		if (c != null) {
-			dto = CompanyDTO.toDTO(c);
-		}
-		return dto;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.excilys.cdb.service.CompanyService#count()
-	 */
-	@Override
-	public int count() {
-		return companyDao.count();
-	}
 }

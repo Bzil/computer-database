@@ -2,8 +2,8 @@ package com.excilys.cdb.persistence.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.List;
@@ -26,7 +26,6 @@ import com.excilys.cdb.util.sort.SortCriteria;
  * The Class ComputerDaoImpl.
  */
 // TODO put sql req into static string
-// TODO get primary key CRUD @see javadoc
 @Repository
 public class ComputerDaoImpl implements ComputerDao {
 
@@ -52,9 +51,9 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @see com.excilys.cdb.persistence.ComputerDao#find(int)
 	 */
 	@Override
-	public Computer find(int id) {
+	public Computer find(final int id) {
 		LOGGER.info("Find computer " + id);
-		String sql = "SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id WHERE compu.id = ? ";
+		final String sql = "SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id WHERE compu.id = ? ";
 		return jdbc.queryForObject(sql, new Object[] { id }, mapper);
 	}
 
@@ -65,9 +64,9 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * com.excilys.cdb.util.sort.SortCriteria)
 	 */
 	@Override
-	public List<Computer> find(String name, SortCriteria criteria) {
+	public List<Computer> find(final String name, final SortCriteria criteria) {
 		LOGGER.info("Find computers by name : " + name);
-		String correctName = "%".concat(name.trim()).concat("%");
+		final String correctName = "%".concat(name.trim()).concat("%");
 		String sql = "SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id WHERE compu.name LIKE ? ";
 
 		if (criteria != null) {
@@ -82,9 +81,9 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @see com.excilys.cdb.persistence.ComputerDao#findByCompanyId(int)
 	 */
 	@Override
-	public List<Computer> findByCompanyId(int companyId) {
+	public List<Computer> findByCompanyId(final int companyId) {
 		LOGGER.info("Find computers by company id : " + companyId);
-		String sql = "SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id WHERE compu.company_id = ? ";
+		final String sql = "SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id WHERE compu.company_id = ? ";
 		return jdbc.query(sql, new Object[] { companyId }, mapper);
 	}
 
@@ -96,15 +95,15 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * Computer)
 	 */
 	@Override
-	public Computer create(Computer computer) {
+	public Computer create(final Computer computer) {
 		LOGGER.debug("Create computer info");
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-		String sql = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
-		PreparedStatementCreator psc = new PreparedStatementCreator() {
+		final KeyHolder keyHolder = new GeneratedKeyHolder();
+		final String sql = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
+		final PreparedStatementCreator psc = new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(
-					Connection connection) throws SQLException {
-				PreparedStatement statement = connection
+					final Connection connection) throws SQLException {
+				final PreparedStatement statement = connection
 						.prepareStatement(sql.toString(),
 								Statement.RETURN_GENERATED_KEYS);
 				if (computer.getName().trim().isEmpty()) {
@@ -146,7 +145,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * Computer)
 	 */
 	@Override
-	public Computer update(Computer computer) {
+	public Computer update(final Computer computer) {
 		LOGGER.info("Update computer " + computer);
 		jdbc.update(
 				"UPDATE computer SET name = ? , introduced = ? , discontinued = ?, company_id = ? WHERE id = ? ",
@@ -170,7 +169,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * Computer)
 	 */
 	@Override
-	public void delete(int id) {
+	public void delete(final int id) {
 		LOGGER.info("Delete computer whit id + " + id);
 		jdbc.update("DELETE FROM computer WHERE id = ?", id);
 	}
@@ -181,7 +180,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @see com.excilys.cdb.persistence.ComputerDao#deleteByCompanyId(int)
 	 */
 	@Override
-	public void deleteByCompanyId(int companyId) {
+	public void deleteByCompanyId(final int companyId) {
 		LOGGER.info("Delete computer whit company id + " + companyId);
 		jdbc.update("DELETE FROM computer WHERE company_id = ?", companyId);
 	}
@@ -193,7 +192,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	 */
 	@Override
 	public int count() {
-		String sql = "SELECT COUNT(*) AS count FROM computer";
+		final String sql = "SELECT COUNT(*) AS count FROM computer";
 		return jdbc.queryForObject(sql, Integer.class);
 	}
 
@@ -203,7 +202,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @see com.excilys.cdb.persistence.ComputerDao#findAll()
 	 */
 	@Override
-	public List<Computer> findAll(SortCriteria criteria) {
+	public List<Computer> findAll(final SortCriteria criteria) {
 		String sql = "SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id ";
 		if (criteria != null) {
 			sql = sql.concat(criteria.toString());
@@ -217,8 +216,9 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @see com.excilys.cdb.persistence.ComputerDao#findAll(int, int)
 	 */
 	@Override
-	public List<Computer> findAll(int start, int offset, SortCriteria criteria) {
-		StringBuffer req = new StringBuffer(
+	public List<Computer> findAll(final int start, final int offset,
+			final SortCriteria criteria) {
+		final StringBuffer req = new StringBuffer(
 				"SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id ");
 		if (criteria != null) {
 			req.append(criteria.toString());

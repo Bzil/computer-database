@@ -8,8 +8,10 @@ import com.excilys.cdb.util.sort.SortCriteria;
 /**
  * The Interface Service.
  *
- * @param <T> the generic type
- * @param <D> the generic type
+ * @param <T>
+ *            the generic type
+ * @param <D>
+ *            the generic type
  */
 public interface ServiceCommons<T, D extends DTO<T>> {
 
@@ -47,7 +49,9 @@ public interface ServiceCommons<T, D extends DTO<T>> {
 	 *            the t
 	 * @return the t
 	 */
-	public D add(T t);
+	public default D add(final T t) {
+		throw new UnsupportedOperationException();
+	};
 
 	/**
 	 * Delete.
@@ -56,11 +60,12 @@ public interface ServiceCommons<T, D extends DTO<T>> {
 	 *            the t
 	 */
 	public void delete(T t);
-	
+
 	/**
 	 * Delete.
 	 *
-	 * @param id the id
+	 * @param id
+	 *            the id
 	 */
 	public void delete(int id);
 
@@ -71,13 +76,17 @@ public interface ServiceCommons<T, D extends DTO<T>> {
 	 *            the t
 	 * @return the t
 	 */
-	public D update(T t);
+	public default D update(final T t) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * Count.
 	 *
 	 * @return c
 	 */
-	public int count();
+	public default int count() {
+		throw new UnsupportedOperationException();
+	}
 
 }

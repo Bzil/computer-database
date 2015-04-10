@@ -8,8 +8,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+@Ignore
 public class EditTest {
-	
+
 	private WebDriver driver;
 	private String baseUrl;
 
@@ -23,8 +24,7 @@ public class EditTest {
 	public void close() {
 		driver.close();
 	}
-	
-	
+
 	@Ignore
 	public void testEditFromDashBoard() {
 		baseUrl += "dashboard";
@@ -36,8 +36,7 @@ public class EditTest {
 		driver.findElement(By.tagName("form")).submit();
 		driver.close();
 	}
-	
-	
+
 	@Test
 	public void testEditWithSpecificUrl() {
 		baseUrl += "edit?id=10";
@@ -48,16 +47,16 @@ public class EditTest {
 		driver.findElement(By.tagName("form")).submit();
 		driver.close();
 	}
-	
+
 	@Ignore
 	public void testEditWithSpecificUrlWhitoutParam() {
 		baseUrl += "edit";
 		driver.get(baseUrl);
-		
+
 		driver.findElement(By.tagName("form")).submit();
 		driver.close();
 	}
-	
+
 	@Test
 	public void testEditWithSpecificUrlWrongDate() {
 		baseUrl += "edit?id=10";
@@ -65,11 +64,11 @@ public class EditTest {
 		// Put value into field
 		driver.findElement(By.id("computerName")).sendKeys("testSelenium");
 		driver.findElement(By.id("introduced")).sendKeys("testSelenium");
-		
+
 		driver.findElement(By.tagName("form")).submit();
 		driver.close();
 	}
-	
+
 	@Test
 	public void testEditWithSpecificUrlWhithoutName() {
 		baseUrl += "edit?id=10";

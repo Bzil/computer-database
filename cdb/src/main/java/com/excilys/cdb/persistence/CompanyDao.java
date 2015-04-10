@@ -37,24 +37,6 @@ public interface CompanyDao {
 	public List<Company> findAll(int start, int offset);
 
 	/**
-	 * Creates the.
-	 *
-	 * @param company
-	 *            the company
-	 * @return the company
-	 */
-	public Company create(Company company);
-
-	/**
-	 * Update.
-	 *
-	 * @param company
-	 *            the company
-	 * @return the company
-	 */
-	public Company update(Company company);
-
-	/**
 	 * Delete.
 	 *
 	 * @param company
@@ -62,10 +44,4 @@ public interface CompanyDao {
 	 */
 	public void delete(int id);
 
-	/**
-	 * Count.
-	 *
-	 * @return the int
-	 */
-	public int count();
 }
