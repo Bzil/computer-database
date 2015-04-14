@@ -38,7 +38,7 @@ public class AddController {
 			Model model) {
 		final List<CompanyDTO> companies = companyService.findAll(null);
 		model.addAttribute("companies", companies);
-		return "addComputer";
+		return ControllerList.ADD_VIEW;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -51,12 +51,12 @@ public class AddController {
 		if (!result.hasErrors()) {
 			computerDto.companyName = companyService
 					.find(computerDto.companyId) != null ? companyService.find(
-					computerDto.companyId).getName() : "";
-			final Computer computer = ComputerDTO.fromDTO(computerDto);
-			computerService.add(computer);
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("add computer " + computer);
-			}
+							computerDto.companyId).getName() : "";
+							final Computer computer = ComputerDTO.fromDTO(computerDto);
+							computerService.add(computer);
+							if (LOGGER.isDebugEnabled()) {
+								LOGGER.debug("add computer " + computer);
+							}
 		}
 		return load(computerDto, model);
 

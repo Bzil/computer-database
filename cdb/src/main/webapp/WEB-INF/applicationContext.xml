@@ -30,6 +30,16 @@
 	</bean>
 	<tx:annotation-driven proxy-target-class="true" />
 	
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="basenames">
+			<list>
+				<value>classpath:/i18n/message</value>
+			</list>
+		</property>
+	</bean>
+	
 	<context:component-scan base-package="com.excilys.cdb.util.mapper" />
 	<context:component-scan base-package="com.excilys.cdb.persistence" />
 	<context:component-scan base-package="com.excilys.cdb.util.dto" />

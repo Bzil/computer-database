@@ -48,9 +48,9 @@ public class EditController {
 			model.addAttribute("computer", dto);
 			model.addAttribute("companies", companies);
 		} else {
-			return "500";
+			return ControllerList.ERROR_500_VIEW;
 		}
-		return "editComputer";
+		return ControllerList.EDIT_VIEW;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -69,7 +69,7 @@ public class EditController {
 							if (LOGGER.isDebugEnabled()) {
 								LOGGER.debug("edit computer " + computer);
 							}
-							return "redirect:/dashboard";
+							return ControllerList.REDIRECT + ControllerList.DASHBOARD_VIEW;
 		} else {
 			return load(computerDto.id, computerDto, model);
 		}

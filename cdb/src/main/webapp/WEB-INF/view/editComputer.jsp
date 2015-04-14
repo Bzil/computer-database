@@ -54,9 +54,8 @@
                         </div>
 					</fieldset>
 					<div class="actions pull-right">
-						<input type="submit" value="Edit" class="btn btn-primary"
-							id="buttonControl" disabled="disabled"> or <a
-							href="dashboard" class="btn btn-default">Cancel</a>
+						<input type="submit" value="Edit" class="btn btn-primary" id="buttonControl" disabled="disabled"> or 
+						<a href="dashboard" class="btn btn-default">Cancel</a>
 					</div>
 				</form:form>
 			</div>

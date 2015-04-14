@@ -117,7 +117,7 @@ public class DashboardController {
 		LOGGER.info("Show page : " + computerPage);
 
 		model.addAttribute("page", computerPage);
-		return "dashboard";// + options;
+		return ControllerList.DASHBOARD_VIEW;
 	}
 
 	/**

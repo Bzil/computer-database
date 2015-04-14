@@ -1,26 +1,23 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="mylib" tagdir="/WEB-INF/tags"%>
 <%@ include file="header.jsp"%>
 <section id="main">
 	<div class="container">
-		<h1 id="homeTitle">${page.count}Computers found</h1>
+		<h1 id="homeTitle">${page.count} <spring:message code="computer.found" /></h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
 				<form id="searchForm" action="#" method="GET" class="form-inline">
 
-					<input type="search" id="searchbox" name="search"
-						class="form-control" placeholder="Search name" /> <input
-						type="submit" id="searchsubmit" value="Filter by name"
-						class="btn btn-primary" />
+					<input type="search" id="searchbox" name="search" class="form-control" placeholder="<spring:message code="search.name" />" /> 
+					<input type="submit" id="searchsubmit" value="<spring:message code="filter.by.name" />" class="btn btn-primary" />
 				</form>
 			</div>
 			<div class="pull-right">
-				<a class="btn btn-success" id="addComputer" href="add">Add
-					Computer</a> <a class="btn btn-default" id="editComputer" href="#"
-					onclick="$.fn.toggleEditMode();">Edit</a>
+				<a class="btn btn-success" id="addComputer" href="add"><spring:message code="add.computer" /></a> 
+				<a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="edit.computer" /></a>
 			</div>
 		</div>
 	</div>
@@ -36,14 +33,11 @@
 					<!-- Variable declarations for passing labels as parameters -->
 					<!-- Table header for Computer Name -->
 
-					<th class="editMode" style="width: 60px; height: 22px;"><input
-						type="checkbox" id="selectall" /> <span
-						style="vertical-align: top;"> - <a href="#"
-							id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
-								class="fa fa-trash-o fa-lg"></i>
-						</a>
-					</span></th>
-					<th>Computer name <span style="float: right;"> <c:choose>
+					<th class="editMode" style="width: 60px; height: 22px;"><input type="checkbox" id="selectall" /> 
+						<span style="vertical-align: top;"> - <a href="#" id="deleteSelected" onclick="$.fn.deleteSelected();"> <i class="fa fa-trash-o fa-lg"></i></a> </span>
+					</th>
+					<th><spring:message code="computer.name" /> <span style="float: right;"> 
+					<c:choose>
 								<c:when
 									test="${page.orderBy == 'DESC' && page.column == 'NAME'}">
 									<mylib:link body="&#x21E7;" page="${page.currentPage}"
@@ -58,7 +52,7 @@
 							</c:choose>
 					</span>
 					</th>
-					<th>Introduced date <span style="float: right;"> <c:choose>
+					<th><spring:message code="introduced.date" /> <span style="float: right;"> <c:choose>
 								<c:when
 									test="${page.orderBy == 'DESC' && page.column == 'INTRODUCED'}">
 									<mylib:link body="&#x21E7;" page="${page.currentPage}"
@@ -74,7 +68,7 @@
 					</span>
 					</th>
 					<!-- Table header for Discontinued Date -->
-					<th>Discontinued date <span style="float: right;"> <c:choose>
+					<th><spring:message code="discontinued.date" /> <span style="float: right;"> <c:choose>
 								<c:when
 									test="${page.orderBy == 'DESC' && page.column == 'DISCONTINUED'}">
 									<mylib:link body="&#x21E7;" page="${page.currentPage}"
@@ -90,7 +84,7 @@
 					</span>
 					</th>
 					<!-- Table header for Company -->
-					<th>Company <span style="float: right;"> <c:choose>
+					<th><spring:message code="company" /> <span style="float: right;"> <c:choose>
 								<c:when
 									test="${page.orderBy == 'DESC' && page.column == 'COMPANY_ID'}">
 									<mylib:link body="&#x21E7;" page="${page.currentPage}"
