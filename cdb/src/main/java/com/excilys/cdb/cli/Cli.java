@@ -34,7 +34,7 @@ public class Cli {
 
 	@SuppressWarnings("resource")
 	private String getChoice(List<String> choices) {
-		Scanner scanner = new Scanner(System.in);
+		final Scanner scanner = new Scanner(System.in);
 		String choice = null;
 
 		while (choice == null || !choices.contains(choice.toLowerCase())) {
@@ -46,9 +46,9 @@ public class Cli {
 
 	@SuppressWarnings("resource")
 	private String getChoice() {
-		Scanner scanner = new Scanner(System.in);
+		final Scanner scanner = new Scanner(System.in);
 		String choice = null;
-		
+
 		while (choice == null || !isNumeric(choice)) {
 			System.out.println("Make your choice :");
 			choice = scanner.nextLine().trim();
@@ -58,7 +58,7 @@ public class Cli {
 
 	@SuppressWarnings("resource")
 	private String getChoiceDate() {
-		Scanner scanner = new Scanner(System.in);
+		final Scanner scanner = new Scanner(System.in);
 		String choice = null;
 
 		while (choice == null || !isCorrectDate(choice)) {
@@ -70,9 +70,9 @@ public class Cli {
 
 	@SuppressWarnings("resource")
 	private String getString() {
-		Scanner scanner = new Scanner(System.in);
+		final Scanner scanner = new Scanner(System.in);
 		String str = null;
-		
+
 		while (str == null || str.trim().isEmpty()) {
 			System.out.println("Write your string : ");
 			str = scanner.nextLine().trim();
@@ -81,8 +81,8 @@ public class Cli {
 	}
 
 	private List<String> toList(String... strings) {
-		List<String> ret = new ArrayList<>();
-		for (String s : strings) {
+		final List<String> ret = new ArrayList<>();
+		for (final String s : strings) {
 			ret.add(s);
 		}
 		return ret;
@@ -143,7 +143,7 @@ public class Cli {
 	}
 
 	private void showComputers() {
-		ComputerPage cp = new ComputerPage();
+		final ComputerPage cp = new ComputerPage();
 		int start = 0;
 		int offset = 10;
 		boolean exit = false;
@@ -151,7 +151,7 @@ public class Cli {
 			cp.showEntities(computerService.findAll(start, offset, null));
 
 			System.out.println("Show more ? [y/n]");
-			String choice = getChoice(toList("y", "n"));
+			final String choice = getChoice(toList("y", "n"));
 			switch (choice) {
 			case "y":
 				start = offset;
@@ -164,7 +164,7 @@ public class Cli {
 	}
 
 	private void showCompanies() {
-		CompanyPage cp = new CompanyPage();
+		final CompanyPage cp = new CompanyPage();
 		int start = 0;
 		int offset = 10;
 		boolean exit = false;
@@ -172,7 +172,7 @@ public class Cli {
 			cp.showEntities(companyService.findAll(start, offset, null));
 
 			System.out.println("Show more ? [y/n]");
-			String choice = getChoice(toList("y", "n"));
+			final String choice = getChoice(toList("y", "n"));
 			switch (choice) {
 			case "y":
 				start = offset;
@@ -185,18 +185,19 @@ public class Cli {
 	}
 
 	private void showComputer() {
-		String choice = getChoice();
+		final String choice = getChoice();
 		System.out.println(computerService.find(Integer.parseInt(choice)));
 	}
 
 	private void deleteComputer() {
 		System.out.println("Choose computer id : ");
-		String choice = getChoice();
-		ComputerDTO computer = computerService.find(Integer.parseInt(choice));
+		final String choice = getChoice();
+		final ComputerDTO computer = computerService.find(Integer
+				.parseInt(choice));
 		if (computer != null) {
 			System.out.println(computer);
 			System.out.println("Confirm deletion ? [y/n]");
-			String str = getChoice(toList("y", "n"));
+			final String str = getChoice(toList("y", "n"));
 			switch (str) {
 			case "y":
 				computerService.delete(computer.id);
@@ -212,12 +213,13 @@ public class Cli {
 
 	private void deleteCompany() {
 		System.out.println("Choose company id : ");
-		String choice = getChoice();
-		CompanyDTO company = companyService.find(Integer.parseInt(choice));
+		final String choice = getChoice();
+		final CompanyDTO company = companyService
+				.find(Integer.parseInt(choice));
 		if (company != null) {
 			System.out.println(company);
 			System.out.println("Confirm deletion ? [y/n]");
-			String str = getChoice(toList("y", "n"));
+			final String str = getChoice(toList("y", "n"));
 			switch (str) {
 			case "y":
 				companyService.delete(company.id);
@@ -233,9 +235,9 @@ public class Cli {
 
 	private void createComputer() {
 		String buffer;
-		Computer computer = new Computer();
+		final Computer computer = new Computer();
 		LocalDateTime introduced = null, discontinued = null;
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
+		final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
 				"dd-MM-uuuu HH:mm:ss", new Locale("fr"));
 		System.out.println("Name : ");
 		computer.setName(getString());
@@ -264,17 +266,17 @@ public class Cli {
 
 	private void updateComputer() {
 		String buffer;
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
+		final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
 				"dd-MM-uuuu HH:mm:ss", new Locale("fr"));
 		System.out.println("iD : ");
-		Computer computer = ComputerDTO.fromDTO(computerService.find(Integer
-				.parseInt(getChoice())));
+		final Computer computer = ComputerDTO.fromDTO(computerService
+				.find(Integer.parseInt(getChoice())));
 		if (computer != null) {
 			System.out.println("Introduced");
 			buffer = getChoiceDate();
 			if (!buffer.equals("null")) {
 				buffer += " 00:00:00";
-				LocalDateTime introduced = LocalDateTime.parse(buffer,
+				final LocalDateTime introduced = LocalDateTime.parse(buffer,
 						formatter);
 				computer.setIntroduced(introduced);
 			}
@@ -282,7 +284,7 @@ public class Cli {
 			buffer = getChoiceDate();
 			if (!buffer.equals("null")) {
 				buffer += " 00:00:00";
-				LocalDateTime discontinued = LocalDateTime.parse(buffer,
+				final LocalDateTime discontinued = LocalDateTime.parse(buffer,
 						formatter);
 				computer.setDiscontinued(discontinued);
 			}
@@ -303,8 +305,9 @@ public class Cli {
 
 	public static void main(String[] args) {
 		@SuppressWarnings("resource")
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:context-cli.xml");
-		Cli cli = ctx.getBean(Cli.class);
+		final ApplicationContext ctx = new ClassPathXmlApplicationContext(
+				"classpath:context-cli.xml");
+		final Cli cli = ctx.getBean(Cli.class);
 		cli.mainCli();
 	}
 }

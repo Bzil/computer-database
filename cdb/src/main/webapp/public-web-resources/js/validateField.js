@@ -1,4 +1,4 @@
-$('#computerName').keyup(function() {
+$('#name').keyup(function() {
 	if(validateName($(this))) {
         $(this).css({'color' : '#4DA585'});
     } else {
@@ -27,7 +27,7 @@ $('#discontinued').keyup(function() {
 
 
 function validator(){
-    if(validateName('#computerName') && validateDate('#introduced') && validateDate('#discontinued')) {
+    if(validateName('#name') && validateDate('#introduced') && validateDate('#discontinued')) {
     	$('#buttonControl').removeAttr("disabled");
     } else {
     	$('#buttonControl').attr("disabled", "disabled");

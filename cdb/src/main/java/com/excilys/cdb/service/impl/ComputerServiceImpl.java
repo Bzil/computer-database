@@ -26,8 +26,7 @@ public class ComputerServiceImpl implements ComputerService {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(ComputerServiceImpl.class);
-	
-	
+
 	public ComputerServiceImpl() {
 	}
 
@@ -37,12 +36,17 @@ public class ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#find(int)
 	 */
 	@Override
-	public ComputerDTO find(int id) {
-		LOGGER.info("Looking for computer " + id);
-		Computer c = dao.find(id);
+	public ComputerDTO find(final int id) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Looking for computer " + id);
+		}
 		ComputerDTO dto = null;
-		if (c != null) {
-			dto = ComputerDTO.toDTO(c);
+		if (id > 0) {
+			final Computer c = dao.find(id);
+
+			if (c != null) {
+				dto = ComputerDTO.toDTO(c);
+			}
 		}
 		return dto;
 	}
@@ -53,11 +57,13 @@ public class ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#find(String)
 	 */
 	@Override
-	public List<ComputerDTO> find(String name, SortCriteria criteria) {
-		LOGGER.info("Looking for computer " + name);
-		List<Computer> computers = dao.find(name, criteria);
-		List<ComputerDTO> dtos = new ArrayList<>();
-		for (Computer c : computers) {
+	public List<ComputerDTO> find(final String name, final SortCriteria criteria) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Looking for computer " + name);
+		}
+		final List<Computer> computers = dao.find(name, criteria);
+		final List<ComputerDTO> dtos = new ArrayList<>();
+		for (final Computer c : computers) {
 			dtos.add(ComputerDTO.toDTO(c));
 		}
 		return dtos;
@@ -69,11 +75,13 @@ public class ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#findAll()
 	 */
 	@Override
-	public List<ComputerDTO> findAll(SortCriteria criteria) {
-		LOGGER.info("Looking for all computer");
-		List<Computer> companies = dao.findAll(criteria);
-		List<ComputerDTO> dtos = new ArrayList<>();
-		for (Computer c : companies) {
+	public List<ComputerDTO> findAll(final SortCriteria criteria) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Looking for all computer");
+		}
+		final List<Computer> companies = dao.findAll(criteria);
+		final List<ComputerDTO> dtos = new ArrayList<>();
+		for (final Computer c : companies) {
 			dtos.add(ComputerDTO.toDTO(c));
 		}
 
@@ -86,13 +94,15 @@ public class ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#findAll(int, int)
 	 */
 	@Override
-	public List<ComputerDTO> findAll(int start, int offset,
-			SortCriteria criteria) {
-		LOGGER.info("Looking for all computer between " + start + " - "
-				+ offset);
-		List<Computer> companies = dao.findAll(start, offset, criteria);
-		List<ComputerDTO> dtos = new ArrayList<>();
-		for (Computer c : companies) {
+	public List<ComputerDTO> findAll(final int start, final int offset,
+			final SortCriteria criteria) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Looking for all computer between " + start + " - "
+					+ offset);
+		}
+		final List<Computer> companies = dao.findAll(start, offset, criteria);
+		final List<ComputerDTO> dtos = new ArrayList<>();
+		for (final Computer c : companies) {
 			dtos.add(ComputerDTO.toDTO(c));
 		}
 		return dtos;
@@ -106,13 +116,17 @@ public class ComputerServiceImpl implements ComputerService {
 	 * )
 	 */
 	@Override
-	
-	public ComputerDTO add(Computer computer) {
-		LOGGER.info("Create" + computer);
-		Computer c = dao.create(computer);
+	public ComputerDTO add(final Computer computer) {
 		ComputerDTO dto = null;
-		if (c != null) {
-			dto = ComputerDTO.toDTO(c);
+		if (computer != null) {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Create" + computer);
+			}
+			final Computer c = dao.create(computer);
+
+			if (c != null) {
+				dto = ComputerDTO.toDTO(c);
+			}
 		}
 		return dto;
 	}
@@ -123,9 +137,10 @@ public class ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#delete(int)
 	 */
 	@Override
-	
-	public void delete(Computer computer) {
-		LOGGER.info("Delete " + computer);
+	public void delete(final Computer computer) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Delete " + computer);
+		}
 		dao.delete(computer.getId());
 	}
 
@@ -135,14 +150,18 @@ public class ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.Service#delete(int)
 	 */
 	@Override
-	public void delete(int id) {
-		LOGGER.info("Delete computer with id " + id);
+	public void delete(final int id) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Delete computer with id " + id);
+		}
 		dao.delete(id);
 	}
-	
+
 	@Override
-	public void deleteByCompanyId(int companyId) {
-		LOGGER.info("Delete computer with id " + companyId);
+	public void deleteByCompanyId(final int companyId) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Delete computer with id " + companyId);
+		}
 		dao.deleteByCompanyId(companyId);
 	}
 
@@ -154,10 +173,11 @@ public class ComputerServiceImpl implements ComputerService {
 	 * Computer )
 	 */
 	@Override
-	
-	public ComputerDTO update(Computer computer) {
-		LOGGER.info("Update " + computer);
-		Computer c = dao.update(computer);
+	public ComputerDTO update(final Computer computer) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Update " + computer);
+		}
+		final Computer c = dao.update(computer);
 		ComputerDTO dto = null;
 		if (c != null) {
 			dto = ComputerDTO.toDTO(c);
@@ -172,7 +192,9 @@ public class ComputerServiceImpl implements ComputerService {
 	 */
 	@Override
 	public int count() {
-		LOGGER.info("Count");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Count");
+		}
 		return dao.count();
 	}
 }

@@ -1,20 +1,33 @@
 package com.excilys.cdb.util.dto;
 
+import java.io.Serializable;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 import com.excilys.cdb.model.Company;
 
-public class CompanyDTO implements DTO<Company> {
+public class CompanyDTO implements DTO<Company>, Serializable {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public int id;
+
+	@NotNull
+	@Pattern(regexp = "^[ ]+.*$")
 	public String name;
 
-	public static CompanyDTO toDTO(Company company) {
-		CompanyDTO dto = new CompanyDTO();
+	public static CompanyDTO toDTO(final Company company) {
+		final CompanyDTO dto = new CompanyDTO();
 		dto.id = company.getId();
 		dto.name = company.getName();
 		return dto;
 	}
 
-	public static Company fromDTO(CompanyDTO dto) {
+	public static Company fromDTO(final CompanyDTO dto) {
 		return new Company(dto.id, dto.name);
 	}
 
@@ -40,25 +53,37 @@ public class CompanyDTO implements DTO<Company> {
 		return result;
 	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(final Object obj) {
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		CompanyDTO other = (CompanyDTO) obj;
-		if (id != other.id)
+		}
+		final CompanyDTO other = (CompanyDTO) obj;
+		if (id != other.id) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		return true;
 	}
-	
-	
 
 }

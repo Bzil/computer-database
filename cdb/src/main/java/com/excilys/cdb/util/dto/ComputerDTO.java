@@ -1,52 +1,90 @@
 package com.excilys.cdb.util.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 
-public class ComputerDTO implements DTO<Computer> {
+public class ComputerDTO implements DTO<Computer>, Serializable {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public int id;
+
+	@NotEmpty(message = "Please enter the name")
+	@Size(min = 3)
+	@Pattern(message = "The name souldn't begin with blanck char", regexp = "^(?![ ]+).*$")
 	public String name;
+
+	@Pattern(message = "Please enter a past date", regexp = "^$|^(0[1-9]|1[0-9]|2[0-8]|29((?=-([0][13-9]|1[0-2])|(?=-(0[1-9]|1[0-2])-([0-9]{2}(0[48]|[13579][26]|[2468][048])|([02468][048]|[13579][26])00))))|30(?=-(0[13-9]|1[0-2]))|31(?=-(0[13578]|1[02])))-(0[1-9]|1[0-2])-[0-9]{4}$")
 	public String introduced;
+
+	@Pattern(message = "Please enter a past date", regexp = "^$|^(0[1-9]|1[0-9]|2[0-8]|29((?=-([0][13-9]|1[0-2])|(?=-(0[1-9]|1[0-2])-([0-9]{2}(0[48]|[13579][26]|[2468][048])|([02468][048]|[13579][26])00))))|30(?=-(0[13-9]|1[0-2]))|31(?=-(0[13578]|1[02])))-(0[1-9]|1[0-2])-[0-9]{4}$")
 	public String discontinued;
 
 	public int companyId;
+
 	public String companyName;
 
-	public static ComputerDTO toDTO(Computer computer) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		ComputerDTO dto = new ComputerDTO();
+	public static ComputerDTO toDTO(final Computer computer) {
+		final DateTimeFormatter formatter = DateTimeFormatter
+				.ofPattern("dd-MM-yyyy");
+		final ComputerDTO dto = new ComputerDTO();
 		dto.id = computer.getId();
 		dto.name = computer.getName();
-		dto.introduced = computer.getIntroduced() != null ? computer
-				.getIntroduced().format(formatter) : "";
-		dto.discontinued = computer.getDiscontinued() != null ? computer
-				.getDiscontinued().format(formatter) : "";
-		dto.companyName = (computer.getCompany() != null) ? computer
-				.getCompany().getName() : "";
-		dto.companyId = (computer.getCompany() != null) ? computer.getCompany()
-				.getId() : -1;
+		if (computer.getIntroduced() != null) {
+			dto.introduced = computer.getIntroduced().format(formatter);
+		} else {
+			dto.introduced = "";
+		}
+		if (computer.getDiscontinued() != null) {
+			dto.discontinued = computer.getDiscontinued().format(formatter);
+		} else {
+			dto.discontinued = "";
+		}
+		if (computer.getCompany() != null) {
+			dto.companyName = computer.getCompany().getName();
+		} else {
+			dto.companyName = "";
+		}
+		if (computer.getCompany() != null) {
+			dto.companyId = computer.getCompany().getId();
+		} else {
+			dto.companyId = -1;
+		}
 		return dto;
 	}
 
-	public static Computer fromDTO(ComputerDTO dto) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
+	public static Computer fromDTO(final ComputerDTO dto) {
+		final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
 				"dd-MM-uuuu HH:mm:ss", new Locale("fr"));
-		Computer computer = new Computer();
+		final Computer computer = new Computer();
+
 		computer.setId(dto.id);
 		computer.setName(dto.name);
-		if (!dto.introduced.trim().isEmpty())
+		if (dto.introduced != null && !dto.introduced.trim().isEmpty()) {
 			computer.setIntroduced(LocalDateTime.parse(
 					dto.introduced += " 00:00:00", formatter));
-		if (!dto.discontinued.trim().isEmpty())
+		}
+		if (dto.discontinued != null && !dto.discontinued.trim().isEmpty()) {
 			computer.setDiscontinued(LocalDateTime.parse(
 					dto.discontinued += " 00:00:00", formatter));
-		if (dto.companyId != -1 && !dto.companyName.trim().isEmpty())
-			computer.setCompany(new Company(dto.companyId, dto.companyName));
+		}
+		if (dto.companyId != -1 && !dto.companyName.trim().isEmpty()) {
+			computer.setCompany(new Company(dto.companyId, dto.companyName
+					.trim()));
+		}
 		return computer;
 	}
 
@@ -72,6 +110,30 @@ public class ComputerDTO implements DTO<Computer> {
 
 	public String getCompanyName() {
 		return companyName;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setIntroduced(String introduced) {
+		this.introduced = introduced;
+	}
+
+	public void setDiscontinued(String discontinued) {
+		this.discontinued = discontinued;
+	}
+
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 
 	@Override
@@ -101,39 +163,51 @@ public class ComputerDTO implements DTO<Computer> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		ComputerDTO other = (ComputerDTO) obj;
-		if (companyId != other.companyId)
+		}
+		final ComputerDTO other = (ComputerDTO) obj;
+		if (companyId != other.companyId) {
 			return false;
+		}
 		if (companyName == null) {
-			if (other.companyName != null)
+			if (other.companyName != null) {
 				return false;
-		} else if (!companyName.equals(other.companyName))
+			}
+		} else if (!companyName.equals(other.companyName)) {
 			return false;
+		}
 		if (discontinued == null) {
-			if (other.discontinued != null)
+			if (other.discontinued != null) {
 				return false;
-		} else if (!discontinued.equals(other.discontinued))
+			}
+		} else if (!discontinued.equals(other.discontinued)) {
 			return false;
-		if (id != other.id)
+		}
+		if (id != other.id) {
 			return false;
+		}
 		if (introduced == null) {
-			if (other.introduced != null)
+			if (other.introduced != null) {
 				return false;
-		} else if (!introduced.equals(other.introduced))
+			}
+		} else if (!introduced.equals(other.introduced)) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		return true;
 	}
-	
 
 }

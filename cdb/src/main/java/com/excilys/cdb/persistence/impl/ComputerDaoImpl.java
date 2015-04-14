@@ -1,8 +1,6 @@
 package com.excilys.cdb.persistence.impl;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
@@ -47,7 +45,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.persistence.ComputerDao#find(int)
 	 */
 	@Override
@@ -59,7 +57,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.persistence.ComputerDao#find(java.lang.String,
 	 * com.excilys.cdb.util.sort.SortCriteria)
 	 */
@@ -77,7 +75,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.persistence.ComputerDao#findByCompanyId(int)
 	 */
 	@Override
@@ -89,57 +87,54 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.persistence.ComputerDao#create(com.excilys.cdb.model.
 	 * Computer)
 	 */
 	@Override
 	public Computer create(final Computer computer) {
-		LOGGER.debug("Create computer info");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Create computer info");
+		}
 		final KeyHolder keyHolder = new GeneratedKeyHolder();
 		final String sql = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
-		final PreparedStatementCreator psc = new PreparedStatementCreator() {
-			@Override
-			public PreparedStatement createPreparedStatement(
-					final Connection connection) throws SQLException {
-				final PreparedStatement statement = connection
-						.prepareStatement(sql.toString(),
-								Statement.RETURN_GENERATED_KEYS);
-				if (computer.getName().trim().isEmpty()) {
-					throw new NullPointerException();
-				}
-				statement.setString(1, computer.getName().trim());
-				if (computer.getIntroduced() != null) {
-					statement.setTimestamp(2,
-							Timestamp.valueOf(computer.getIntroduced()));
-				} else {
-					statement.setNull(2, Types.TIMESTAMP);
-				}
-				if (computer.getDiscontinued() != null) {
-					statement.setTimestamp(3,
-							Timestamp.valueOf(computer.getDiscontinued()));
-				} else {
-					statement.setNull(3, Types.TIMESTAMP);
-				}
-				if (computer.getCompany() != null
-						&& computer.getCompany().getId() > 0) {
-					statement.setLong(4, computer.getCompany().getId());
-				} else {
-					statement.setNull(4, Types.INTEGER);
-				}
-				return statement;
+		final PreparedStatementCreator psc = connection -> {
+			final PreparedStatement statement = connection.prepareStatement(
+					sql.toString(), Statement.RETURN_GENERATED_KEYS);
+			if (computer.getName().trim().isEmpty()) {
+				throw new NullPointerException();
 			}
+			statement.setString(1, computer.getName().trim());
+			if (computer.getIntroduced() != null) {
+				statement.setTimestamp(2,
+						Timestamp.valueOf(computer.getIntroduced()));
+			} else {
+				statement.setNull(2, Types.TIMESTAMP);
+			}
+			if (computer.getDiscontinued() != null) {
+				statement.setTimestamp(3,
+						Timestamp.valueOf(computer.getDiscontinued()));
+			} else {
+				statement.setNull(3, Types.TIMESTAMP);
+			}
+			if (computer.getCompany() != null
+					&& computer.getCompany().getId() > 0) {
+				statement.setLong(4, computer.getCompany().getId());
+			} else {
+				statement.setNull(4, Types.INTEGER);
+			}
+			return statement;
 		};
 		jdbc.update(psc, keyHolder);
 		computer.setId(keyHolder.getKey().intValue());
-		LOGGER.debug("Create computer " + computer);
+		LOGGER.info("Create computer " + computer);
 		return computer;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.persistence.ComputerDao#update(com.excilys.cdb.model.
 	 * Computer)
@@ -153,17 +148,17 @@ public class ComputerDaoImpl implements ComputerDao {
 						computer.getName(),
 						computer.getIntroduced() != null ? Timestamp
 								.valueOf((computer.getIntroduced())) : null,
-						computer.getDiscontinued() != null ? Timestamp
-								.valueOf((computer.getDiscontinued())) : null,
-						computer.getCompany() != null
-								&& computer.getCompany().getId() > 0 ? computer
-								.getCompany().getId() : null, computer.getId() });
+								computer.getDiscontinued() != null ? Timestamp
+										.valueOf((computer.getDiscontinued())) : null,
+										computer.getCompany() != null
+										&& computer.getCompany().getId() > 0 ? computer
+												.getCompany().getId() : null, computer.getId() });
 		return computer;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.persistence.ComputerDao#delete(com.excilys.cdb.model.
 	 * Computer)
@@ -176,7 +171,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.persistence.ComputerDao#deleteByCompanyId(int)
 	 */
 	@Override
@@ -187,7 +182,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.persistence.ComputerDao#count()
 	 */
 	@Override
@@ -198,7 +193,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.persistence.ComputerDao#findAll()
 	 */
 	@Override
@@ -212,7 +207,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.persistence.ComputerDao#findAll(int, int)
 	 */
 	@Override
