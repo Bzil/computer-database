@@ -45,7 +45,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#find(int)
 	 */
 	@Override
@@ -57,7 +57,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#find(java.lang.String,
 	 * com.excilys.cdb.util.sort.SortCriteria)
 	 */
@@ -75,7 +75,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#findByCompanyId(int)
 	 */
 	@Override
@@ -87,7 +87,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * com.excilys.cdb.persistence.ComputerDao#create(com.excilys.cdb.model.
 	 * Computer)
@@ -134,7 +134,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * com.excilys.cdb.persistence.ComputerDao#update(com.excilys.cdb.model.
 	 * Computer)
@@ -142,23 +142,24 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public Computer update(final Computer computer) {
 		LOGGER.info("Update computer " + computer);
+		final String sql = "UPDATE computer SET name = ? , introduced = ? , discontinued = ?, company_id = ? WHERE id = ? ";
 		jdbc.update(
-				"UPDATE computer SET name = ? , introduced = ? , discontinued = ?, company_id = ? WHERE id = ? ",
+				sql,
 				new Object[] {
 						computer.getName(),
 						computer.getIntroduced() != null ? Timestamp
 								.valueOf((computer.getIntroduced())) : null,
-								computer.getDiscontinued() != null ? Timestamp
-										.valueOf((computer.getDiscontinued())) : null,
-										computer.getCompany() != null
-										&& computer.getCompany().getId() > 0 ? computer
-												.getCompany().getId() : null, computer.getId() });
+						computer.getDiscontinued() != null ? Timestamp
+								.valueOf((computer.getDiscontinued())) : null,
+						computer.getCompany() != null
+								&& computer.getCompany().getId() > 0 ? computer
+								.getCompany().getId() : null, computer.getId() });
 		return computer;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * com.excilys.cdb.persistence.ComputerDao#delete(com.excilys.cdb.model.
 	 * Computer)
@@ -171,7 +172,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#deleteByCompanyId(int)
 	 */
 	@Override
@@ -182,7 +183,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#count()
 	 */
 	@Override
@@ -193,7 +194,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#findAll()
 	 */
 	@Override
@@ -207,7 +208,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#findAll(int, int)
 	 */
 	@Override

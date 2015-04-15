@@ -6,8 +6,8 @@
 		</encoder>
 	</appender>
 	
-	<!-- Disable Spring logger 
-	<logger name="org.springframework" level="OFF" /> -->
+	<!-- Disable Spring logger -->
+	<logger name="org.springframework" level="OFF" /> 
 	
 	<root level="DEBUG">
 		<appender-ref ref="STDOUT" />

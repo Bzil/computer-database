@@ -185,6 +185,14 @@ public class ComputerServiceImpl implements ComputerService {
 		return dto;
 	}
 
+	@Override
+	public ComputerDTO saveOrUpdate(final Computer computer) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Save or Update " + computer);
+		}
+		return (computer.getId() > 0) ? update(computer) : add(computer);
+	};
+
 	/*
 	 * (non-Javadoc)
 	 * 

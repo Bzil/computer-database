@@ -16,10 +16,10 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.util.CompanyPage;
-import com.excilys.cdb.util.ComputerPage;
 import com.excilys.cdb.util.dto.CompanyDTO;
 import com.excilys.cdb.util.dto.ComputerDTO;
+import com.excilys.cdb.util.page.CompanyPage;
+import com.excilys.cdb.util.page.ComputerPage;
 
 @Component
 public class Cli {

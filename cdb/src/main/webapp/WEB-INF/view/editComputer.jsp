@@ -12,7 +12,7 @@
 			<div class="col-xs-8 col-xs-offset-2 box">
 				<div class="label label-default pull-right">id: ${computer.id}
 				</div>
-				<h1>Edit Computer</h1>
+				<h1><spring:message code="edit.computer" /></h1>
 				<c:if test="${!empty message}">
 					<div class="has-error">${message}</div>
 				</c:if>
@@ -20,43 +20,38 @@
 					<input type="hidden" value="${computer.id}" name="id" />
 					<fieldset>
 						<div class="form-group">
-							<form:label path="name" for="name">Computer name</form:label>
-                            <form:input path="name" type="text" cssClass="form-control" id="name" name="name" 
-                            	placeholder="Computer name" value="${computer.name}" />
+							<spring:message code="computer.name" var="computerName"/>
+							<form:label path="name" for="name">${computerName}</form:label>
+                            <form:input path="name" type="text" cssClass="form-control" id="name" name="name" placeholder="${computerName}" value="${computer.name}" />
                             <form:errors path="name" cssClass="has-error" />
 						</div>
 						<div class="form-group">
-							<form:label path="introduced" for="introduced">Introduced date</form:label>
+							<spring:message code="date.pattern" var="pattern"/>
+                            <form:label path="introduced" for="introduced"><spring:message code="introduced.date" /></form:label>
                             <form:input path="introduced" type="date" cssClass="form-control" id="introduced" name="introduced"
-                                   placeholder="DD-MM-YYYY" value="${computer.introduced}" />
+                                   placeholder="${pattern}" value="${computer.introduced}" />
 							<form:errors path="introduced" cssClass="has-error" />
 						</div>
 						<div class="form-group">
-							<form:label path="discontinued" for="discontinued">Discontinued date</form:label>
+							<form:label path="discontinued" for="discontinued"><spring:message code="discontinued.date" /></form:label>
                             <form:input path="discontinued" type="date" cssClass="form-control" id="discontinued" name="discontinued"
-                                   placeholder="DD-MM-YYYY" value="${computer.discontinued}"/>
+                                   placeholder="${pattern}" value="${computer.discontinued}"/>
 							<form:errors path="discontinued" cssClass="has-error" /> 
 						</div>
 						 <div class="form-group">
-                            <label for="companyId">Company</label>
-                            <select class="form-control" id="companyId" name="companyId">
-                                <c:forEach var="c" items="${companies}">
-                                    <c:choose>
-                                        <c:when test="${(!empty computer.companyId != null) && (computer.companyId == c.id)}">
-                                            <option value="${c.id}" selected>${c.name}</option>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <option value="${c.id}">${c.name}</option>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:forEach>
-                            </select>
-                        </div>
+						 	<spring:message code="select.company" var="company"/>
+                            <form:label path="companyId" for="companyId"><spring:message code="company" /></form:label>
+                            <form:select id="companyId" name="companyId" path="companyId" cssClass="form-control" multiple="false">
+                            	 <form:option value="0" label="${company}"/>
+                            	<form:options items="${companies}" itemValue="id" itemLabel="name" />
+                            </form:select>
+                         </div>
 					</fieldset>
 					<div class="actions pull-right">
-						<input type="submit" value="Edit" class="btn btn-primary" id="buttonControl" disabled="disabled"> or 
-						<a href="dashboard" class="btn btn-default">Cancel</a>
-					</div>
+                        <input type="submit" value="<spring:message code="button.add" />" class="btn btn-primary" id="buttonControl" disabled="disabled">
+                        <spring:message code="or" />
+                        <a class="btn btn-default" href="<c:url value="/dashboard" />"><spring:message code="button.cancel" /></a>
+                    </div>
 				</form:form>
 			</div>
 		</div>

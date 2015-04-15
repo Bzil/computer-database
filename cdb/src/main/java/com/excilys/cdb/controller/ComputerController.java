@@ -3,31 +3,40 @@ package com.excilys.cdb.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.util.ComputerPage;
+import com.excilys.cdb.util.dto.CompanyDTO;
 import com.excilys.cdb.util.dto.ComputerDTO;
+import com.excilys.cdb.util.page.ComputerPage;
 import com.excilys.cdb.util.sort.SortColumn;
 import com.excilys.cdb.util.sort.SortCriteria;
 import com.excilys.cdb.util.sort.SortDirection;
 
 @Controller
-@RequestMapping("dashboard")
-public class DashboardController {
+public class ComputerController {
 
 	private static final Logger LOGGER = LoggerFactory
-			.getLogger(DashboardController.class);
+			.getLogger(ComputerController.class);
 
 	@Autowired
 	private ComputerService computerService;
+
+	@Autowired
+	private CompanyService companyService;
 
 	/**
 	 * Gets the computer list.
@@ -48,7 +57,8 @@ public class DashboardController {
 	 *            the model
 	 * @return the computer list
 	 */
-	@RequestMapping(method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "/dashboard", method = { RequestMethod.GET,
+			RequestMethod.POST })
 	public String getComputerList(
 			@RequestParam(required = false) final Integer id,
 			@RequestParam(required = false) final Integer size,
@@ -118,6 +128,54 @@ public class DashboardController {
 
 		model.addAttribute("page", computerPage);
 		return ControllerList.DASHBOARD_VIEW;
+	}
+
+	@RequestMapping(value = { "/edit", "/add" }, method = RequestMethod.GET)
+	public String load(@RequestParam(required = false) final Integer id,
+			@ModelAttribute("computerDto") ComputerDTO computerDto, Model model) {
+
+		final List<CompanyDTO> companies = companyService.findAll(null);
+		model.addAttribute("companies", companies);
+		// Check param
+		if (id != null && id > 0) {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Load edit page  DTO id =" + id);
+			}
+			final ComputerDTO dto = computerService.find(id);
+
+			model.addAttribute("computer", dto);
+
+			return ControllerList.EDIT_VIEW;
+		} else {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Load add page");
+			}
+			return ControllerList.ADD_VIEW;
+		}
+
+	}
+
+	@RequestMapping(value = { "/edit", "/add" }, method = RequestMethod.POST)
+	public String edit(
+			@Valid @ModelAttribute("computerDto") ComputerDTO computerDto,
+			BindingResult result, Model model) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("add or edit  DTO " + computerDto);
+			LOGGER.warn("erreur " + result.getErrorCount());
+		}
+		if (!result.hasErrors()) {
+			computerDto.companyName = companyService
+					.find(computerDto.companyId) != null ? companyService.find(
+							computerDto.companyId).getName() : "";
+							final Computer computer = ComputerDTO.fromDTO(computerDto);
+							computerService.saveOrUpdate(computer);
+							if (LOGGER.isDebugEnabled()) {
+								LOGGER.debug("add or edit computer " + computer);
+							}
+							return ControllerList.REDIRECT + ControllerList.DASHBOARD_VIEW;
+		} else {
+			return load(computerDto.id, computerDto, model);
+		}
 	}
 
 	/**

@@ -1,4 +1,4 @@
-package com.excilys.cdb.util;
+package com.excilys.cdb.util.page;
 
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.util.dto.ComputerDTO;

@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package com.excilys.cdb.service;
 
@@ -21,6 +21,7 @@ public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
 	 *            the id
 	 * @return the computer
 	 */
+	@Override
 	public ComputerDTO find(int id);
 
 	/**
@@ -37,6 +38,7 @@ public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
 	 *
 	 * @return the list
 	 */
+	@Override
 	public List<ComputerDTO> findAll(SortCriteria criteria);
 
 	/**
@@ -48,7 +50,9 @@ public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
 	 *            the offset
 	 * @return the list
 	 */
-	public List<ComputerDTO> findAll(int start, int offset, SortCriteria criteria);
+	@Override
+	public List<ComputerDTO> findAll(int start, int offset,
+			SortCriteria criteria);
 
 	/**
 	 * Adds the.
@@ -57,6 +61,7 @@ public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
 	 *            the computer
 	 * @return the computer
 	 */
+	@Override
 	public ComputerDTO add(Computer computer);
 
 	/**
@@ -65,13 +70,14 @@ public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
 	 * @param computer
 	 *            the computer
 	 */
+	@Override
 	public void delete(Computer computer);
-	
-	
+
 	/**
 	 * Delete by company id.
 	 *
-	 * @param companyId the company id
+	 * @param companyId
+	 *            the company id
 	 */
 	public void deleteByCompanyId(int companyId);
 
@@ -82,12 +88,23 @@ public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
 	 *            the computer
 	 * @return the computer
 	 */
+	@Override
 	public ComputerDTO update(Computer computer);
+
+	/**
+	 * Save or update.
+	 *
+	 * @param computer
+	 *            the computer
+	 * @return the computer dto
+	 */
+	public ComputerDTO saveOrUpdate(Computer computer);
 
 	/**
 	 * Count.
 	 *
 	 * @return c
 	 */
+	@Override
 	public int count();
 }
