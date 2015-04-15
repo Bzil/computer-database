@@ -48,7 +48,7 @@
                          </div>
 					</fieldset>
 					<div class="actions pull-right">
-                        <input type="submit" value="<spring:message code="button.add" />" class="btn btn-primary" id="buttonControl" disabled="disabled">
+                        <input type="submit" value="<spring:message code="button.edit" />" class="btn btn-primary" id="buttonControl" disabled="disabled">
                         <spring:message code="or" />
                         <a class="btn btn-default" href="<c:url value="/dashboard" />"><spring:message code="button.cancel" /></a>
                     </div>

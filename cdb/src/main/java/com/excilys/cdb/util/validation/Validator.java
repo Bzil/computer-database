@@ -1,4 +1,4 @@
-package com.excilys.cdb.util.validator;
+package com.excilys.cdb.util.validation;
 
 /**
  * The Enum Validator.

@@ -20,6 +20,7 @@ import com.excilys.cdb.util.dto.CompanyDTO;
 import com.excilys.cdb.util.dto.ComputerDTO;
 import com.excilys.cdb.util.page.CompanyPage;
 import com.excilys.cdb.util.page.ComputerPage;
+import com.excilys.cdb.util.validation.DateValidator;
 
 @Component
 public class Cli {
@@ -29,8 +30,6 @@ public class Cli {
 
 	@Autowired
 	private CompanyService companyService;
-
-	private static final String DATE_PATTERN = "^(0[1-9]|1[0-9]|2[0-8]|29((?=-([0][13-9]|1[0-2])|(?=-(0[1-9]|1[0-2])-([0-9]{2}(0[48]|[13579][26]|[2468][048])|([02468][048]|[13579][26])00))))|30(?=-(0[13-9]|1[0-2]))|31(?=-(0[13578]|1[02])))-(0[1-9]|1[0-2])-[0-9]{4}$";
 
 	@SuppressWarnings("resource")
 	private String getChoice(List<String> choices) {
@@ -93,7 +92,7 @@ public class Cli {
 	}
 
 	private boolean isCorrectDate(String str) {
-		return (str.matches(DATE_PATTERN) || str.equals("null"));
+		return (DateValidator.validate(str, "fr") || str.equals("null"));
 	}
 
 	private void mainCli() {
@@ -102,7 +101,7 @@ public class Cli {
 			System.out.println("1) List computers");
 			System.out.println("2) List companies");
 			System.out
-					.println("3) Show computer details (the detailed information of only one computer)");
+			.println("3) Show computer details (the detailed information of only one computer)");
 			System.out.println("4) Create a computer");
 			System.out.println("5) Update a computer");
 			System.out.println("6) Delete a computer");
@@ -112,31 +111,31 @@ public class Cli {
 
 			switch (getChoice(toList("1", "2", "3", "4", "5", "6", "7", "8",
 					"0"))) {
-			case "1":
-				showComputers();
-				break;
-			case "2":
-				showCompanies();
-				break;
-			case "3":
-				showComputer();
-				break;
-			case "4":
-				createComputer();
-				break;
-			case "5":
-				updateComputer();
-				break;
-			case "6":
-				deleteComputer();
-				break;
-			case "7":
-				deleteCompany();
-				break;
-			case "0":
-				System.out.println("Program ended.");
-				System.exit(0);
-				;
+					case "1":
+						showComputers();
+						break;
+					case "2":
+						showCompanies();
+						break;
+					case "3":
+						showComputer();
+						break;
+					case "4":
+						createComputer();
+						break;
+					case "5":
+						updateComputer();
+						break;
+					case "6":
+						deleteComputer();
+						break;
+					case "7":
+						deleteCompany();
+						break;
+					case "0":
+						System.out.println("Program ended.");
+						System.exit(0);
+						;
 			}
 			;
 		}

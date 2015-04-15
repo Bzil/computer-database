@@ -57,6 +57,7 @@
         </div>
     </div>
 </section>
+<script> var local = ${pageContext.response.locale};</script>
 <script src="<c:url value="/resources/js/jquery.min.js" />"></script>
 <script src="<c:url value="/resources/js/validateField.js" />"></script>
 </body>

@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.excilys.cdb.util.validation.Validator;
+
 public class ValidatorTest {
 
 	@Test
