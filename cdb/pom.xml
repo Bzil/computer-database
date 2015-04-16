@@ -45,10 +45,10 @@
 		<!-- Javax - Jsp -->
 		<javax.version>3.1.0</javax.version>
 		<javax.jsp.version>2.2</javax.jsp.version>
-		
+
 		<jstl.version>1.1.2</jstl.version>
 		<taglibs.version>1.1.2</taglibs.version>
-		
+
 		<!-- Validation -->
 		<javax.validation.version>1.1.0.Final</javax.validation.version>
 		<apache.validator.version>1.4.1</apache.validator.version>
@@ -59,6 +59,9 @@
 
 		<!-- 99 empty -->
 		<empty.99.version>99-empty</empty.99.version>
+
+		<!-- Hibernate -->
+		<hibernate.version>4.3.8.Final</hibernate.version>
 	</properties>
 
 	<build>
@@ -122,14 +125,14 @@
 			<artifactId>commons-validator</artifactId>
 			<version>${apache.validator.version}</version>
 		</dependency>
-		<!-- Bean Validation provider -->
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>${hibernate.validation.version}</version>
 		</dependency>
-		<!-- Spring -->
 
+		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -158,6 +161,13 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
+		</dependency>
+
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
 		</dependency>
 
 

@@ -2,34 +2,62 @@ package com.excilys.cdb.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 /**
  * The Class Computer.
  */
+@Entity
+@Table(name = "computer")
 public class Computer {
 
 	/** Specific id of a computer. */
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
 	/** The name. */
+	@Column(name = "name")
 	private String name;
 
 	/** The introduced. */
+	@Column(name = "introduced")
+	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime introduced;
 
 	/** The discontinued. */
+	@Column(name = "discontinued")
+	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime discontinued;
 
 	/** The compagny. */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "company_id")
 	private Company company;
 
 	/**
 	 * Instantiates a new computer.
 	 *
-	 * @param id            the id
-	 * @param name            the name
-	 * @param introduced            the introducedgetTime
-	 * @param discontinued            the discontinued
-	 * @param company the company
+	 * @param id
+	 *            the id
+	 * @param name
+	 *            the name
+	 * @param introduced
+	 *            the introducedgetTime
+	 * @param discontinued
+	 *            the discontinued
+	 * @param company
+	 *            the company
 	 */
 	public Computer(int id, String name, LocalDateTime introduced,
 			LocalDateTime discontinued, Company company) {
@@ -44,10 +72,14 @@ public class Computer {
 	/**
 	 * Instantiates a new computer.
 	 *
-	 * @param name the name
-	 * @param introduced the introduced
-	 * @param discontinued the discontinued
-	 * @param company the company
+	 * @param name
+	 *            the name
+	 * @param introduced
+	 *            the introduced
+	 * @param discontinued
+	 *            the discontinued
+	 * @param company
+	 *            the company
 	 */
 	public Computer(String name, LocalDateTime introduced,
 			LocalDateTime discontinued, Company company) {
@@ -57,7 +89,8 @@ public class Computer {
 	/**
 	 * Instantiates a new computer.
 	 *
-	 * @param name the name
+	 * @param name
+	 *            the name
 	 */
 	public Computer(String name) {
 		this.name = name;
@@ -128,7 +161,8 @@ public class Computer {
 	/**
 	 * Sets the company id.
 	 *
-	 * @param company the new company
+	 * @param company
+	 *            the new company
 	 */
 	public void setCompany(Company company) {
 		this.company = company;
@@ -165,7 +199,7 @@ public class Computer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -173,11 +207,12 @@ public class Computer {
 		return new StringBuilder("Computer [id=").append(id).append(" name : ")
 				.append(name).append(" introduced : ").append(introduced)
 				.append(" discontinued : ").append(discontinued)
-				.append(" company : ").append(company).append(" ]")
-				.toString();
+				.append(" company : ").append(company).append(" ]").toString();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -194,42 +229,55 @@ public class Computer {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		Computer other = (Computer) obj;
+		}
+		final Computer other = (Computer) obj;
 		if (company == null) {
-			if (other.company != null)
+			if (other.company != null) {
 				return false;
-		} else if (!company.equals(other.company))
+			}
+		} else if (!company.equals(other.company)) {
 			return false;
+		}
 		if (discontinued == null) {
-			if (other.discontinued != null)
+			if (other.discontinued != null) {
 				return false;
-		} else if (!discontinued.equals(other.discontinued))
+			}
+		} else if (!discontinued.equals(other.discontinued)) {
 			return false;
-		if (id != other.id)
+		}
+		if (id != other.id) {
 			return false;
+		}
 		if (introduced == null) {
-			if (other.introduced != null)
+			if (other.introduced != null) {
 				return false;
-		} else if (!introduced.equals(other.introduced))
+			}
+		} else if (!introduced.equals(other.introduced)) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		return true;
 	}
 
-	
 }

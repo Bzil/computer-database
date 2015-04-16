@@ -1,14 +1,26 @@
 package com.excilys.cdb.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * The Class Company.
  */
+@Entity
+@Table(name = "company")
 public class Company {
 
 	/** Specific id of a company. */
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
 	/** company name. */
+	@Column(name = "name")
 	private String name;
 
 	/**
@@ -21,8 +33,10 @@ public class Company {
 	/**
 	 * Instantiates a new company.
 	 *
-	 * @param id the id
-	 * @param name the name
+	 * @param id
+	 *            the id
+	 * @param name
+	 *            the name
 	 */
 	public Company(int id, String name) {
 		super();
@@ -33,7 +47,8 @@ public class Company {
 	/**
 	 * Instantiates a new company.
 	 *
-	 * @param name the name
+	 * @param name
+	 *            the name
 	 */
 	public Company(String name) {
 		this(-1, name);
@@ -87,7 +102,9 @@ public class Company {
 		this.name = name;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -99,25 +116,33 @@ public class Company {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		Company other = (Company) obj;
-		if (id != other.id)
+		}
+		final Company other = (Company) obj;
+		if (id != other.id) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		return true;
 	}
 
