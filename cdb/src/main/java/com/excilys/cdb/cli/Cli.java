@@ -20,7 +20,7 @@ import com.excilys.cdb.util.dto.CompanyDTO;
 import com.excilys.cdb.util.dto.ComputerDTO;
 import com.excilys.cdb.util.page.CompanyPage;
 import com.excilys.cdb.util.page.ComputerPage;
-import com.excilys.cdb.util.validation.DateValidator;
+import com.excilys.cdb.util.validation.Validator;
 
 @Component
 public class Cli {
@@ -92,7 +92,8 @@ public class Cli {
 	}
 
 	private boolean isCorrectDate(String str) {
-		return (DateValidator.validate(str, "fr") || str.equals("null"));
+		return (Validator.getInstance().validate(str, "fr") || str
+				.equals("null"));
 	}
 
 	private void mainCli() {
@@ -101,7 +102,7 @@ public class Cli {
 			System.out.println("1) List computers");
 			System.out.println("2) List companies");
 			System.out
-			.println("3) Show computer details (the detailed information of only one computer)");
+					.println("3) Show computer details (the detailed information of only one computer)");
 			System.out.println("4) Create a computer");
 			System.out.println("5) Update a computer");
 			System.out.println("6) Delete a computer");
@@ -111,31 +112,31 @@ public class Cli {
 
 			switch (getChoice(toList("1", "2", "3", "4", "5", "6", "7", "8",
 					"0"))) {
-					case "1":
-						showComputers();
-						break;
-					case "2":
-						showCompanies();
-						break;
-					case "3":
-						showComputer();
-						break;
-					case "4":
-						createComputer();
-						break;
-					case "5":
-						updateComputer();
-						break;
-					case "6":
-						deleteComputer();
-						break;
-					case "7":
-						deleteCompany();
-						break;
-					case "0":
-						System.out.println("Program ended.");
-						System.exit(0);
-						;
+			case "1":
+				showComputers();
+				break;
+			case "2":
+				showCompanies();
+				break;
+			case "3":
+				showComputer();
+				break;
+			case "4":
+				createComputer();
+				break;
+			case "5":
+				updateComputer();
+				break;
+			case "6":
+				deleteComputer();
+				break;
+			case "7":
+				deleteCompany();
+				break;
+			case "0":
+				System.out.println("Program ended.");
+				System.exit(0);
+				;
 			}
 			;
 		}

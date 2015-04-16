@@ -1,41 +1,41 @@
-package com.excilys.cdb.util.validation;
+package com.excilys.cdb.util.validation.annotation;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * The Enum Validator.
- */
-public enum Validator {
-	INSTANCE;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
-	private static final String DATE_PATTERN = "^(0[1-9]|1[0-9]|2[0-8]|29((?=-([0][13-9]|1[0-2])|(?=-(0[1-9]|1[0-2])-([0-9]{2}(0[48]|[13579][26]|[2468][048])|([02468][048]|[13579][26])00))))|30(?=-(0[13-9]|1[0-2]))|31(?=-(0[13578]|1[02])))-(0[1-9]|1[0-2])-[0-9]{4}$";
-	private static final String NUMERIC_PATTERN = "^[0-9]+$";
+import org.springframework.context.i18n.LocaleContextHolder;
 
-	private static final String DATE_PATTERN_EN = "^(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-((19|20)\\d\\d)$";
+public class DateValidator implements ConstraintValidator<Date, String> {
 
-	private static final String DATE_PATTERN_FR = "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-((19|20)\\d\\d)$";
+	private static final String DATE_PATTERN_EN = "^(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])-((19|20)[0-9]{2})$";
 
-	public static Validator getInstance() {
-		return INSTANCE;
+	private static final String DATE_PATTERN_FR = "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-((19|20)[0-9]{2})$";
+
+	@Override
+	public void initialize(Date arg0) {
 	}
 
-	public boolean isCorrectDate(String str) {
-		return (str != null && !str.isEmpty() && str.matches(DATE_PATTERN));
+	@Override
+	public boolean isValid(String value, ConstraintValidatorContext context) {
+		if (value == null || value.trim().isEmpty()) {
+			return true;
+		}
+		final Locale locale = LocaleContextHolder.getLocale();
+		return validate(value.trim(), locale.toString());
 	}
 
-	public boolean isNumericString(String str) {
-		return (str != null && !str.isEmpty() && str.matches(NUMERIC_PATTERN));
-	}
-
-	public boolean validate(final String date, final String local) {
-
+	private boolean validate(final String date, final String locale) {
 		if (date == null || date.trim().isEmpty()) {
-			return false;
+			return true;
 		}
 
 		final Pattern pattern = Pattern
-				.compile(local.equals("fr") ? DATE_PATTERN_FR : DATE_PATTERN_EN);
+				.compile(locale.equals("fr") ? DATE_PATTERN_FR
+						: DATE_PATTERN_EN);
 		final Matcher matcher = pattern.matcher(date);
 
 		if (matcher.matches()) {
@@ -43,7 +43,7 @@ public enum Validator {
 			if (matcher.find()) {
 				final String day, month;
 				final int year;
-				if (local.equals("fr")) {
+				if (locale.equals("fr")) {
 					day = matcher.group(1);
 					month = matcher.group(2);
 				} else {
@@ -56,13 +56,18 @@ public enum Validator {
 								|| month.equals("06") || month.equals("09"))) {
 					return false;
 				} else if (month.equals("02")) {
+
 					if (isLeapYear(year)) {
 						if (day.equals("30") || day.equals("31")) {
 							return false;
+						} else {
+							return true;
 						}
 					} else if (day.equals("29") || day.equals("30")
 							|| day.equals("31")) {
 						return false;
+					} else {
+						return true;
 					}
 				}
 

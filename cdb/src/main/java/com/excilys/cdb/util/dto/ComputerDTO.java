@@ -8,10 +8,12 @@ import java.util.Locale;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.util.validation.annotation.Date;
 
 public class ComputerDTO implements DTO<Computer>, Serializable {
 
@@ -23,14 +25,15 @@ public class ComputerDTO implements DTO<Computer>, Serializable {
 	public int id;
 
 	@NotEmpty(message = "Please enter the name")
-	@Size(min = 3)
+	@NotBlank
+	@Size(min = 3, max = 100)
 	@Pattern(message = "The name souldn't begin with blanck char", regexp = "^(?![ ]+).*$")
 	public String name;
 
-	@Pattern(message = "Please enter a past date", regexp = "^$|^(0[1-9]|1[0-9]|2[0-8]|29((?=-([0][13-9]|1[0-2])|(?=-(0[1-9]|1[0-2])-([0-9]{2}(0[48]|[13579][26]|[2468][048])|([02468][048]|[13579][26])00))))|30(?=-(0[13-9]|1[0-2]))|31(?=-(0[13578]|1[02])))-(0[1-9]|1[0-2])-[0-9]{4}$")
+	@Date
 	public String introduced;
 
-	@Pattern(message = "Please enter a past date", regexp = "^$|^(0[1-9]|1[0-9]|2[0-8]|29((?=-([0][13-9]|1[0-2])|(?=-(0[1-9]|1[0-2])-([0-9]{2}(0[48]|[13579][26]|[2468][048])|([02468][048]|[13579][26])00))))|30(?=-(0[13-9]|1[0-2]))|31(?=-(0[13578]|1[02])))-(0[1-9]|1[0-2])-[0-9]{4}$")
+	@Date
 	public String discontinued;
 
 	public int companyId;

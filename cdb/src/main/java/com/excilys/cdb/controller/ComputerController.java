@@ -161,8 +161,8 @@ public class ComputerController {
 			BindingResult result, Model model) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("add or edit  DTO " + computerDto);
-			LOGGER.warn("erreur " + result.getErrorCount());
 		}
+
 		if (!result.hasErrors()) {
 			computerDto.companyName = companyService
 					.find(computerDto.companyId) != null ? companyService.find(

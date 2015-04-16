@@ -45,10 +45,13 @@
 		<!-- Javax - Jsp -->
 		<javax.version>3.1.0</javax.version>
 		<javax.jsp.version>2.2</javax.jsp.version>
-		<javax.validation.version>1.1.0.Final</javax.validation.version>
+		
 		<jstl.version>1.1.2</jstl.version>
 		<taglibs.version>1.1.2</taglibs.version>
-
+		
+		<!-- Validation -->
+		<javax.validation.version>1.1.0.Final</javax.validation.version>
+		<apache.validator.version>1.4.1</apache.validator.version>
 		<hibernate.validation.version>5.1.3.Final</hibernate.validation.version>
 
 		<!-- Spring -->
@@ -113,6 +116,11 @@
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>${javax.validation.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>${apache.validator.version}</version>
 		</dependency>
 		<!-- Bean Validation provider -->
 		<dependency>

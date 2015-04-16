@@ -44,11 +44,11 @@
                             	<form:option value="0" label="${company}"/>
                             	<form:options items="${companies}" itemValue="id" itemLabel="name" />
                             </form:select>
-							<form:errors path="companyId" cssClass="has-error" />                            
+							<form:errors path="companyId" cssClass="has-error" /> 
                         </div>
                     </fieldset>
                     <div class="actions pull-right">
-                        <input type="submit" value="<spring:message code="button.add" />" class="btn btn-primary" id="buttonControl" disabled="disabled">
+                        <input type="submit" value="<spring:message code="button.add" />" class="btn btn-primary" > <!-- id="buttonControl" disabled="disabled"> -->
                         <spring:message code="or" />
                         <a class="btn btn-default" href="<c:url value="/dashboard" />"><spring:message code="button.cancel" /></a>
                     </div>
@@ -57,7 +57,7 @@
         </div>
     </div>
 </section>
-<script> var local = ${pageContext.response.locale};</script>
+<script> var local = "${pageContext.response.locale}";</script>
 <script src="<c:url value="/resources/js/jquery.min.js" />"></script>
 <script src="<c:url value="/resources/js/validateField.js" />"></script>
 </body>
