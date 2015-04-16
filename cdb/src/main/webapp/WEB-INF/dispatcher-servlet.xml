@@ -12,8 +12,8 @@
 
 	<context:component-scan base-package="com.excilys.cdb.controller" />
 
-	<mvc:annotation-driven />
 	<mvc:resources mapping="/resources/**" location="/public-web-resources/" />
+	<mvc:annotation-driven validator="validator" />
 
 
 	<bean id="viewResolver"
@@ -25,6 +25,7 @@
 		class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
 		<property name="cookieName" value="lang" />
 		<property name="defaultLocale" value="fr" />
+		<property name="cookieMaxAge" value="100000" />
 	</bean>
 	
 	<mvc:interceptors>
@@ -34,10 +35,15 @@
 	</mvc:interceptors>
  
 	<bean id="messageSource"
-		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename" value="classpath:i18n/message" />
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
+	
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="validationMessageSource" ref="messageSource"/>
+	</bean>		
 </beans>    
 
 	

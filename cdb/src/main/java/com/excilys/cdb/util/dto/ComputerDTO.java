@@ -24,10 +24,10 @@ public class ComputerDTO implements DTO<Computer>, Serializable {
 
 	public int id;
 
-	@NotEmpty(message = "Please enter the name")
-	@NotBlank
+	@NotEmpty(message = "{validation.empty}")
+	@NotBlank(message = "{validation.blank.char}")
 	@Size(min = 3, max = 100)
-	@Pattern(message = "The name souldn't begin with blanck char", regexp = "^(?![ ]+).*$")
+	@Pattern(message = "{validation.start.blank}", regexp = "^(?![ ]+).*$")
 	public String name;
 
 	@Date
