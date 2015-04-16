@@ -33,10 +33,11 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.CompanyService#find(int)
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public CompanyDTO find(final int id) {
 		CompanyDTO dto = null;
 		if (id > 0) {
@@ -51,10 +52,11 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.CompanyService#findAll()
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<CompanyDTO> findAll(final SortCriteria criteria) {
 		final List<Company> companies = companyDao.findAll();
 		final List<CompanyDTO> dtos = new ArrayList<>();
@@ -67,10 +69,11 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.CompanyService#findAll(int, int)
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<CompanyDTO> findAll(final int start, final int offset,
 			final SortCriteria criteria) {
 		final List<Company> companies = companyDao.findAll(start, offset);
@@ -84,7 +87,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.service.CompanyService#delete(com.excilys.cdb.model.Company
 	 * )
@@ -105,10 +108,11 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.Service#delete(int)
 	 */
 	@Override
+	@Transactional
 	public void delete(final int id) {
 		companyDao.delete(id);
 	}

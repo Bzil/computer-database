@@ -1,5 +1,7 @@
 package com.excilys.cdb.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,15 +14,21 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "company")
-public class Company {
+public class Company implements Serializable {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/** Specific id of a company. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", unique = true, nullable = false)
 	private int id;
 
 	/** company name. */
-	@Column(name = "name")
+	@Column(name = "name", nullable = true, length = 255)
 	private String name;
 
 	/**
@@ -104,7 +112,7 @@ public class Company {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -118,7 +126,7 @@ public class Company {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

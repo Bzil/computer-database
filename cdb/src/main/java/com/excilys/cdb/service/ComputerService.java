@@ -106,5 +106,5 @@ public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
 	 * @return c
 	 */
 	@Override
-	public int count();
+	public long count();
 }

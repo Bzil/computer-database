@@ -1,29 +1,28 @@
 package com.excilys.cdb.persistence.impl;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.sql.Types;
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDao;
 import com.excilys.cdb.util.mapper.ComputerMapper;
 import com.excilys.cdb.util.sort.SortCriteria;
+import com.excilys.cdb.util.sort.SortDirection;
 
 /**
  * The Class ComputerDaoImpl.
  */
-// TODO put sql req into static string
 @Repository
 public class ComputerDaoImpl implements ComputerDao {
 
@@ -41,7 +40,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	private ComputerMapper mapper;
 
 	@Autowired
-	private JdbcTemplate jdbc;
+	private SessionFactory sessionFactory;
 
 	/*
 	 * (non-Javadoc)
@@ -51,8 +50,8 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public Computer find(final int id) {
 		LOGGER.info("Find computer " + id);
-		final String sql = "SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id WHERE compu.id = ? ";
-		return jdbc.queryForObject(sql, new Object[] { id }, mapper);
+		return (Computer) sessionFactory.getCurrentSession().get(
+				Computer.class, id);
 	}
 
 	/*
@@ -61,16 +60,22 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @see com.excilys.cdb.persistence.ComputerDao#find(java.lang.String,
 	 * com.excilys.cdb.util.sort.SortCriteria)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<Computer> find(final String name, final SortCriteria criteria) {
+	public List<Computer> find(final String name,
+			final SortCriteria sortCriteria) {
 		LOGGER.info("Find computers by name : " + name);
-		final String correctName = "%".concat(name.trim()).concat("%");
-		String sql = "SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id WHERE compu.name LIKE ? ";
 
-		if (criteria != null) {
-			sql = sql.concat(criteria.toString());
+		final Criteria criteria = sessionFactory.getCurrentSession()
+				.createCriteria(Computer.class, "computer")
+				.createCriteria("company", "company", JoinType.LEFT_OUTER_JOIN)
+				.add(Restrictions.like("name", "%" + name + "%"));
+		if (sortCriteria != null) {
+			final Order order = getOrder(sortCriteria);
+			criteria.addOrder(order);
 		}
-		return jdbc.query(sql, new Object[] { correctName }, mapper);
+
+		return criteria.list();
 	}
 
 	/*
@@ -78,11 +83,14 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#findByCompanyId(int)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Computer> findByCompanyId(final int companyId) {
 		LOGGER.info("Find computers by company id : " + companyId);
-		final String sql = "SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id WHERE compu.company_id = ? ";
-		return jdbc.query(sql, new Object[] { companyId }, mapper);
+		return sessionFactory.getCurrentSession()
+				.createCriteria(Computer.class, "computer")
+				.createCriteria("company", "company", JoinType.LEFT_OUTER_JOIN)
+				.add(Restrictions.like("company.id", companyId)).list();
 	}
 
 	/*
@@ -94,40 +102,8 @@ public class ComputerDaoImpl implements ComputerDao {
 	 */
 	@Override
 	public Computer create(final Computer computer) {
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Create computer info");
-		}
-		final KeyHolder keyHolder = new GeneratedKeyHolder();
-		final String sql = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
-		final PreparedStatementCreator psc = connection -> {
-			final PreparedStatement statement = connection.prepareStatement(
-					sql.toString(), Statement.RETURN_GENERATED_KEYS);
-			if (computer.getName().trim().isEmpty()) {
-				throw new NullPointerException();
-			}
-			statement.setString(1, computer.getName().trim());
-			if (computer.getIntroduced() != null) {
-				statement.setTimestamp(2,
-						Timestamp.valueOf(computer.getIntroduced()));
-			} else {
-				statement.setNull(2, Types.TIMESTAMP);
-			}
-			if (computer.getDiscontinued() != null) {
-				statement.setTimestamp(3,
-						Timestamp.valueOf(computer.getDiscontinued()));
-			} else {
-				statement.setNull(3, Types.TIMESTAMP);
-			}
-			if (computer.getCompany() != null
-					&& computer.getCompany().getId() > 0) {
-				statement.setLong(4, computer.getCompany().getId());
-			} else {
-				statement.setNull(4, Types.INTEGER);
-			}
-			return statement;
-		};
-		jdbc.update(psc, keyHolder);
-		computer.setId(keyHolder.getKey().intValue());
+		final int id = (int) sessionFactory.getCurrentSession().save(computer);
+		computer.setId(id);
 		LOGGER.info("Create computer " + computer);
 		return computer;
 	}
@@ -142,18 +118,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public Computer update(final Computer computer) {
 		LOGGER.info("Update computer " + computer);
-		final String sql = "UPDATE computer SET name = ? , introduced = ? , discontinued = ?, company_id = ? WHERE id = ? ";
-		jdbc.update(
-				sql,
-				new Object[] {
-						computer.getName(),
-						computer.getIntroduced() != null ? Timestamp
-								.valueOf((computer.getIntroduced())) : null,
-						computer.getDiscontinued() != null ? Timestamp
-								.valueOf((computer.getDiscontinued())) : null,
-						computer.getCompany() != null
-								&& computer.getCompany().getId() > 0 ? computer
-								.getCompany().getId() : null, computer.getId() });
+		sessionFactory.getCurrentSession().save(computer);
 		return computer;
 	}
 
@@ -167,7 +132,12 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public void delete(final int id) {
 		LOGGER.info("Delete computer whit id + " + id);
-		jdbc.update("DELETE FROM computer WHERE id = ?", id);
+		final Session session = sessionFactory.getCurrentSession();
+		final Computer computer = (Computer) session.get(Computer.class, id);
+		if (computer == null) {
+			return;
+		}
+		session.delete(computer);
 	}
 
 	/*
@@ -178,7 +148,11 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public void deleteByCompanyId(final int companyId) {
 		LOGGER.info("Delete computer whit company id + " + companyId);
-		jdbc.update("DELETE FROM computer WHERE company_id = ?", companyId);
+		final Session session = sessionFactory.getCurrentSession();
+		@SuppressWarnings("unchecked")
+		final List<Computer> computers = session.createCriteria(Computer.class)
+				.add(Restrictions.eq("company.id", companyId)).list();
+		session.delete(computers);
 	}
 
 	/*
@@ -187,9 +161,11 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * @see com.excilys.cdb.persistence.ComputerDao#count()
 	 */
 	@Override
-	public int count() {
-		final String sql = "SELECT COUNT(*) AS count FROM computer";
-		return jdbc.queryForObject(sql, Integer.class);
+	public long count() {
+		final Criteria criteria = sessionFactory.getCurrentSession()
+				.createCriteria(Computer.class);
+		return (long) criteria.setProjection(Projections.rowCount())
+				.uniqueResult();
 	}
 
 	/*
@@ -197,13 +173,18 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#findAll()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<Computer> findAll(final SortCriteria criteria) {
-		String sql = "SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id ";
-		if (criteria != null) {
-			sql = sql.concat(criteria.toString());
+	public List<Computer> findAll(final SortCriteria sortCriteria) {
+		LOGGER.info("final all with criteria " + sortCriteria.toString());
+		final Criteria criteria = sessionFactory.getCurrentSession()
+				.createCriteria(Computer.class, "computer")
+				.createCriteria("company", "company", JoinType.LEFT_OUTER_JOIN);
+		if (sortCriteria != null) {
+			final Order order = getOrder(sortCriteria);
+			criteria.addOrder(order);
 		}
-		return jdbc.query(sql, mapper);
+		return criteria.list();
 	}
 
 	/*
@@ -211,17 +192,26 @@ public class ComputerDaoImpl implements ComputerDao {
 	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#findAll(int, int)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Computer> findAll(final int start, final int offset,
-			final SortCriteria criteria) {
-		final StringBuffer req = new StringBuffer(
-				"SELECT * FROM computer compu LEFT JOIN company compa ON compu.company_id = compa.id ");
-		if (criteria != null) {
-			req.append(criteria.toString());
+			final SortCriteria sortCriteria) {
+		LOGGER.info("final all  start : {}, offset : {} ", start, offset);
+
+		final Criteria criteria = sessionFactory.getCurrentSession()
+				.createCriteria(Computer.class, "computer")
+				.createCriteria("company", "company", JoinType.LEFT_OUTER_JOIN);
+		if (sortCriteria != null) {
+			final Order order = getOrder(sortCriteria);
+			criteria.addOrder(order);
 		}
-		req.append(" LIMIT ?, ? ");
-		return jdbc.query(req.toString(), new Object[] { start, offset },
-				mapper);
+		return criteria.setFirstResult(start).setMaxResults(offset).list();
+	}
+
+	private Order getOrder(SortCriteria sortCriteria) {
+		return (sortCriteria.getSortDirection() == SortDirection.ASC) ? Order
+				.asc(sortCriteria.getColumn()) : Order.desc(sortCriteria
+				.getColumn());
 	}
 
 }

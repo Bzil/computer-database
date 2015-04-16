@@ -101,7 +101,7 @@ public class ComputerController {
 		}
 		String options = "?id=".concat(String.valueOf(page));
 		// count of cumputer
-		int count = computerService.count();
+		long count = computerService.count();
 
 		// Sort criteria
 		final SortCriteria criteria = getSortCriteria(column, dir);
@@ -166,13 +166,13 @@ public class ComputerController {
 		if (!result.hasErrors()) {
 			computerDto.companyName = companyService
 					.find(computerDto.companyId) != null ? companyService.find(
-					computerDto.companyId).getName() : "";
-			final Computer computer = ComputerDTO.fromDTO(computerDto);
-			computerService.saveOrUpdate(computer);
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("add or edit computer " + computer);
-			}
-			return ControllerList.REDIRECT + ControllerList.DASHBOARD_VIEW;
+							computerDto.companyId).getName() : "";
+							final Computer computer = ComputerDTO.fromDTO(computerDto);
+							computerService.saveOrUpdate(computer);
+							if (LOGGER.isDebugEnabled()) {
+								LOGGER.debug("add or edit computer " + computer);
+							}
+							return ControllerList.REDIRECT + ControllerList.DASHBOARD_VIEW;
 		} else {
 			return load(computerDto.id, computerDto, model);
 		}

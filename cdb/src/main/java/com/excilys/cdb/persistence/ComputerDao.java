@@ -101,7 +101,7 @@ public interface ComputerDao {
 	/**
 	 * Count.
 	 *
-	 * @return the int
+	 * @return the long
 	 */
-	public int count();
+	public long count();
 }

@@ -23,7 +23,7 @@ public abstract class Page<T, D extends DTO<T>> {
 	private int offset = 0;
 
 	/** Count of items */
-	private int count;
+	private long count;
 
 	/** The current page. */
 	private int currentPage = 1;
@@ -46,7 +46,7 @@ public abstract class Page<T, D extends DTO<T>> {
 	protected abstract DTO<T> getDTO(T t);
 
 	public void showEntities(List<D> list) {
-		for (D d : list) {
+		for (final D d : list) {
 			System.out.println(d);
 		}
 	}
@@ -98,13 +98,13 @@ public abstract class Page<T, D extends DTO<T>> {
 		}
 	}
 
-	public int getCount() {
+	public long getCount() {
 		return count;
 	}
 
-	public void setCount(int count) {
+	public void setCount(long count) {
 		this.count = count;
-		int nb = (int) count / offset;
+		final int nb = (int) count / offset;
 		setPageNb(count < offset ? 1 : count % nb == 0 ? nb : nb + 1);
 	}
 

@@ -51,7 +51,12 @@ $(function() {
         }
         else {
             $(".editMode").show();
-            $("#editComputer").text("View");
+            if(local == "fr" ){
+            	$("#editComputer").text("Vue");
+            }
+            else {
+            	$("#editComputer").text("View"); 
+            }
         }
         return this;
     };
@@ -62,7 +67,13 @@ $(function() {
 // Function delete selected: Asks for confirmation to delete selected computers, then submits it to the deleteForm
 (function ( $ ) {
     $.fn.deleteSelected = function() {
-        if (confirm("Are you sure you want to delete the selected computers?")) { 
+    	 if(local == "fr" ){
+    		 var confirmText = "Confirmez-vous la suppression des ces ordinateurs ?";
+         }
+         else {
+        	 var confirmText = "Are you sure you want to delete the selected computers?"
+         }
+        if (confirm(confirmText)) { 
             $('#deleteForm input[name=selection]').setCheckboxValues('selection','cb');
             $('#deleteForm').submit();
         }
@@ -74,7 +85,6 @@ $(function() {
 //Event handling
 //Onkeydown
 $(document).keydown(function(e) {
-
     switch (e.keyCode) {
         //DEL key
         case 46:

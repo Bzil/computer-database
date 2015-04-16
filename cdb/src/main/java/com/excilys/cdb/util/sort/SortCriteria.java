@@ -6,16 +6,18 @@ package com.excilys.cdb.util.sort;
 public class SortCriteria {
 
 	/** The column. */
-	private SortColumn column;
-	
+	private final SortColumn column;
+
 	/** The direction. */
-	private SortDirection direction;
+	private final SortDirection direction;
 
 	/**
 	 * Instantiates a new sort criteria.
 	 *
-	 * @param column the column
-	 * @param direction the direction
+	 * @param column
+	 *            the column
+	 * @param direction
+	 *            the direction
 	 */
 	public SortCriteria(SortColumn column, SortDirection direction) {
 		super();
@@ -23,7 +25,9 @@ public class SortCriteria {
 		this.direction = direction;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -40,6 +44,10 @@ public class SortCriteria {
 		return column.name();
 	}
 
+	public SortColumn getSortColumn() {
+		return column;
+	}
+
 	/**
 	 * Gets the direction.
 	 *
@@ -48,7 +56,8 @@ public class SortCriteria {
 	public String getDirection() {
 		return direction.name();
 	}
+
+	public SortDirection getSortDirection() {
+		return direction;
+	}
 }
-
-
-

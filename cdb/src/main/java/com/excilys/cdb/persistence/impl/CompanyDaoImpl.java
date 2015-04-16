@@ -2,10 +2,10 @@ package com.excilys.cdb.persistence.impl;
 
 import java.util.List;
 
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.Company;
@@ -32,7 +32,7 @@ public class CompanyDaoImpl implements CompanyDao {
 	private CompanyMapper mapper;
 
 	@Autowired
-	private JdbcTemplate jdbc;
+	private SessionFactory sessionFactory;
 
 	/*
 	 * (non-Javadoc)
@@ -42,8 +42,8 @@ public class CompanyDaoImpl implements CompanyDao {
 	@Override
 	public Company find(final int id) {
 		LOGGER.info("Find company with id " + id);
-		final String sql = "SELECT * FROM company WHERE id = ?";
-		return jdbc.queryForObject(sql, new Object[] { id }, mapper);
+		return (Company) sessionFactory.getCurrentSession().get(Company.class,
+				id);
 	}
 
 	/*
@@ -56,7 +56,11 @@ public class CompanyDaoImpl implements CompanyDao {
 	@Override
 	public void delete(final int id) {
 		LOGGER.info("Delete company " + id);
-		jdbc.update("DELETE FROM computer WHERE company_id=?", id);
+		final Company company = (Company) sessionFactory.getCurrentSession()
+				.get(Company.class, id);
+		if (company != null) {
+			sessionFactory.getCurrentSession().delete(company);
+		}
 	}
 
 	/*
@@ -64,10 +68,11 @@ public class CompanyDaoImpl implements CompanyDao {
 	 * 
 	 * @see com.excilys.cdb.persistence.CompanyDao#findAll()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Company> findAll() {
-		final String sql = "SELECT * FROM company";
-		return jdbc.query(sql, mapper);
+		return sessionFactory.getCurrentSession().createCriteria(Company.class)
+				.list();
 	}
 
 	/*
@@ -75,10 +80,11 @@ public class CompanyDaoImpl implements CompanyDao {
 	 * 
 	 * @see com.excilys.cdb.persistence.CompanyDao#findAll(int, int)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Company> findAll(final int start, final int offset) {
-		final String sql = "SELECT * FROM company LIMIT ?, ? ";
-		return jdbc.query(sql, new Object[] { start, offset }, mapper);
+		return sessionFactory.getCurrentSession().createCriteria(Company.class)
+				.setFirstResult(start).setMaxResults(offset).list();
 	}
 
 }

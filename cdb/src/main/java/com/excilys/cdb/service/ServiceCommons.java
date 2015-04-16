@@ -85,7 +85,7 @@ public interface ServiceCommons<T, D extends DTO<T>> {
 	 *
 	 * @return c
 	 */
-	public default int count() {
+	public default long count() {
 		throw new UnsupportedOperationException();
 	}
 

@@ -1,5 +1,6 @@
 package com.excilys.cdb.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -11,33 +12,39 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Type;
 
 /**
  * The Class Computer.
  */
 @Entity
 @Table(name = "computer")
-public class Computer {
+public class Computer implements Serializable {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/** Specific id of a computer. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", unique = true, nullable = false)
 	private int id;
 
 	/** The name. */
-	@Column(name = "name")
+	@Column(name = "name", nullable = true, length = 255)
 	private String name;
 
 	/** The introduced. */
-	@Column(name = "introduced")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Type(type = "com.excilys.cdb.util.validation.LocalDateTimeUserType")
+	@Column(name = "introduced", nullable = true)
 	private LocalDateTime introduced;
 
 	/** The discontinued. */
-	@Column(name = "discontinued")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Type(type = "com.excilys.cdb.util.validation.LocalDateTimeUserType")
+	@Column(name = "discontinued", nullable = true)
 	private LocalDateTime discontinued;
 
 	/** The compagny. */
@@ -199,7 +206,7 @@ public class Computer {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -212,7 +219,7 @@ public class Computer {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -231,7 +238,7 @@ public class Computer {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

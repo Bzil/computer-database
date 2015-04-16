@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDao;
@@ -36,6 +37,7 @@ public class ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#find(int)
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public ComputerDTO find(final int id) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Looking for computer " + id);
@@ -57,6 +59,7 @@ public class ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#find(String)
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<ComputerDTO> find(final String name, final SortCriteria criteria) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Looking for computer " + name);
@@ -75,6 +78,7 @@ public class ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#findAll()
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<ComputerDTO> findAll(final SortCriteria criteria) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Looking for all computer");
@@ -94,6 +98,7 @@ public class ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#findAll(int, int)
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<ComputerDTO> findAll(final int start, final int offset,
 			final SortCriteria criteria) {
 		if (LOGGER.isDebugEnabled()) {
@@ -116,6 +121,7 @@ public class ComputerServiceImpl implements ComputerService {
 	 * )
 	 */
 	@Override
+	@Transactional
 	public ComputerDTO add(final Computer computer) {
 		ComputerDTO dto = null;
 		if (computer != null) {
@@ -137,6 +143,7 @@ public class ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#delete(int)
 	 */
 	@Override
+	@Transactional
 	public void delete(final Computer computer) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Delete " + computer);
@@ -150,6 +157,7 @@ public class ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.Service#delete(int)
 	 */
 	@Override
+	@Transactional
 	public void delete(final int id) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Delete computer with id " + id);
@@ -158,6 +166,7 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteByCompanyId(final int companyId) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Delete computer with id " + companyId);
@@ -186,6 +195,7 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Override
+	@Transactional
 	public ComputerDTO saveOrUpdate(final Computer computer) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Save or Update " + computer);
@@ -199,7 +209,8 @@ public class ComputerServiceImpl implements ComputerService {
 	 * @see com.excilys.cdb.service.ComputerService#count()
 	 */
 	@Override
-	public int count() {
+	@Transactional(readOnly = true)
+	public long count() {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Count");
 		}
