@@ -5,6 +5,8 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -66,10 +68,21 @@ public class ComputerDaoImpl implements ComputerDao {
 			final SortCriteria sortCriteria) {
 		LOGGER.info("Find computers by name : " + name);
 
+		final StringBuffer correctName = new StringBuffer("%").append(name)
+				.append("%");
+
+		final Criterion computerName = Restrictions.like("computer.name",
+				correctName.toString());
+		final Criterion companyName = Restrictions.like("company.name",
+				correctName.toString());
+		final LogicalExpression orExp = Restrictions.or(computerName,
+				companyName);
+
 		final Criteria criteria = sessionFactory.getCurrentSession()
 				.createCriteria(Computer.class, "computer")
 				.createCriteria("company", "company", JoinType.LEFT_OUTER_JOIN)
-				.add(Restrictions.like("name", "%" + name + "%"));
+				.add(orExp);
+
 		if (sortCriteria != null) {
 			final Order order = getOrder(sortCriteria);
 			criteria.addOrder(order);
@@ -118,7 +131,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public Computer update(final Computer computer) {
 		LOGGER.info("Update computer " + computer);
-		sessionFactory.getCurrentSession().save(computer);
+		sessionFactory.getCurrentSession().update(computer);
 		return computer;
 	}
 
