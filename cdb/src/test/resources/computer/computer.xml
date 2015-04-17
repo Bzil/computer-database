@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<dataset>
-	<company id="1" name="Apple Inc." />
-
-	<computer id="1" name="TEST" introduced="1991-01-01 00:00:00" discontinued="1993-02-01 00:00:00" company_id="1" />
-	<computer id="2" name="TEST2" introduced="1992-01-01 00:00:00" discontinued="1993-02-01 00:00:00" company_id="1" />
-
-</dataset>
