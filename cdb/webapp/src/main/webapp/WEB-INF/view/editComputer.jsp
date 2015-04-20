@@ -4,8 +4,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ include file="header.jsp"%>
-
+<jsp:include page="/WEB-INF/view/import/header.jsp" ></jsp:include>
+ 
+ <body>
+<jsp:include page="/WEB-INF/view/import/menu.jsp" ></jsp:include>
 <section id="main">
 	<div class="container">
 		<div class="row">
@@ -23,20 +25,20 @@
 							<spring:message code="computer.name" var="computerName"/>
 							<form:label path="name" for="name">${computerName}</form:label>
                             <form:input path="name" type="text" cssClass="form-control" id="name" name="name" placeholder="${computerName}" value="${computer.name}" />
-                            <form:errors path="name" cssClass="has-error" />
+                            <font color="red"><form:errors path="name" cssClass="has-error" /></font>
 						</div>
 						<div class="form-group">
 							<spring:message code="date.pattern" var="pattern"/>
                             <form:label path="introduced" for="introduced"><spring:message code="introduced.date" /></form:label>
                             <form:input path="introduced" type="date" cssClass="form-control" id="introduced" name="introduced"
                                    placeholder="${pattern}" value="${computer.introduced}" />
-							<form:errors path="introduced" cssClass="has-error" />
+							<font color="red"><form:errors path="introduced" cssClass="has-error" /></font>
 						</div>
 						<div class="form-group">
 							<form:label path="discontinued" for="discontinued"><spring:message code="discontinued.date" /></form:label>
                             <form:input path="discontinued" type="date" cssClass="form-control" id="discontinued" name="discontinued"
                                    placeholder="${pattern}" value="${computer.discontinued}"/>
-							<form:errors path="discontinued" cssClass="has-error" /> 
+							<font color="red"><form:errors path="discontinued" cssClass="has-error" /> </font>
 						</div>
 						 <div class="form-group">
 						 	<spring:message code="select.company" var="company"/>
@@ -57,8 +59,7 @@
 		</div>
 	</div>
 </section>
-<script> var local = "${pageContext.response.locale}";</script>
-<script src="<c:url value="/resources/js/jquery.min.js" />"></script>
+<jsp:include page="/WEB-INF/view/import/footer.jsp"></jsp:include>
 <script src="<c:url value="/resources/js/validateField.js" />"></script>
 </body>
 </html>

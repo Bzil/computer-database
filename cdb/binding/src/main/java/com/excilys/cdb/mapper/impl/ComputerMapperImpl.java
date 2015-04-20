@@ -48,22 +48,23 @@ public class ComputerMapperImpl implements ComputerMapper {
 	public Computer toModel(ComputerDTO dto) {
 		final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
 				"dd-MM-uuuu HH:mm:ss", new Locale("fr"));
-		final Computer t = new Computer();
+		final Computer computer = new Computer();
 
-		t.setId(dto.id);
-		t.setName(dto.name);
+		computer.setId(dto.id);
+		computer.setName(dto.name);
 		if (dto.introduced != null && !dto.introduced.trim().isEmpty()) {
-			t.setIntroduced(LocalDateTime.parse(dto.introduced += " 00:00:00",
-					formatter));
+			computer.setIntroduced(LocalDateTime.parse(
+					dto.introduced += " 00:00:00", formatter));
 		}
 		if (dto.discontinued != null && !dto.discontinued.trim().isEmpty()) {
-			t.setDiscontinued(LocalDateTime.parse(
+			computer.setDiscontinued(LocalDateTime.parse(
 					dto.discontinued += " 00:00:00", formatter));
 		}
 		if (dto.companyId != -1 && !dto.companyName.trim().isEmpty()) {
-			t.setCompany(new Company(dto.companyId, dto.companyName.trim()));
+			computer.setCompany(new Company(dto.companyId, dto.companyName
+					.trim()));
 		}
-		return t;
+		return computer;
 	}
 
 }

@@ -15,4 +15,6 @@ public class ControllerList {
 	public static final String ERROR_500_VIEW = "500";
 
 	public static final String REDIRECT = "redirect:/";
+
+	public static final String LOGIN_VIEW = "login";
 }

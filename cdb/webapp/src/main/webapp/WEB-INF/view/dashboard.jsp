@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="mylib" tagdir="/WEB-INF/tags"%>
-<%@ include file="header.jsp"%>
+
+<jsp:include page="/WEB-INF/view/import/header.jsp" ></jsp:include>
+ 
+ <body>
+<jsp:include page="/WEB-INF/view/import/menu.jsp" ></jsp:include>
 <section id="main">
 	<div class="container">
 		<h1 id="homeTitle">${page.count} <spring:message code="computer.found" /></h1>
@@ -126,10 +130,7 @@
 		start="${page.startPage}"></mylib:pagination>
 
 </footer>
-<script> var local = "${pageContext.response.locale}";</script>
-<script src="<c:url value="/resources/js/jquery.min.js" />"></script>
-<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-<script src="<c:url value="/resources/js/dashboard.js" />"></script>
+<jsp:include page="/WEB-INF/view/import/footer.jsp"></jsp:include>
 
 </body>
 </html>
