@@ -1,7 +1,8 @@
 package com.excilys.cdb.controller;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -77,7 +78,8 @@ public class ComputerController {
 
 		// Deletion
 		if (selection != null) {
-			final List<Integer> list = getSelectionList(selection);
+			final List<Integer> list = Arrays.stream(selection.split(","))
+					.map(Integer::valueOf).collect(Collectors.toList());
 			for (final Integer i : list) {
 				try {
 					computerService.delete(i);
@@ -204,24 +206,5 @@ public class ComputerController {
 			}
 		}
 		return sort;
-	}
-
-	/**
-	 * Gets the selection list.
-	 *
-	 * @param selection
-	 *            the selection
-	 * @return the selection list
-	 */
-	private List<Integer> getSelectionList(final String selection) {
-		List<Integer> ret = null;
-		if (selection != null && !selection.equals("0")) {
-			ret = new ArrayList<>();
-			for (final String s : selection.trim().split(",")) {
-				ret.add(Integer.valueOf(s));
-			}
-		}
-		return ret;
-
 	}
 }

@@ -4,10 +4,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<jsp:include page="/WEB-INF/view/import/header.jsp" ></jsp:include>
+<jsp:include page="/WEB-INF/view/import/head.jsp" ></jsp:include>
  
  <body>
-<jsp:include page="/WEB-INF/view/import/menu.jsp" ></jsp:include>
+<jsp:include page="/WEB-INF/view/import/header.jsp" ></jsp:include>
 <section id="main">
 	<div class="container">
 		<div class="row">

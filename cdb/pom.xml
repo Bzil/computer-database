@@ -74,7 +74,7 @@
 		<!-- Spring -->
 		<spring.version>4.1.6.RELEASE</spring.version>
 		<spring.security.version>4.0.0.RELEASE</spring.security.version>
-		
+
 
 		<!-- 99 empty -->
 		<empty.99.version>99-empty</empty.99.version>
@@ -228,6 +228,12 @@
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>
+				<version>${spring.security.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
 				<version>${spring.security.version}</version>
 			</dependency>
 

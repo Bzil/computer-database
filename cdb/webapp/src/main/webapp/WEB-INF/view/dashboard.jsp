@@ -4,10 +4,10 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="mylib" tagdir="/WEB-INF/tags"%>
 
-<jsp:include page="/WEB-INF/view/import/header.jsp" ></jsp:include>
+<jsp:include page="/WEB-INF/view/import/head.jsp" ></jsp:include>
  
  <body>
-<jsp:include page="/WEB-INF/view/import/menu.jsp" ></jsp:include>
+<jsp:include page="/WEB-INF/view/import/header.jsp" ></jsp:include>
 <section id="main">
 	<div class="container">
 		<h1 id="homeTitle">${page.count} <spring:message code="computer.found" /></h1>

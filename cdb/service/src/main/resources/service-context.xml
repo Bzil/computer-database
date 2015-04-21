@@ -15,6 +15,7 @@
 	
 	
 	<import resource="classpath:persitence-context.xml" />
+	<import resource="classpath:binding-context.xml" />
 	
 	
 	<tx:annotation-driven proxy-target-class="true"	transaction-manager="transactionManager" />

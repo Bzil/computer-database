@@ -16,5 +16,5 @@ public class ControllerList {
 
 	public static final String REDIRECT = "redirect:/";
 
-	public static final String LOGIN_VIEW = "login";
+	public static final String LOGIN_VIEW = "connect";
 }

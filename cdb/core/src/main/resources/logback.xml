@@ -10,10 +10,10 @@
 Create file appender for log
 </TODO> -->
 	<!-- Disable Spring logger -->
-<!-- 	<logger name="org.springframework" level="off" />  -->
+	<logger name="org.springframework" level="info" /> 
 
 	<!-- Disable hibernate logger -->
-	<logger name="org.hibernate" level="info" />
+	<logger name="org.hibernate" level="off" />
 
 	<root level="debug">
 		<appender-ref ref="STDOUT" />
