@@ -21,7 +21,7 @@
 		<http-basic />
 		<form-login login-page="/connect" default-target-url="/dashboard" authentication-failure-url="/connect?error=wrong"
 			username-parameter="username" password-parameter="password" />
-		<logout logout-url="/connect?logout" delete-cookies="JSESSIONID" logout-success-url="/connect"/>
+		<logout logout-url="/logout" delete-cookies="JSESSIONID" logout-success-url="/connect?msg=success"/>
 		 <csrf />
 	</http>
 	
