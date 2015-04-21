@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 <%@ taglib prefix="mylib" tagdir="/WEB-INF/tags"%>
 
 <jsp:include page="/WEB-INF/view/import/head.jsp" ></jsp:include>
@@ -19,16 +20,19 @@
 					<input type="submit" id="searchsubmit" value="<spring:message code="filter.by.name" />" class="btn btn-primary" />
 				</form>
 			</div>
-			<div class="pull-right">
-				<a class="btn btn-success" id="addComputer" href="add"><spring:message code="add.computer" /></a> 
-				<a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="edit.computer" /></a>
-			</div>
+			<security:authorize access="hasRole('ROLE_ADMIN')">
+				<div class="pull-right">
+					<a class="btn btn-success" id="addComputer" href="add"><spring:message code="add.computer" /></a> 
+					<a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="edit.computer" /></a>
+				</div>
+			</security:authorize>
 		</div>
 	</div>
-
-	<form id="deleteForm" action="#" method="POST">
-		<input type="hidden" name="selection" value="">
-	</form>
+	<security:authorize access="hasRole('ROLE_ADMIN')">
+		<form id="deleteForm" action="#" method="POST">
+			<input type="hidden" name="selection" value="">
+		</form>
+	</security:authorize>
 
 	<div class="container" style="margin-top: 10px;">
 		<table class="table table-striped table-bordered">
@@ -36,10 +40,11 @@
 				<tr>
 					<!-- Variable declarations for passing labels as parameters -->
 					<!-- Table header for Computer Name -->
-
-					<th class="editMode" style="width: 60px; height: 22px;"><input type="checkbox" id="selectall" /> 
-						<span style="vertical-align: top;"> - <a href="#" id="deleteSelected" onclick="$.fn.deleteSelected();"> <i class="fa fa-trash-o fa-lg"></i></a> </span>
-					</th>
+					<security:authorize access="hasRole('ROLE_ADMIN')">
+						<th class="editMode" style="width: 60px; height: 22px;"><input type="checkbox" id="selectall" /> 
+							<span style="vertical-align: top;"> - <a href="#" id="deleteSelected" onclick="$.fn.deleteSelected();"> <i class="fa fa-trash-o fa-lg"></i></a> </span>
+						</th>
+					</security:authorize>
 					<th><spring:message code="computer.name" /> <span style="float: right;"> 
 					<c:choose>
 								<c:when
@@ -112,7 +117,11 @@
 					<tr>
 						<td class="editMode"><input type="checkbox" name="cb"
 							class="cb" value="${computer.id}"></td>
-						<td><a href="edit?id=${computer.id}" onclick="">${computer.name}</a>
+						<td><a 
+						<security:authorize access="hasRole('ROLE_ADMIN')">
+						href="edit?id=${computer.id}" 
+						</security:authorize>
+						onclick="">${computer.name}</a>
 						</td>
 						<td>${computer.introduced}</td>
 						<td>${computer.discontinued}</td>
