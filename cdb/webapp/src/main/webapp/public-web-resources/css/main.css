@@ -62,3 +62,7 @@ input[type='checkbox'] {
 .input-group-addon {
 	border = 1px;
 }
+
+.has-error {
+	color: #FF0000;
+}

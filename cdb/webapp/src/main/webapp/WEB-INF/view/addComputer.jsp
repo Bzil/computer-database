@@ -23,20 +23,20 @@
                         	<spring:message code="computer.name" var="computerName"/>
                             <form:label path="name" for="name">${computerName}</form:label>
                             <form:input path="name" type="text" cssClass="form-control" id="name" name="name" placeholder="${computerName}" />
-                            <font color="red"><form:errors path="name" cssClass="has-error" /></font>
+                            <form:errors path="name" cssClass="has-error" />
                         </div>
                         <div class="form-group">
                         	<spring:message code="date.pattern" var="pattern"/>
                             <form:label path="introduced" for="introduced"><spring:message code="introduced.date" /></form:label>
                             <form:input path="introduced" type="date" cssClass="form-control" id="introduced" name="introduced"
                                    placeholder="${pattern}" />
-							<font color="red"><form:errors path="introduced" cssClass="has-error" /> </font>                                  
+							<form:errors path="introduced" cssClass="has-error" />                                  
                         </div>
                         <div class="form-group">
                             <form:label path="discontinued" for="discontinued"><spring:message code="discontinued.date" /></form:label>
                             <form:input path="discontinued" type="date" cssClass="form-control" id="discontinued" name="discontinued"
                                    placeholder="${pattern}" />
-							<font color="red"><form:errors path="discontinued" cssClass="has-error" />  </font>                                 
+							<form:errors path="discontinued" cssClass="has-error" />                                  
                         </div>
                         <div class="form-group">
                        		 <spring:message code="select.company" var="company"/>
@@ -45,7 +45,7 @@
                             	<form:option value="0" label="${company}"/>
                             	<form:options items="${companies}" itemValue="id" itemLabel="name" />
                             </form:select>
-							<font color="red"><form:errors path="companyId" cssClass="has-error" /> </font>
+							<form:errors path="companyId" cssClass="has-error" />
                         </div>
                     </fieldset>
                     <div class="actions pull-right">
