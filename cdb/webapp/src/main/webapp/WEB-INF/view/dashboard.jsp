@@ -48,7 +48,7 @@
 					<th><spring:message code="computer.name" /> <span style="float: right;"> 
 					<c:choose>
 								<c:when
-									test="${page.orderBy == 'DESC' && page.column == 'NAME'}">
+									test="${page.orderBy == 'DESC' && page.column == 'computer.name'}">
 									<mylib:link body="&#x21E7;" page="${page.currentPage}"
 										active="false" target="dashboard" search="${page.search}"
 										column="name" dir="ASC" size="${page.offset}" />
@@ -63,7 +63,7 @@
 					</th>
 					<th><spring:message code="introduced.date" /> <span style="float: right;"> <c:choose>
 								<c:when
-									test="${page.orderBy == 'DESC' && page.column == 'INTRODUCED'}">
+									test="${page.orderBy == 'DESC' && page.column == 'computer.introduced'}">
 									<mylib:link body="&#x21E7;" page="${page.currentPage}"
 										active="false" target="dashboard" search="${page.search}"
 										column="introduced" dir="ASC" size="${page.offset}" />
@@ -79,7 +79,7 @@
 					<!-- Table header for Discontinued Date -->
 					<th><spring:message code="discontinued.date" /> <span style="float: right;"> <c:choose>
 								<c:when
-									test="${page.orderBy == 'DESC' && page.column == 'DISCONTINUED'}">
+									test="${page.orderBy == 'DESC' && page.column == 'computer.discontinued'}">
 									<mylib:link body="&#x21E7;" page="${page.currentPage}"
 										active="false" target="dashboard" search="${page.search}"
 										column="discontinued" dir="ASC" size="${page.offset}" />
@@ -95,7 +95,7 @@
 					<!-- Table header for Company -->
 					<th><spring:message code="company" /> <span style="float: right;"> <c:choose>
 								<c:when
-									test="${page.orderBy == 'DESC' && page.column == 'COMPANY_ID'}">
+									test="${page.orderBy == 'DESC' && page.column == 'computer.company.id'}">
 									<mylib:link body="&#x21E7;" page="${page.currentPage}"
 										active="false" target="dashboard" search="${page.search}"
 										column="company_id" dir="ASC" size="${page.offset}" />

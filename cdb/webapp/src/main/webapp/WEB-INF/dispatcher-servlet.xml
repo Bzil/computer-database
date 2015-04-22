@@ -12,7 +12,7 @@
 	
 	
 	<context:annotation-config />
-	<context:component-scan base-package="com.excilys.cdb.controller" />
+	<import resource="classpath:webapp-context.xml" />
 
 	<mvc:resources mapping="/resources/**" location="/public-web-resources/" />
 	<mvc:annotation-driven validator="validator" />

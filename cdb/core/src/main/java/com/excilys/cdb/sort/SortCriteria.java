@@ -32,7 +32,7 @@ public class SortCriteria {
 	 */
 	@Override
 	public String toString() {
-		return "ORDER BY compu." + column + " " + direction;
+		return "ORDER BY computer." + column + " " + direction;
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class SortCriteria {
 	 * @return the column
 	 */
 	public String getColumn() {
-		return column.name();
+		return column.toString();
 	}
 
 	public SortColumn getSortColumn() {
@@ -54,7 +54,7 @@ public class SortCriteria {
 	 * @return the direction
 	 */
 	public String getDirection() {
-		return direction.name();
+		return direction.toString();
 	}
 
 	public SortDirection getSortDirection() {

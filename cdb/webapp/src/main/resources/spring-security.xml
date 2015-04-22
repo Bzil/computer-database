@@ -17,6 +17,10 @@
 		<intercept-url pattern="/add**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/edit**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/delete**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/add/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/edit/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/delete/**" access="hasRole('ROLE_ADMIN')" />
+		
 		
 		<http-basic />
 		<form-login login-page="/connect" default-target-url="/dashboard" authentication-failure-url="/connect?error=wrong"

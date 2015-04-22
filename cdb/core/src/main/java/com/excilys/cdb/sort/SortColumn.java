@@ -6,13 +6,13 @@ package com.excilys.cdb.sort;
 public enum SortColumn {
 
 	/** The name. */
-	NAME("name"),
+	NAME("computer.name"),
 	/** The introduced. */
-	INTRODUCED("introduced"),
+	INTRODUCED("computer.introduced"),
 	/** The discontinued. */
-	DISCONTINUED("discontinued"),
+	DISCONTINUED("computer.discontinued"),
 	/** The company id. */
-	COMPANY_ID("company_id");
+	COMPANY_ID("computer.company.id");
 
 	/** The name. */
 	private String name;
@@ -29,7 +29,7 @@ public enum SortColumn {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Enum#toString()
 	 */
 	@Override
