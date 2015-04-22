@@ -20,7 +20,7 @@
 				</div>
 			</c:if>
 			<c:if test="${not empty msg}">
-				<div class="alert alert-success" role="alert"><div class="msg">${msg}</div></div>
+				<div class="alert alert-success" role="alert"><div class="msg"><spring:message code="logout.success" /></div></div>
 			</c:if>
 						
 			<form name='connect' action='login' method='POST'>

@@ -1,4 +1,6 @@
 $('#name').keyup(function() {
+	console.log($(this).val());
+	console.log(validateName(this));
 	if(validateName($(this))) {
         $(this).css({'color' : '#4DA585'});
     } else {
@@ -36,11 +38,11 @@ function validator() {
 function validateName(name) {
 	var inputVal = $(name).val();
 	var reg = /^[ ]+.*$/;
-	return (!inputVal || !reg.test(inputVal));
+	return (inputVal != '' && !reg.test(inputVal));
 };
 
-function validateDate(name) {
-	var inputVal = $(name).val();
+function validateDate(date) {
+	var inputVal = $(date).val();
 	if (!inputVal) { // nothing
 		return true;
 	}

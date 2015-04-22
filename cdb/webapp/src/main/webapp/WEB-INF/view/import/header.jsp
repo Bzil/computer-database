@@ -29,14 +29,16 @@
 						</li>
 					</ul>
 				</td>
-				<td>
-					<form action="logout" method="POST">
-						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						<button class="btn btn-link" id="logoutButton" type="submit">
-							<span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout
-						</button>
-					</form>
-				</td>
+				<c:if test = "${pageContext.request.servletPath != '/WEB-INF/view/connect.jsp'}"> 
+					<td>
+						<form action="logout" method="POST">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<button class="btn btn-link" id="logoutButton" type="submit">
+								<span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout
+							</button>
+						</form>
+					</td>
+				</c:if>
 			</tr>
 	  	</table>
 		</div>
