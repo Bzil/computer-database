@@ -34,7 +34,7 @@
 						<form action="logout" method="POST">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							<button class="btn btn-link" id="logoutButton" type="submit">
-								<span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout
+								<span class="glyphicon glyphicon-off" aria-hidden="true"></span> <spring:message code="logout" />
 							</button>
 						</form>
 					</td>

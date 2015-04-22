@@ -1,6 +1,4 @@
 $('#name').keyup(function() {
-	console.log($(this).val());
-	console.log(validateName(this));
 	if(validateName($(this))) {
         $(this).css({'color' : '#4DA585'});
     } else {
