@@ -1,11 +1,13 @@
 package com.excilys.cdb.cli;
 
+import static com.excilys.cdb.cli.CliUtil.getChoice;
+import static com.excilys.cdb.cli.CliUtil.getChoiceDate;
+import static com.excilys.cdb.cli.CliUtil.getString;
+import static com.excilys.cdb.cli.CliUtil.toList;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
-import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -21,7 +23,6 @@ import com.excilys.cdb.page.CompanyPage;
 import com.excilys.cdb.page.ComputerPage;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.validation.DateValidator;
 
 @Component
 public class CliService {
@@ -35,77 +36,13 @@ public class CliService {
 	@Autowired
 	private ComputerMapper mapper;
 
-	@SuppressWarnings("resource")
-	private String getChoice(List<String> choices) {
-		final Scanner scanner = new Scanner(System.in);
-		String choice = null;
-
-		while (choice == null || !choices.contains(choice.toLowerCase())) {
-			System.out.println("Make your choice :");
-			choice = scanner.nextLine().trim();
-		}
-		return choice.toLowerCase();
-	}
-
-	@SuppressWarnings("resource")
-	private String getChoice() {
-		final Scanner scanner = new Scanner(System.in);
-		String choice = null;
-
-		while (choice == null || !isNumeric(choice)) {
-			System.out.println("Make your choice :");
-			choice = scanner.nextLine().trim();
-		}
-		return choice.toLowerCase();
-	}
-
-	@SuppressWarnings("resource")
-	private String getChoiceDate() {
-		final Scanner scanner = new Scanner(System.in);
-		String choice = null;
-
-		while (choice == null || !isCorrectDate(choice)) {
-			System.out.println("date (pattern : dd-mm-yyyy or null) : ");
-			choice = scanner.nextLine().trim();
-		}
-		return choice.toLowerCase();
-	}
-
-	@SuppressWarnings("resource")
-	private String getString() {
-		final Scanner scanner = new Scanner(System.in);
-		String str = null;
-
-		while (str == null || str.trim().isEmpty()) {
-			System.out.println("Write your string : ");
-			str = scanner.nextLine().trim();
-		}
-		return str.trim();
-	}
-
-	private List<String> toList(String... strings) {
-		final List<String> ret = new ArrayList<>();
-		for (final String s : strings) {
-			ret.add(s);
-		}
-		return ret;
-	}
-
-	private boolean isNumeric(String str) {
-		return (str.matches("\\d+?") || str.equals("null"));
-	}
-
-	private boolean isCorrectDate(String str) {
-		return (new DateValidator().isValid(str, null) || str.equals("null"));
-	}
-
 	private void mainCli() {
 		while (true) {
 			System.out.println("\n========= MENU =========");
 			System.out.println("1) List computers");
 			System.out.println("2) List companies");
 			System.out
-					.println("3) Show computer details (the detailed information of only one computer)");
+			.println("3) Show computer details (the detailed information of only one computer)");
 			System.out.println("4) Create a computer");
 			System.out.println("5) Update a computer");
 			System.out.println("6) Delete a computer");
@@ -115,31 +52,31 @@ public class CliService {
 
 			switch (getChoice(toList("1", "2", "3", "4", "5", "6", "7", "8",
 					"0"))) {
-			case "1":
-				showComputers();
-				break;
-			case "2":
-				showCompanies();
-				break;
-			case "3":
-				showComputer();
-				break;
-			case "4":
-				createComputer();
-				break;
-			case "5":
-				updateComputer();
-				break;
-			case "6":
-				deleteComputer();
-				break;
-			case "7":
-				deleteCompany();
-				break;
-			case "0":
-				System.out.println("Program ended.");
-				System.exit(0);
-				;
+					case "1":
+						showComputers();
+						break;
+					case "2":
+						showCompanies();
+						break;
+					case "3":
+						showComputer();
+						break;
+					case "4":
+						createComputer();
+						break;
+					case "5":
+						updateComputer();
+						break;
+					case "6":
+						deleteComputer();
+						break;
+					case "7":
+						deleteCompany();
+						break;
+					case "0":
+						System.out.println("Program ended.");
+						System.exit(0);
+						;
 			}
 			;
 		}
