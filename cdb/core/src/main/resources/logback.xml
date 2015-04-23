@@ -13,7 +13,7 @@ Create file appender for log
 	<logger name="org.springframework" level="info" /> 
 
 	<!-- Disable hibernate logger -->
-	<logger name="org.hibernate" level="debug" />
+	<logger name="org.hibernate" level="off" />
 
 	<root level="debug">
 		<appender-ref ref="STDOUT" />

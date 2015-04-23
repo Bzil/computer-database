@@ -21,10 +21,10 @@ import com.excilys.cdb.page.CompanyPage;
 import com.excilys.cdb.page.ComputerPage;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.validation.Validator;
+import com.excilys.cdb.validation.DateValidator;
 
 @Component
-public class Cli {
+public class CliService {
 
 	@Autowired
 	private ComputerService computerService;
@@ -96,8 +96,7 @@ public class Cli {
 	}
 
 	private boolean isCorrectDate(String str) {
-		return (Validator.getInstance().validate(str, "fr") || str
-				.equals("null"));
+		return (new DateValidator().isValid(str, null) || str.equals("null"));
 	}
 
 	private void mainCli() {
@@ -311,7 +310,7 @@ public class Cli {
 		@SuppressWarnings("resource")
 		final ApplicationContext ctx = new ClassPathXmlApplicationContext(
 				"classpath:context-cli.xml");
-		final Cli cli = ctx.getBean(Cli.class);
-		cli.mainCli();
+		final CliService cliService = ctx.getBean(CliService.class);
+		cliService.mainCli();
 	}
 }

@@ -117,8 +117,10 @@
 					<tr>
 						<td class="editMode"><input type="checkbox" name="cb"
 							class="cb" value="${computer.id}"></td>
-						<td><security:authorize access="hasRole('ROLE_ADMIN')"><a href="edit?id=${computer.id}" onclick=""></security:authorize>
-						${computer.name}<security:authorize access="hasRole('ROLE_ADMIN')"></a></security:authorize>
+						<td>
+							<security:authorize access="hasRole('ROLE_ADMIN')"><a href="edit?id=${computer.id}" onclick=""></security:authorize>
+							${computer.name}
+							<security:authorize access="hasRole('ROLE_ADMIN')"></a></security:authorize>
 						</td>
 						<td>${computer.introduced}</td>
 						<td>${computer.discontinued}</td>

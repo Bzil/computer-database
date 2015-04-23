@@ -43,9 +43,7 @@ public class ComputerServiceImpl implements ComputerService {
 	@Override
 	@Transactional(readOnly = true)
 	public ComputerDTO find(final int id) {
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Looking for computer " + id);
-		}
+		LOGGER.debug("Looking for computer " + id);
 		ComputerDTO dto = null;
 		if (id > 0) {
 			final Computer c = dao.find(id);
@@ -54,6 +52,7 @@ public class ComputerServiceImpl implements ComputerService {
 				dto = mapper.toDto(c);
 			}
 		}
+		LOGGER.debug("computer {}", dto);
 		return dto;
 	}
 

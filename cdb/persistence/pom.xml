@@ -69,11 +69,5 @@
 			<groupId>commons-logging</groupId><!-- Empty jar for create a bridge -->
 			<artifactId>commons-logging</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 </project>

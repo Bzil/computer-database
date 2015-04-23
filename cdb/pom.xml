@@ -16,6 +16,7 @@
 		<module>binding</module>
 		<module>webapp</module>
 		<module>console</module>
+		<module>webservice</module>
 	</modules>
 
 	<repositories>
@@ -81,10 +82,41 @@
 
 		<!-- Hibernate -->
 		<hibernate.version>4.3.8.Final</hibernate.version>
+
+		<!-- Jersey -->
+		<jersey.version>2.17</jersey.version>
+
+		<!-- Plugin -->
+		<version.maven.assembly.plugin>2.5.3</version.maven.assembly.plugin>
 	</properties>
 
 	<build>
 		<finalName>cdb</finalName>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>${version.maven.assembly.plugin}</version>
+					<configuration>
+						<descriptorRefs>
+							<descriptorRef>jar-with-dependencies</descriptorRef>
+						</descriptorRefs>
+					</configuration>
+					<executions>
+						<execution>
+							<id>make-assembly</id> <!-- this is used for inheritance merges -->
+							<phase>package</phase> <!-- bind to the packaging phase -->
+							<goals>
+								<goal>single</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -96,23 +128,6 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>${exec.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>java</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<skip>false</skip>
-					<mainClass>com.excilys.cdb.cli.Cli</mainClass>
-					<killAfter>-1</killAfter>
-				</configuration>
-			</plugin>
 			<!-- For Maven Tomcat Plugin -->
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
@@ -131,6 +146,7 @@
 			</plugin>
 		</plugins>
 	</build>
+
 	<dependencyManagement>
 		<dependencies>
 			<!-- Modules -->
@@ -162,6 +178,11 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>console</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>webservice</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<!-- Bean validation -->
@@ -224,26 +245,26 @@
 				<artifactId>spring-orm</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
-			
+
 			<!-- Spring security -->
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>
 				<version>${spring.security.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
 				<version>${spring.security.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-taglibs</artifactId>
 				<version>${spring.security.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-core</artifactId>
@@ -305,6 +326,23 @@
 				<version>${commons.dbcp2.version}</version>
 			</dependency>
 
+			<!-- Jersey -->
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.ext</groupId>
+			<artifactId>jersey-spring3</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+
 			<!-- Logging -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
@@ -329,13 +367,6 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-test</artifactId>
-				<scope>test</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
 
@@ -408,6 +439,13 @@
 					<artifactId>xml-apis</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

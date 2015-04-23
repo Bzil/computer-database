@@ -27,7 +27,6 @@
 	
 
 	<!-- Spring Context -->
-	
 	<listener>
    		<listener-class>
         	org.springframework.web.context.ContextLoaderListener

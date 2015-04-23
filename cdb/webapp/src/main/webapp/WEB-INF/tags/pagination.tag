@@ -8,10 +8,10 @@
 		
 		<c:if test="${active > 1}">
 			<li>
-				<mylib:link body="&laquo;" target="dashboard" page="1" size="${page.offset}" active="false"></mylib:link>
+				<mylib:link body="&laquo;" target="dashboard" page="1" size="${page.offset}" active="false" search="${page.search}"></mylib:link>
 			</li>
 			<li>
-				<mylib:link body="&lsaquo;" target="dashboard" page="${active - 1}" size="${page.offset}" active="false"></mylib:link>
+				<mylib:link body="&lsaquo;" target="dashboard" page="${active - 1}" size="${page.offset}" active="false" search="${page.search}"></mylib:link>
 			</li>
 		</c:if>
 		
@@ -19,12 +19,12 @@
 				<c:choose>
 					<c:when test="${active == i}">
 						<li>
-							<mylib:link body="${i}" page="${i+1}" size="${page.offset}" target="dashboard" active="true" />
+							<mylib:link body="${i}" page="${i+1}" size="${page.offset}" target="dashboard" active="true" search="${page.search}"/>
 						</li>
 					</c:when>
 					<c:otherwise>
 						<li>
-							<mylib:link body="${i}" page="${i+1}" size="${page.offset}" target="dashboard" active="false" />
+							<mylib:link body="${i}" page="${i+1}" size="${page.offset}" target="dashboard" active="false" search="${page.search}"/>
 						</li>
 					</c:otherwise>
 				</c:choose>
@@ -33,10 +33,10 @@
 		
 		<c:if test="${active < page.pageNb }">
 			<li>
-				<mylib:link body="&rsaquo;" target="dashboard" page="${active +1}" size="${page.offset}" active="false"></mylib:link>
+				<mylib:link body="&rsaquo;" target="dashboard" page="${active +1}" size="${page.offset}" active="false" search="${page.search}"></mylib:link>
 			</li>
 			<li>
-				<mylib:link body="&raquo;" target="dashboard" page="${page.pageNb}" size="${page.offset}"  active="false"></mylib:link>
+				<mylib:link body="&raquo;" target="dashboard" page="${page.pageNb}" size="${page.offset}"  active="false" search="${search}"></mylib:link>
 			</li>
 		</c:if>
 		
@@ -44,8 +44,8 @@
 		
 	</ul>
 	<div class="btn-group btn-group-sm pull-right" role="group">
-		<button type="button" class="btn btn-default" onclick="document.location.href='dashboard?id=${active}&size=10'">10</button>
-		<button type="button" class="btn btn-default" onclick="document.location.href='dashboard?id=${active}&size=50'">50</button>
-		<button type="button" class="btn btn-default" onclick="document.location.href='dashboard?id=${active}&size=100'">100</button>
+		<button type="button" class="btn btn-default" onclick="document.location.href='dashboard?id=${active}&size=10&search=${page.search}'">10</button>
+		<button type="button" class="btn btn-default" onclick="document.location.href='dashboard?id=${active}&size=50&search=${page.search}'">50</button>
+		<button type="button" class="btn btn-default" onclick="document.location.href='dashboard?id=${active}&size=100&search=${page.search}'">100</button>
 	</div>
 </div>

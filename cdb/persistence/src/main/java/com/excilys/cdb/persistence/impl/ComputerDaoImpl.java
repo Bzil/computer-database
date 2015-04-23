@@ -42,7 +42,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.persistence.ComputerDao#find(int)
 	 */
 	@Override
@@ -54,7 +54,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.persistence.ComputerDao#find(java.lang.String,
 	 * com.excilys.cdb.util.sort.SortCriteria)
 	 */
@@ -89,7 +89,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.persistence.ComputerDao#findByCompanyId(int)
 	 */
 	@SuppressWarnings("unchecked")
@@ -104,7 +104,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.persistence.ComputerDao#create(com.excilys.cdb.model.
 	 * Computer)
@@ -119,7 +119,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.persistence.ComputerDao#update(com.excilys.cdb.model.
 	 * Computer)
@@ -133,7 +133,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.persistence.ComputerDao#delete(com.excilys.cdb.model.
 	 * Computer)
@@ -151,7 +151,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.persistence.ComputerDao#deleteByCompanyId(int)
 	 */
 	@Override
@@ -160,13 +160,13 @@ public class ComputerDaoImpl implements ComputerDao {
 		final Session session = sessionFactory.getCurrentSession();
 		@SuppressWarnings("unchecked")
 		final List<Computer> computers = session.createCriteria(Computer.class)
-				.add(Restrictions.eq("company.id", companyId)).list();
+		.add(Restrictions.eq("company.id", companyId)).list();
 		session.delete(computers);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.persistence.ComputerDao#count()
 	 */
 	@Override
@@ -179,17 +179,18 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.persistence.ComputerDao#findAll()
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Computer> findAll(final SortCriteria sortCriteria) {
-		LOGGER.info("final all with criteria " + sortCriteria.toString());
+		LOGGER.info("final all");
 		final Criteria criteria = sessionFactory.getCurrentSession()
 				.createCriteria(Computer.class, "computer")
 				.createCriteria("company", "company", JoinType.LEFT_OUTER_JOIN);
 		if (sortCriteria != null) {
+			LOGGER.info("final all with criteria " + sortCriteria.toString());
 			final Order order = getOrder(sortCriteria);
 			criteria.addOrder(order);
 		}
@@ -198,7 +199,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.persistence.ComputerDao#findAll(int, int)
 	 */
 	@SuppressWarnings("unchecked")
@@ -220,7 +221,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	private Order getOrder(SortCriteria sortCriteria) {
 		return (sortCriteria.getSortDirection() == SortDirection.ASC) ? Order
 				.asc(sortCriteria.getColumn()) : Order.desc(sortCriteria
-				.getColumn());
+						.getColumn());
 	}
 
 }

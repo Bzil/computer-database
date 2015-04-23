@@ -172,18 +172,19 @@ public class ComputerController {
 		if (!result.hasErrors()) {
 			computerDto.companyName = companyService
 					.find(computerDto.companyId) != null ? companyService.find(
-							computerDto.companyId).getName() : "";
-							final Computer computer = mapper.toModel(computerDto);
-							computerService.saveOrUpdate(computer);
-							if (LOGGER.isDebugEnabled()) {
-								LOGGER.debug("add or edit computer " + computer);
-							}
-							return ControllerList.REDIRECT + ControllerList.DASHBOARD_VIEW;
+					computerDto.companyId).getName() : "";
+			final Computer computer = mapper.toModel(computerDto);
+			computerService.saveOrUpdate(computer);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("add or edit computer " + computer);
+			}
+			return ControllerList.REDIRECT + ControllerList.DASHBOARD_VIEW;
 		} else {
 			return load(computerDto.id, computerDto, model);
 		}
 	}
 
+	// TODO delete duplicate code
 	/**
 	 * Gets the sort criteria.
 	 *

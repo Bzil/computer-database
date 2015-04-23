@@ -14,18 +14,18 @@
 	<http auto-config="true" use-expressions="true">
 		<access-denied-handler error-page="/403" />
 		<intercept-url pattern="/dashboard**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" />
+		<intercept-url pattern="/dashboard/**" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" />
 		<intercept-url pattern="/add**" access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/edit**" access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/delete**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/add/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/edit**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/edit/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/delete/**" access="hasRole('ROLE_ADMIN')" />
-		
+		<intercept-url pattern="/delete**" access="hasRole('ROLE_ADMIN')" />
 		
 		<http-basic />
 		<form-login login-page="/connect" default-target-url="/dashboard" authentication-failure-url="/connect?error=wrong"
 			username-parameter="username" password-parameter="password" />
-		<logout logout-url="/logout" delete-cookies="JSESSIONID" logout-success-url="/connect?logout=success"/>
+		<logout logout-url="/logout" delete-cookies="JSESSIONID" logout-success-url="/connect?logout=success" invalidate-session="true"/>
 		 <csrf />
 	</http>
 	

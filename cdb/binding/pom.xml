@@ -21,7 +21,7 @@
 		<!-- Module -->
 		<dependency>
 			<groupId>com.excilys</groupId>
-			<artifactId>core</artifactId>
+			<artifactId>persistence</artifactId>
 		</dependency>
 
 		<dependency>
@@ -41,12 +41,6 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
