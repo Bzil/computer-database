@@ -83,10 +83,9 @@ public class ComputerController {
 			for (final Integer i : list) {
 				try {
 					computerService.delete(i);
-					LOGGER.info("computer with id : " + i + " deleted");
+					LOGGER.info("computer with id : {} deleted", id);
 				} catch (final Exception e) {
-					LOGGER.error("computer with id : " + i
-							+ " can not be deleted");
+					LOGGER.error("computer with id : {} can not be deleted", id);
 				}
 			}
 		}
@@ -119,7 +118,7 @@ public class ComputerController {
 		}
 		// Search
 		if (search != null && !search.trim().isEmpty()) {
-			LOGGER.info("Looking for : " + search);
+			LOGGER.info("Looking for : {}", search);
 			entities = computerService.find(search, criteria);
 			count = entities.size();
 			options = options.concat("&search=").concat(search);
@@ -130,7 +129,7 @@ public class ComputerController {
 		}
 		computerPage.setCount(count);
 		computerPage.setEntities(entities);
-		LOGGER.info("Show page : " + computerPage);
+		LOGGER.info("Show page : {}", computerPage);
 
 		model.addAttribute("page", computerPage);
 		return ControllerList.DASHBOARD_VIEW;
@@ -144,18 +143,12 @@ public class ComputerController {
 		model.addAttribute("companies", companies);
 		// Check param
 		if (id != null && id > 0) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Load edit page  DTO id =" + id);
-			}
+			LOGGER.debug("Load edit page  DTO id = {}", id);
 			final ComputerDTO dto = computerService.find(id);
-
 			model.addAttribute("computer", dto);
-
 			return ControllerList.EDIT_VIEW;
 		} else {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Load add page");
-			}
+			LOGGER.debug("Load add page");
 			return ControllerList.ADD_VIEW;
 		}
 
@@ -165,19 +158,17 @@ public class ComputerController {
 	public String edit(
 			@Valid @ModelAttribute("computerDto") ComputerDTO computerDto,
 			BindingResult result, Model model) {
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("add or edit  DTO " + computerDto);
-		}
+
+		LOGGER.debug("add or edit  DTO {}", computerDto);
 
 		if (!result.hasErrors()) {
 			computerDto.companyName = companyService
 					.find(computerDto.companyId) != null ? companyService.find(
-					computerDto.companyId).getName() : "";
+							computerDto.companyId).getName() : "";
 			final Computer computer = mapper.toModel(computerDto);
-			computerService.saveOrUpdate(computer);
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("add or edit computer " + computer);
-			}
+							computerService.saveOrUpdate(computer);
+			LOGGER.debug("add or edit computer {}", computer);
+
 			return ControllerList.REDIRECT + ControllerList.DASHBOARD_VIEW;
 		} else {
 			return load(computerDto.id, computerDto, model);
@@ -195,7 +186,6 @@ public class ComputerController {
 	 * @return the sort criteria
 	 */
 	private SortCriteria getSortCriteria(final String column, final String dir) {
-
 		SortCriteria sort = null;
 		if (column != null && dir != null && !column.trim().isEmpty()
 				&& !dir.trim().isEmpty()) {
