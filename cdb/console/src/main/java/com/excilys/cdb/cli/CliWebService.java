@@ -3,10 +3,14 @@ package com.excilys.cdb.cli;
 import static com.excilys.cdb.cli.CliUtil.getChoice;
 import static com.excilys.cdb.cli.CliUtil.toList;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.UriBuilder;
+
+import org.glassfish.jersey.client.ClientConfig;
 
 public class CliWebService {
 
@@ -21,16 +25,17 @@ public class CliWebService {
 			System.out.println("5) Update a computer");
 			System.out.println("6) Delete a computer");
 			System.out.println("7) Delete a company");
+			System.out.println("8) Show company details");
 			System.out.println("0) Quit");
 			System.out.println("Choose between 0 - 7 : ");
 
 			switch (getChoice(toList("1", "2", "3", "4", "5", "6", "7", "8",
 					"0"))) {
 					case "1":
-						// showComputers();
+						showComputers();
 						break;
 					case "2":
-						// showCompanies();
+						showCompanies();
 						break;
 					case "3":
 						showComputer();
@@ -42,15 +47,18 @@ public class CliWebService {
 						// updateComputer();
 						break;
 					case "6":
-						// deleteComputer();
+						deleteComputer();
 						break;
 					case "7":
-						// deleteCompany();
+						deleteCompany();
+						break;
+					case "8":
+						showCompany();
 						break;
 					case "0":
 						System.out.println("Program ended.");
 						System.exit(0);
-						;
+						break;
 			}
 			;
 		}
@@ -59,29 +67,66 @@ public class CliWebService {
 	public void showComputer() {
 		System.out.println("Computer id ?");
 		final String choice = getChoice();
-		String output = null;
-		try {
-			final URL url = new URL("http://localhost:8080/cdb/api/computer/"
-					+ choice);
-			final HttpURLConnection conn = (HttpURLConnection) url
-					.openConnection();
-			conn.setRequestMethod("GET");
-			conn.setRequestProperty("Accept", "application/json");
+		final ClientConfig config = new ClientConfig();
+		final Client client = ClientBuilder.newClient(config);
+		final WebTarget target = client.target(getBaseURI());
+		System.out.println(target.path("computer").path(choice).request()
+				.get(String.class));
 
-			if (conn.getResponseCode() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "
-						+ conn.getResponseCode());
-			}
-			final BufferedReader br = new BufferedReader(new InputStreamReader(
-					(conn.getInputStream())));
-			while ((output = br.readLine()) != null) {
-				System.out.println(output);
-			}
+	}
 
-			conn.disconnect();
-		} catch (final Exception e) {
-			e.printStackTrace();
-		}
+	public void showCompanies() {
+		final ClientConfig config = new ClientConfig();
+		final Client client = ClientBuilder.newClient(config);
+		final WebTarget target = client.target(getBaseURI());
+		System.out.println(target.path("company").path("list").request()
+				.get(String.class));
+	}
+
+	public void showCompany() {
+		System.out.println("Company id ?");
+		final String choice = getChoice();
+
+		final ClientConfig config = new ClientConfig();
+		final Client client = ClientBuilder.newClient(config);
+		final WebTarget target = client.target(getBaseURI());
+		System.out.println(target.path("company").path(choice).request()
+				.get(String.class));
+	}
+
+	public void showComputers() {
+		final ClientConfig config = new ClientConfig();
+		final Client client = ClientBuilder.newClient(config);
+		final WebTarget target = client.target(getBaseURI());
+		System.out.println(target.path("computer").path("list").request()
+				.get(String.class));
+	}
+
+	private void deleteComputer() {
+		System.out.println("Computer id ?");
+		final String choice = getChoice();
+
+		final ClientConfig config = new ClientConfig();
+		final Client client = ClientBuilder.newClient(config);
+		final WebTarget target = client.target(getBaseURI());
+		System.out.println(target.path("computer").path(choice).request()
+				.delete());
+	}
+
+	private void deleteCompany() {
+		System.out.println("Company id ?");
+		final String choice = getChoice();
+
+		final ClientConfig config = new ClientConfig();
+		final Client client = ClientBuilder.newClient(config);
+		final WebTarget target = client.target(getBaseURI());
+		System.out.println(target.path("company").path(choice).request()
+				.delete());
+
+	}
+
+	private static URI getBaseURI() {
+		return UriBuilder.fromUri("http://localhost:8080/cdb/api").build();
 	}
 
 	public static void main(String[] args) {

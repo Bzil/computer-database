@@ -60,7 +60,8 @@ public class ComputerMapperImpl implements ComputerMapper {
 			computer.setDiscontinued(LocalDateTime.parse(
 					dto.discontinued += " 00:00:00", formatter));
 		}
-		if (dto.companyId != -1 && !dto.companyName.trim().isEmpty()) {
+		if (dto.companyId != -1 && dto.companyName != null
+				&& !dto.companyName.trim().isEmpty()) {
 			computer.setCompany(new Company(dto.companyId, dto.companyName
 					.trim()));
 		}

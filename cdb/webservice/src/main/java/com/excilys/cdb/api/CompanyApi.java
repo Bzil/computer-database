@@ -19,4 +19,13 @@ public interface CompanyApi {
 	 * @return the all
 	 */
 	public Response getAll();
+
+	/**
+	 * Delete.
+	 *
+	 * @param id
+	 *            the id
+	 * @return the response
+	 */
+	public Response delete(Integer id);
 }

@@ -185,6 +185,7 @@ public class ComputerServiceImpl implements ComputerService {
 	 * Computer )
 	 */
 	@Override
+	@Transactional
 	public ComputerDTO update(final Computer computer) {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Update " + computer);

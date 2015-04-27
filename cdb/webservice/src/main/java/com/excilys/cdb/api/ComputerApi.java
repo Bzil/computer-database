@@ -2,6 +2,8 @@ package com.excilys.cdb.api;
 
 import javax.ws.rs.core.Response;
 
+import com.excilys.cdb.dto.ComputerDTO;
+
 /**
  * The Interface ComputerApi.
  */
@@ -33,29 +35,42 @@ public interface ComputerApi {
 	public Response getAll();
 
 	/**
-	 * Gets the all by criteria.
+	 * Creates the Computer with required parameter name, id = -1, companyId
+	 * Optional parameter are introduced, discontinued with pattern
+	 * <u>dd-mm-yyyy</u> and companyName. For example <i>{"id":"-1",
+	 * "name":"xyz", "companyId":"-1"}</i> will return
+	 * <i>{"id":XX,"name":"xyz","introduced"
+	 * :"","discontinued":"","companyId":-1,"companyName":""}</i> where XX is
+	 * the new id of the computer.
 	 *
-	 * @param name
-	 *            the name
-	 * @param order
-	 *            the order
-	 * @return the all by criteria
+	 * @param dto
+	 *            the dto
+	 * @return the response
 	 */
-	public Response getAllByCriteria(String name, String order);
+	public Response create(ComputerDTO dto);
 
 	/**
-	 * Gets the page.
+	 * Update the Computer with required parameter name, id = XX, companyId
+	 * Optional parameter are introduced, discontinued with pattern
+	 * <u>dd-mm-yyyy</u> and companyName. For example <i>{"id":"XX",
+	 * "name":"xyz", "companyId":"-1"}</i> will return
+	 * <i>{"id":XX,"name":"xyz","introduced"
+	 * :"","discontinued":"","companyId":-1,"companyName":""}</i> where XX is
+	 * the id of the computer.
 	 *
-	 * @param name
-	 *            the name
-	 * @param order
-	 *            the order
-	 * @param start
-	 *            the start
-	 * @param offset
-	 *            the offset
-	 * @return the page
+	 * @param dto
+	 *            the dto
+	 * @return the response
 	 */
-	public Response getPage(String name, String order, Integer start,
-			Integer offset);
+	public Response update(ComputerDTO dto);
+
+	/**
+	 * Delete.
+	 *
+	 * @param id
+	 *            the id
+	 * @return the response
+	 */
+	public Response delete(Integer id);
+
 }

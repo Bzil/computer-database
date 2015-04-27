@@ -33,7 +33,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.CompanyService#find(int)
 	 */
 	@Override
@@ -42,7 +42,6 @@ public class CompanyServiceImpl implements CompanyService {
 		CompanyDTO dto = null;
 		if (id > 0) {
 			final Company c = companyDao.find(id);
-
 			if (c != null) {
 				dto = mapper.toDto(c);
 			}
@@ -52,7 +51,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.CompanyService#findAll()
 	 */
 	@Override
@@ -69,7 +68,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.CompanyService#findAll(int, int)
 	 */
 	@Override
@@ -87,7 +86,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.service.CompanyService#delete(com.excilys.cdb.model.Company
 	 * )
@@ -95,25 +94,20 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	@Transactional
 	public void delete(final Company company) {
-
-		/*
-		 * final List<Computer> computers =
-		 * computerDao.findByCompanyId(company.getId()); for (Computer computer
-		 * : computers) { computerDao.delete(computer.getId()); }
-		 */
-		computerDao.delete(company.getId());
-
-		companyDao.delete(company.getId());
+		this.delete(company.getId());
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.Service#delete(int)
 	 */
 	@Override
 	@Transactional
 	public void delete(final int id) {
+		computerDao.findByCompanyId(id).stream()
+		.forEach(e -> computerDao.delete(e.getId()));
+
 		companyDao.delete(id);
 	}
 
