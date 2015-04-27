@@ -32,6 +32,7 @@ public class ComputerDTO implements DTO<Computer>, Serializable {
 	@Date
 	public String discontinued;
 
+	// TODO put Company DTO
 	public int companyId;
 
 	public String companyName;

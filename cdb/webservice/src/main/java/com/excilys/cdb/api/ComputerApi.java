@@ -1,6 +1,8 @@
 package com.excilys.cdb.api;
 
-import javax.ws.rs.core.Response;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 
 import com.excilys.cdb.dto.ComputerDTO;
 
@@ -16,7 +18,7 @@ public interface ComputerApi {
 	 *            the id
 	 * @return the by id
 	 */
-	public Response getById(Integer id);
+	public ResponseEntity<ComputerDTO> getById(Integer id);
 
 	/**
 	 * Gets the by name.
@@ -25,14 +27,14 @@ public interface ComputerApi {
 	 *            the name
 	 * @return the by name
 	 */
-	public Response getByName(String name);
+	public ResponseEntity<List<ComputerDTO>> getByName(String name);
 
 	/**
 	 * Gets the all.
 	 *
 	 * @return the all
 	 */
-	public Response getAll();
+	public ResponseEntity<List<ComputerDTO>> getAll();
 
 	/**
 	 * Creates the Computer with required parameter name, id = -1, companyId
@@ -47,7 +49,7 @@ public interface ComputerApi {
 	 *            the dto
 	 * @return the response
 	 */
-	public Response create(ComputerDTO dto);
+	public ResponseEntity<ComputerDTO> create(ComputerDTO dto);
 
 	/**
 	 * Update the Computer with required parameter name, id = XX, companyId
@@ -62,7 +64,7 @@ public interface ComputerApi {
 	 *            the dto
 	 * @return the response
 	 */
-	public Response update(ComputerDTO dto);
+	public ResponseEntity<ComputerDTO> update(ComputerDTO dto);
 
 	/**
 	 * Delete.
@@ -71,6 +73,6 @@ public interface ComputerApi {
 	 *            the id
 	 * @return the response
 	 */
-	public Response delete(Integer id);
+	public ResponseEntity<ComputerDTO> delete(Integer id);
 
 }

@@ -1,6 +1,10 @@
 package com.excilys.cdb.api;
 
-import javax.ws.rs.core.Response;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+
+import com.excilys.cdb.dto.CompanyDTO;
 
 public interface CompanyApi {
 
@@ -11,14 +15,14 @@ public interface CompanyApi {
 	 *            the id
 	 * @return the by id
 	 */
-	public Response getById(Integer id);
+	public ResponseEntity<CompanyDTO> getById(Integer id);
 
 	/**
 	 * Gets the all.
 	 *
 	 * @return the all
 	 */
-	public Response getAll();
+	public ResponseEntity<List<CompanyDTO>> getAll();
 
 	/**
 	 * Delete.
@@ -27,5 +31,5 @@ public interface CompanyApi {
 	 *            the id
 	 * @return the response
 	 */
-	public Response delete(Integer id);
+	public ResponseEntity<CompanyDTO> delete(Integer id);
 }
