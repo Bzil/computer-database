@@ -15,9 +15,8 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
-
-import org.glassfish.jersey.client.ClientConfig;
 
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.mapper.ComputerMapper;
@@ -40,7 +39,7 @@ public class CliWebService {
 			System.out.println("7) Delete a company");
 			System.out.println("8) Show company details");
 			System.out.println("0) Quit");
-			System.out.println("Choose between 0 - 7 : ");
+			System.out.println("Choose between 0 - 8 : ");
 
 			switch (getChoice(toList("1", "2", "3", "4", "5", "6", "7", "8",
 					"0"))) {
@@ -78,6 +77,7 @@ public class CliWebService {
 	}
 
 	public void createComputer() {
+		final Client restClient = ClientBuilder.newClient();
 		final ComputerMapper mapper = new ComputerMapperImpl();
 		String buffer;
 		final Computer computer = new Computer();
@@ -100,30 +100,34 @@ public class CliWebService {
 		}
 		System.out.println("Company Id");
 		buffer = getChoice();
-		computer.setCompany(new Company());
-		if (!buffer.equals("null")) {
 
-			computer.getCompany().setId(Integer.parseInt(buffer));
+		if (!buffer.equals("null")) {
+			computer.setCompany(new Company(Integer.parseInt(buffer), ""));
 		} else {
-			computer.getCompany().setId(-1);
+			computer.setCompany(new Company(-1, ""));
 		}
 		computer.setIntroduced(introduced);
 		computer.setDiscontinued(discontinued);
 
 		final ComputerDTO dto = mapper.toDto(computer);
-
-		final Client client = ClientBuilder.newClient();
-		final WebTarget target = client.target(getBaseURI());
-		System.out.println(target.path("computer")
-				.request(MediaType.APPLICATION_JSON)
-				.post(Entity.json(dto), String.class));
+		System.out.println("Computer  " + computer);
+		System.out.println("  Dto  " + dto);
+		System.out.println("Json " + Entity.json(dto));
+		final Response response = restClient
+				.target("http://localhost:8080/cdb/api/computer").request()
+				.post(Entity.entity(dto, MediaType.APPLICATION_JSON_TYPE));
+		if (response.getStatus() == 201) {
+			System.out.println("Computer added with success: uri: "
+					+ response.getLocation());
+		} else {
+			System.out.println("Error");
+		}
 	}
 
 	public void showComputer() {
 		System.out.println("Computer id ?");
 		final String choice = getChoice();
-		final ClientConfig config = new ClientConfig();
-		final Client client = ClientBuilder.newClient(config);
+		final Client client = ClientBuilder.newClient();
 		final WebTarget target = client.target(getBaseURI());
 		System.out.println(target.path("computer").path(choice).request()
 				.get(String.class));
@@ -131,8 +135,8 @@ public class CliWebService {
 	}
 
 	public void showCompanies() {
-		final ClientConfig config = new ClientConfig();
-		final Client client = ClientBuilder.newClient(config);
+
+		final Client client = ClientBuilder.newClient();
 		final WebTarget target = client.target(getBaseURI());
 		System.out.println(target.path("company").path("list").request()
 				.get(String.class));
@@ -142,16 +146,15 @@ public class CliWebService {
 		System.out.println("Company id ?");
 		final String choice = getChoice();
 
-		final ClientConfig config = new ClientConfig();
-		final Client client = ClientBuilder.newClient(config);
+		final Client client = ClientBuilder.newClient();
 		final WebTarget target = client.target(getBaseURI());
 		System.out.println(target.path("company").path(choice).request()
 				.get(String.class));
 	}
 
 	public void showComputers() {
-		final ClientConfig config = new ClientConfig();
-		final Client client = ClientBuilder.newClient(config);
+
+		final Client client = ClientBuilder.newClient();
 		final WebTarget target = client.target(getBaseURI());
 		System.out.println(target.path("computer").path("list").request()
 				.get(String.class));
@@ -161,8 +164,7 @@ public class CliWebService {
 		System.out.println("Computer id ?");
 		final String choice = getChoice();
 
-		final ClientConfig config = new ClientConfig();
-		final Client client = ClientBuilder.newClient(config);
+		final Client client = ClientBuilder.newClient();
 		final WebTarget target = client.target(getBaseURI());
 		System.out.println(target.path("computer").path(choice).request()
 				.delete());
@@ -172,8 +174,7 @@ public class CliWebService {
 		System.out.println("Company id ?");
 		final String choice = getChoice();
 
-		final ClientConfig config = new ClientConfig();
-		final Client client = ClientBuilder.newClient(config);
+		final Client client = ClientBuilder.newClient();
 		final WebTarget target = client.target(getBaseURI());
 		System.out.println(target.path("company").path(choice).request()
 				.delete());

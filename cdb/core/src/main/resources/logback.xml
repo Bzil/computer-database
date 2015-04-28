@@ -6,16 +6,29 @@
 			</pattern>
 		</encoder>
 	</appender>
-<!-- 	<TODO>
-Create file appender for log
-</TODO> -->
-	<!-- Disable Spring logger -->
-	<logger name="org.springframework" level="info" /> 
+	
+	<timestamp key="byDay" datePattern="yyyy-MM-dd" />
 
-	<!-- Disable hibernate logger -->
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file> log-${byDay}.log </file>
+		<append>true</append>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<!-- Spring logger -->
+	<logger name="org.springframework" level="info" />
+
+	<!-- Hibernate logger -->
 	<logger name="org.hibernate" level="info" />
 
+	<!-- Logback logger -->
+	<logger name=" ch.qos.logback" level="off" />
+	
 	<root level="debug">
 		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
 	</root>
 </configuration>

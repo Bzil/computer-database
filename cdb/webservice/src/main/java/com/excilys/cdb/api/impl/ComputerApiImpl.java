@@ -1,8 +1,9 @@
 package com.excilys.cdb.api.impl;
 
+import java.net.URI;
 import java.util.List;
 
-import javax.ws.rs.core.MediaType;
+import javax.servlet.ServletContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +25,7 @@ import com.excilys.cdb.service.ComputerService;
  * The Class ComputerApiImpl.
  */
 @RestController
-@RequestMapping(value = "api/computer", produces = MediaType.APPLICATION_JSON)
+@RequestMapping(value = "api/computer", produces = "application/json")
 public class ComputerApiImpl implements ComputerApi {
 
 	/** The Constant LOGGER. */
@@ -35,11 +37,14 @@ public class ComputerApiImpl implements ComputerApi {
 	private ComputerService computerService;
 
 	@Autowired
+	private ServletContext context;
+
+	@Autowired
 	private ComputerMapper mapper;
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.api.ComputerApi#getById(java.lang.Integer)
 	 */
 	@Override
@@ -54,7 +59,7 @@ public class ComputerApiImpl implements ComputerApi {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.api.ComputerApi#getAll()
 	 */
 	@Override
@@ -90,23 +95,27 @@ public class ComputerApiImpl implements ComputerApi {
 	 * com.excilys.cdb.api.ComputerApi#create(com.excilys.cdb.dto.ComputerDTO)
 	 */
 	@Override
-	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
-	public ResponseEntity<ComputerDTO> create(ComputerDTO dto) {
+	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<ComputerDTO> create(@RequestBody ComputerDTO dto) {
+		LOGGER.debug("Create computer {}", dto);
 		final ComputerDTO computer = computerService.add(mapper.toModel(dto));
-		return computer.getId() != -1 ? new ResponseEntity<ComputerDTO>(dto,
-				HttpStatus.OK) : new ResponseEntity<ComputerDTO>(
-						HttpStatus.NO_CONTENT);
+		final URI uri = URI.create(context.getContextPath() + "/api/computer/"
+				+ computer.getId());
+		return computer.getId() != -1 ? ResponseEntity.created(uri).body(
+				computer) : new ResponseEntity<ComputerDTO>(
+				HttpStatus.NO_CONTENT);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.api.ComputerApi#update(com.excilys.cdb.dto.ComputerDTO)
 	 */
 	@Override
-	@RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON)
-	public ResponseEntity<ComputerDTO> update(ComputerDTO dto) {
+	@RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
+	public ResponseEntity<ComputerDTO> update(@RequestBody ComputerDTO dto) {
+		LOGGER.debug("Update computer {}", dto);
 		final ComputerDTO computer = computerService
 				.update(mapper.toModel(dto));
 		return computer.getId() != -1 ? new ResponseEntity<ComputerDTO>(dto,
@@ -122,9 +131,9 @@ public class ComputerApiImpl implements ComputerApi {
 	@Override
 	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<ComputerDTO> delete(@PathVariable("id") Integer id) {
+		LOGGER.debug("Delete computer {}", id);
 		computerService.delete(id);
 		return new ResponseEntity<ComputerDTO>(HttpStatus.OK);
-		// : new ResponseEntity<ComputerDTO>(HttpStatus.BAD_REQUEST);
 	}
 
 }

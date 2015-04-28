@@ -90,6 +90,7 @@ public class ComputerDTO implements DTO<Computer>, Serializable {
 		return new StringBuilder("Computer [name : ").append(name)
 				.append(" introduced : ").append(introduced)
 				.append(" discontinued : ").append(discontinued)
+				.append(" company id : ").append(companyId)
 				.append(" company name : ").append(companyName).append(" ]")
 				.toString();
 	}
