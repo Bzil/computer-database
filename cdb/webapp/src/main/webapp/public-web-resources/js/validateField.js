@@ -67,7 +67,7 @@ var isCorrectDate = function (day, month, year) {
     day = parseInt(day);
     month = parseInt(month);
     year = parseInt(year);
-    if (!day || !month || !year || month < 1 || month > 12 || day < 0 || day > 31 || year < 1970) {
+    if (!day || !month || !year || year <= 1970 || year >= 2037 || month < 1 || month > 12 || day < 0 || day > 31) {
         return false;
     }
     if (day == 31 && (month == 11 || month == 4 || month == 6 || month == 9 )) {
