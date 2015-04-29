@@ -100,7 +100,8 @@ public class ComputerController {
 		// Search
 		if (search != null && !search.trim().isEmpty()) {
 			LOGGER.info("Looking for : {}", search);
-			entities = computerService.find(search, criteria);
+			entities = computerService.find(search, computerPage.getStart(),
+					computerPage.getOffset(), criteria);
 			count = entities.size();
 			computerPage.setSearch(search);
 		} else {
@@ -144,12 +145,12 @@ public class ComputerController {
 		if (!result.hasErrors()) {
 			computerDto.company.name = companyService
 					.find(computerDto.company.id) != null ? companyService
-					.find(computerDto.company.id).getName() : "";
-			final Computer computer = mapper.toModel(computerDto);
-			computerService.saveOrUpdate(computer);
-			LOGGER.debug("add or edit computer {}", computer);
+							.find(computerDto.company.id).getName() : "";
+							final Computer computer = mapper.toModel(computerDto);
+							computerService.saveOrUpdate(computer);
+							LOGGER.debug("add or edit computer {}", computer);
 
-			return ControllerList.REDIRECT + ControllerList.DASHBOARD_VIEW;
+							return ControllerList.REDIRECT + ControllerList.DASHBOARD_VIEW;
 		} else {
 			return load(computerDto.id, computerDto, model);
 		}

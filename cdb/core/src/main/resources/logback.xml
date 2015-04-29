@@ -27,6 +27,9 @@
 
     <!-- Logback logger -->
     <logger name=" ch.qos.logback" level="off"/>
+    
+     <logger name="org.apache" level="info"/>
+    
 
     <root level="debug">
         <appender-ref ref="STDOUT"/>

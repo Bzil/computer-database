@@ -142,8 +142,7 @@
 </section>
 
 <footer class="navbar-fixed-bottom">
-    <mylib:pagination end="${page.endPage}" active="${page.currentPage}"
-                      start="${page.startPage}"></mylib:pagination>
+    <mylib:pagination page="${page}"></mylib:pagination>
 
 </footer>
 <jsp:include page="/WEB-INF/view/import/footer.jsp"></jsp:include>
