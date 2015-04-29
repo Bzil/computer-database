@@ -24,9 +24,7 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.page.ComputerPage;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.sort.SortColumn;
 import com.excilys.cdb.sort.SortCriteria;
-import com.excilys.cdb.sort.SortDirection;
 
 @Controller
 public class ComputerController {
@@ -62,8 +60,7 @@ public class ComputerController {
 	 *            the model
 	 * @return the computer list
 	 */
-	@RequestMapping(value = "/dashboard", method = { RequestMethod.GET,
-			RequestMethod.POST })
+	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	public String getComputerList(
 			@RequestParam(required = false) final Integer id,
 			@RequestParam(required = false) final Integer size,
@@ -75,20 +72,6 @@ public class ComputerController {
 		final ComputerPage computerPage = new ComputerPage();
 
 		List<ComputerDTO> entities = null;
-
-		// Deletion
-		if (selection != null) {
-			final List<Integer> list = Arrays.stream(selection.split(","))
-					.map(Integer::valueOf).collect(Collectors.toList());
-			for (final Integer i : list) {
-				try {
-					computerService.delete(i);
-					LOGGER.info("computer with id : {} deleted", id);
-				} catch (final Exception e) {
-					LOGGER.error("computer with id : {} can not be deleted", id);
-				}
-			}
-		}
 		// size of list
 		if (size != null && size > 0) {
 			computerPage.setOffset(size);
@@ -104,15 +87,13 @@ public class ComputerController {
 		} else {
 			computerPage.setCurrentPage(page);
 		}
-		String options = "?id=".concat(String.valueOf(page));
 		// count of cumputer
 		long count = computerService.count();
 
 		// Sort criteria
-		final SortCriteria criteria = getSortCriteria(column, dir);
+		final SortCriteria criteria = SortCriteria.buildSortCriteria(column,
+				dir);
 		if (criteria != null) {
-			options = options.concat("&column=").concat(criteria.getColumn())
-					.concat("&dir=").concat(criteria.getDirection());
 			computerPage.setOrderBy(criteria.getDirection());
 			computerPage.setColumn(criteria.getColumn());
 		}
@@ -121,7 +102,6 @@ public class ComputerController {
 			LOGGER.info("Looking for : {}", search);
 			entities = computerService.find(search, criteria);
 			count = entities.size();
-			options = options.concat("&search=").concat(search);
 			computerPage.setSearch(search);
 		} else {
 			entities = computerService.findAll(computerPage.getStart(),
@@ -162,11 +142,11 @@ public class ComputerController {
 		LOGGER.debug("add or edit  DTO {}", computerDto);
 
 		if (!result.hasErrors()) {
-			computerDto.companyName = companyService
-					.find(computerDto.companyId) != null ? companyService.find(
-							computerDto.companyId).getName() : "";
+			computerDto.company.name = companyService
+					.find(computerDto.company.id) != null ? companyService
+					.find(computerDto.company.id).getName() : "";
 			final Computer computer = mapper.toModel(computerDto);
-							computerService.saveOrUpdate(computer);
+			computerService.saveOrUpdate(computer);
 			LOGGER.debug("add or edit computer {}", computer);
 
 			return ControllerList.REDIRECT + ControllerList.DASHBOARD_VIEW;
@@ -175,27 +155,22 @@ public class ComputerController {
 		}
 	}
 
-	// TODO delete duplicate code
-	/**
-	 * Gets the sort criteria.
-	 *
-	 * @param column
-	 *            the column
-	 * @param dir
-	 *            the sort direction
-	 * @return the sort criteria
-	 */
-	private SortCriteria getSortCriteria(final String column, final String dir) {
-		SortCriteria sort = null;
-		if (column != null && dir != null && !column.trim().isEmpty()
-				&& !dir.trim().isEmpty()) {
-			try {
-				sort = new SortCriteria(SortColumn.valueOf(column.trim()
-						.toUpperCase()), SortDirection.valueOf(dir.trim()));
-			} catch (final IllegalArgumentException e) {
-				sort = null;
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	public String delete(@RequestParam(value = "selection") String selection) {
+		LOGGER.info("Delete {} ", selection);
+		// Deletion
+		if (selection != null && !selection.trim().isEmpty()) {
+			final List<Integer> list = Arrays.stream(selection.split(","))
+					.map(Integer::valueOf).collect(Collectors.toList());
+			for (final Integer i : list) {
+				try {
+					computerService.delete(i);
+					LOGGER.info("computer with id : {} deleted", i);
+				} catch (final Exception e) {
+					LOGGER.error("computer with id : {} can not be deleted", i);
+				}
 			}
 		}
-		return sort;
+		return ControllerList.REDIRECT + ControllerList.DASHBOARD_VIEW;
 	}
 }

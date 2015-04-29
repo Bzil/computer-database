@@ -7,13 +7,12 @@ import com.excilys.cdb.model.User;
  */
 public interface UserDao {
 
-	/**
-	 * Find user by name.
-	 *
-	 * @param username
-	 *            the username
-	 * @return the user
-	 */
-	public User findByName(String username);
+    /**
+     * Find user by name.
+     *
+     * @param username the username
+     * @return the user
+     */
+    User findByName(String username);
 
 }

@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>	
 <configuration>
 
-	<timestamp key="byDay" datePattern="yyyy-MM-dd" />
+    <timestamp key="byDay" datePattern="yyyy-MM-dd"/>
 
-	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<file> log-${byDay}.log </file>
-		<append>true</append>
-		<encoder>
-			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
-			</pattern>
-		</encoder>
-	</appender>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>log-${byDay}.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
 
-	<!-- Spring logger -->
-	<logger name="org.springframework" level="off" />
+    <!-- Spring logger -->
+    <logger name="org.springframework" level="off"/>
 
-	<!-- Hibernate logger -->
-	<logger name="org.hibernate" level="off" />
+    <!-- Hibernate logger -->
+    <logger name="org.hibernate" level="off"/>
 
-	<!-- Logback logger -->
-	<logger name=" ch.qos.logback" level="off" />
+    <!-- Logback logger -->
+    <logger name=" ch.qos.logback" level="off"/>
 
 
-	<root level="OFF">
-		<appender-ref ref="STDOUT" />
-	</root>
+    <root level="OFF">
+        <appender-ref ref="STDOUT"/>
+    </root>
 
 </configuration>

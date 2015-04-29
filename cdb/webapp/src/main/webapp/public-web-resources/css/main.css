@@ -5,64 +5,67 @@ body {
 }
 
 footer {
-    position:fixed;
-    bottom:0;
-    width:100%;
-    background:#FEFEFE;
-    border-top:1px solid #CCC;
-    height:60px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #FEFEFE;
+    border-top: 1px solid #CCC;
+    height: 60px;
 }
 
 footer .pagination {
-    margin:10px 0px;
+    margin: 10px 0px;
 }
 
 footer .btn-group {
-    margin:10px 10px;
+    margin: 10px 10px;
 }
 
 input[type='checkbox'] {
     margin: 0px;
-    padding:0px;
+    padding: 0px;
     border-radius: 5px;
     white-space: nowrap;
 }
 
 .form-signin, .form-signin-button {
-  max-width: 330px;
-  padding: 0px 15px;
-  margin: 0 auto;
+    max-width: 330px;
+    padding: 0px 15px;
+    margin: 0 auto;
 }
 
 .form-signin-button {
-	padding: 15px;
+    padding: 15px;
 }
 
 .form-signin .form-control {
-  position: relative;
-  height: auto;
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
-  padding: 10px;
-  font-size: 16px;
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
 }
+
 .form-signin .form-control:focus {
-  z-index: 2;
+    z-index: 2;
 }
+
 .form-signin .up {
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
 }
+
 .form-signin .down {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 
 .input-group-addon {
-	border = 1px;
+    border = 1px;
 }
 
 .has-error {
-	color: #FF0000;
+    color: #FF0000;
 }

@@ -9,13 +9,13 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class ErrorHandlerController {
 
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	@ExceptionHandler(Exception.class)
-	public ModelAndView handle500(Exception e) {
-		final ModelAndView model = new ModelAndView(
-				ControllerList.ERROR_500_VIEW);
-		model.addObject("message", e.getMessage());
-		model.addObject("exception", e.getStackTrace());
-		return model;
-	}
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handle500(Exception e) {
+        final ModelAndView model = new ModelAndView(
+                ControllerList.ERROR_500_VIEW);
+        model.addObject("message", e.getMessage());
+        model.addObject("exception", e.getStackTrace());
+        return model;
+    }
 }

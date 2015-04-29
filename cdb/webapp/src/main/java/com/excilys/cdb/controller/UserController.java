@@ -11,55 +11,53 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class UserController {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(UserController.class);
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(UserController.class);
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView welcomePage() {
-		final ModelAndView model = new ModelAndView();
-		model.setViewName("connect");
-		return model;
-	}
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView welcomePage() {
+        final ModelAndView model = new ModelAndView();
+        model.setViewName("connect");
+        return model;
+    }
 
-	/**
-	 * Admin page.
-	 *
-	 * @return the model and view
-	 */
-	@RequestMapping(value = "/dashboard**", method = RequestMethod.GET)
-	public ModelAndView adminPage() {
-		final ModelAndView model = new ModelAndView();
-		model.setViewName("dashboard");
-		return model;
+    /**
+     * Admin page.
+     *
+     * @return the model and view
+     */
+    @RequestMapping(value = "/dashboard**", method = RequestMethod.GET)
+    public ModelAndView adminPage() {
+        final ModelAndView model = new ModelAndView();
+        model.setViewName("dashboard");
+        return model;
 
-	}
+    }
 
-	/**
-	 * Login.
-	 *
-	 * @param error
-	 *            the error
-	 * @param logout
-	 *            the logout
-	 * @return the model and view
-	 */
-	@RequestMapping(value = "/connect", method = RequestMethod.GET)
-	public ModelAndView login(
-			@RequestParam(value = "error", required = false) String error,
-			@RequestParam(value = "logout", required = false) String logout) {
+    /**
+     * Login.
+     *
+     * @param error  the error
+     * @param logout the logout
+     * @return the model and view
+     */
+    @RequestMapping(value = "/connect", method = RequestMethod.GET)
+    public ModelAndView login(
+            @RequestParam(value = "error", required = false) String error,
+            @RequestParam(value = "logout", required = false) String logout) {
 
-		final ModelAndView model = new ModelAndView();
-		if (error != null) {
-			LOGGER.debug("Login error : {}", error);
-			model.addObject("error", "Invalid username and password!");
-		}
+        final ModelAndView model = new ModelAndView();
+        if (error != null) {
+            LOGGER.debug("Login error : {}", error);
+            model.addObject("error", "Invalid username and password!");
+        }
 
-		if (logout != null) {
-			LOGGER.debug("Logout : {}", logout);
-			model.addObject("msg", "You've been logged out successfully.");
-		}
-		model.setViewName("connect");
+        if (logout != null) {
+            LOGGER.debug("Logout : {}", logout);
+            model.addObject("msg", "You've been logged out successfully.");
+        }
+        model.setViewName("connect");
 
-		return model;
-	}
+        return model;
+    }
 }

@@ -1,35 +1,32 @@
 package com.excilys.cdb.api;
 
-import java.util.List;
-
+import com.excilys.cdb.dto.CompanyDTO;
 import org.springframework.http.ResponseEntity;
 
-import com.excilys.cdb.dto.CompanyDTO;
+import java.util.List;
 
 public interface CompanyApi {
 
-	/**
-	 * Gets the by id.
-	 *
-	 * @param id
-	 *            the id
-	 * @return the by id
-	 */
-	public ResponseEntity<CompanyDTO> getById(Integer id);
+    /**
+     * Gets the by id.
+     *
+     * @param id the id
+     * @return the by id
+     */
+    ResponseEntity<CompanyDTO> getById(Integer id);
 
-	/**
-	 * Gets the all.
-	 *
-	 * @return the all
-	 */
-	public ResponseEntity<List<CompanyDTO>> getAll();
+    /**
+     * Gets the all.
+     *
+     * @return the all
+     */
+    ResponseEntity<List<CompanyDTO>> getAll();
 
-	/**
-	 * Delete.
-	 *
-	 * @param id
-	 *            the id
-	 * @return the response
-	 */
-	public ResponseEntity<CompanyDTO> delete(Integer id);
+    /**
+     * Delete.
+     *
+     * @param id the id
+     * @return the response
+     */
+    ResponseEntity<CompanyDTO> delete(Integer id);
 }

@@ -1,154 +1,154 @@
 package com.excilys.cdb.page;
 
+import com.excilys.cdb.dto.DTO;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.excilys.cdb.dto.DTO;
 
 /**
  * The Class Page.
  *
- * @param <T>
- *            the generic type
+ * @param <T> the generic type
  */
 public abstract class Page<T, D extends DTO<T>> {
 
-	/** The entities. */
-	private List<D> entities = new ArrayList<>();
+    private static final int OFFSET_PAGE = 3;
+    /**
+     * The entities.
+     */
+    private List<D> entities = new ArrayList<>();
+    /**
+     * The index of T in base.
+     */
+    private int start = 0;
+    /**
+     * Number of item by page.
+     */
+    private int offset = 0;
+    /**
+     * Count of items
+     */
+    private long count;
+    /**
+     * The current page.
+     */
+    private int currentPage = 1;
+    /**
+     * The page number
+     */
+    private int pageNb;
+    private int startPage = 0;
+    private int endPage = 4;
+    private String search;
+    private String orderBy = "DESC";
+    private String column = "";
 
-	/** The index of T in base. */
-	private int start = 0;
+    public void showEntities(List<D> list) {
+        for (final D d : list) {
+            System.out.println(d);
+        }
+    }
 
-	/** Number of item by page. */
-	private int offset = 0;
+    public List<D> getEntities() {
+        return entities;
+    }
 
-	/** Count of items */
-	private long count;
+    public void setEntities(List<D> entities) {
+        this.entities = entities;
+    }
 
-	/** The current page. */
-	private int currentPage = 1;
+    public int getStart() {
+        return start;
+    }
 
-	/** The page number */
-	private int pageNb;
+    public int getOffset() {
+        return offset;
+    }
 
-	private int startPage = 0;
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
 
-	private int endPage = 4;
+    public int getCurrentPage() {
+        return currentPage;
+    }
 
-	private String search;
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+        this.start = (currentPage > 1) ? (currentPage - 1) * offset : 0;
+    }
 
-	private String orderBy = "DESC";
+    public int getPageNb() {
+        return pageNb;
+    }
 
-	private String column = "";
+    private void setPageNb(int pageNb) {
+        this.pageNb = pageNb;
+        if (currentPage - OFFSET_PAGE > 0) {
+            this.startPage = currentPage - OFFSET_PAGE;
+        } else {
+            this.startPage = 0;
+        }
+        if (currentPage + OFFSET_PAGE < pageNb) {
+            this.endPage = currentPage + OFFSET_PAGE;
+        } else {
+            this.endPage = pageNb;
+        }
+    }
 
-	private static final int OFFSET_PAGE = 3;
+    public long getCount() {
+        return count;
+    }
 
-	public void showEntities(List<D> list) {
-		for (final D d : list) {
-			System.out.println(d);
-		}
-	}
+    public void setCount(long count) {
+        this.count = count;
+        final int nb = (int) count / offset;
+        setPageNb(count < offset ? 1 : count % nb == 0 ? nb : nb + 1);
+    }
 
-	public List<D> getEntities() {
-		return entities;
-	}
+    public int getStartPage() {
+        return startPage;
+    }
 
-	public void setEntities(List<D> entities) {
-		this.entities = entities;
-	}
+    public int getEndPage() {
+        return endPage;
+    }
 
-	public int getStart() {
-		return start;
-	}
+    public String getSearch() {
+        return search;
+    }
 
-	public int getOffset() {
-		return offset;
-	}
+    public void setSearch(String search) {
+        this.search = search;
+    }
 
-	public void setOffset(int offset) {
-		this.offset = offset;
-	}
+    public String getOrderBy() {
+        return orderBy;
+    }
 
-	public int getCurrentPage() {
-		return currentPage;
-	}
+    public void setOrderBy(String orderBy) {
+        if (orderBy.equals("ASC")) {
+            this.orderBy = orderBy;
+        } else {
+            this.orderBy = "DESC";
+        }
+    }
 
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
-		this.start = (currentPage > 1) ? (currentPage - 1) * offset : 0;
-	}
+    public String getColumn() {
+        return column;
+    }
 
-	public int getPageNb() {
-		return pageNb;
-	}
+    public void setColumn(String column) {
+        this.column = column;
+    }
 
-	private void setPageNb(int pageNb) {
-		this.pageNb = pageNb;
-		if (currentPage - OFFSET_PAGE > 0) {
-			this.startPage = currentPage - OFFSET_PAGE;
-		} else {
-			this.startPage = 0;
-		}
-		if (currentPage + OFFSET_PAGE < pageNb) {
-			this.endPage = currentPage + OFFSET_PAGE;
-		} else {
-			this.endPage = pageNb;
-		}
-	}
-
-	public long getCount() {
-		return count;
-	}
-
-	public void setCount(long count) {
-		this.count = count;
-		final int nb = (int) count / offset;
-		setPageNb(count < offset ? 1 : count % nb == 0 ? nb : nb + 1);
-	}
-
-	public int getStartPage() {
-		return startPage;
-	}
-
-	public int getEndPage() {
-		return endPage;
-	}
-
-	public String getSearch() {
-		return search;
-	}
-
-	public void setSearch(String search) {
-		this.search = search;
-	}
-
-	public String getOrderBy() {
-		return orderBy;
-	}
-
-	public void setOrderBy(String orderBy) {
-		if (orderBy.equals("ASC")) {
-			this.orderBy = orderBy;
-		} else {
-			this.orderBy = "DESC";
-		}
-	}
-
-	public String getColumn() {
-		return column;
-	}
-
-	public void setColumn(String column) {
-		this.column = column;
-	}
-
-	@Override
-	public String toString() {
-		return "Page [start=" + start + ", offset=" + offset + ", count="
-				+ count + ", currentPage=" + currentPage + ", pageNb=" + pageNb
-				+ ", startPage=" + startPage + ", endPage=" + endPage
-				+ ", search=" + search + ", orderBy=" + orderBy + ", column="
-				+ column + "]";
-	}
+    @Override
+    public String toString() {
+        return "Page [start=" + start + ", offset=" + offset + ", count="
+                + count + ", currentPage=" + currentPage + ", pageNb=" + pageNb
+                + ", startPage=" + startPage + ", endPage=" + endPage
+                + ", search=" + search + ", orderBy=" + orderBy + ", column="
+                + column + "]";
+    }
 
 }

@@ -29,3 +29,6 @@ WebContent
 
 Servers/
 RemoteSystemsTempFiles
+
+.idea
+*.iml

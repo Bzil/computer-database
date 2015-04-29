@@ -1,78 +1,77 @@
 package com.excilys.cdb.dto;
 
-import java.io.Serializable;
+import com.excilys.cdb.model.Company;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
-import com.excilys.cdb.model.Company;
+import java.io.Serializable;
 
 public class CompanyDTO implements DTO<Company>, Serializable {
 
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public int id;
+    public int id;
 
-	@NotNull
-	@Pattern(regexp = "^[ ]+.*$")
-	public String name;
+    @NotNull
+    @Pattern(regexp = "^[ ]+.*$")
+    public String name;
 
-	@Override
-	public String toString() {
-		return "Company [id=" + id + ", name=" + name + "]";
-	}
+    @Override
+    public String toString() {
+        return "Company [id=" + id + ", name=" + name + "]";
+    }
 
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + id;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final CompanyDTO other = (CompanyDTO) obj;
-		if (id != other.id) {
-			return false;
-		}
-		if (name == null) {
-			if (other.name != null) {
-				return false;
-			}
-		} else if (!name.equals(other.name)) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CompanyDTO other = (CompanyDTO) obj;
+        if (id != other.id) {
+            return false;
+        }
+        if (name == null) {
+            if (other.name != null) {
+                return false;
+            }
+        } else if (!name.equals(other.name)) {
+            return false;
+        }
+        return true;
+    }
 
 }
