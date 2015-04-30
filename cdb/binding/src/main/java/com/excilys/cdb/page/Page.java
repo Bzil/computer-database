@@ -2,15 +2,13 @@ package com.excilys.cdb.page;
 
 import java.util.List;
 
-import com.excilys.cdb.dto.DTO;
-
 /**
  * The Class Page.
  *
  * @param <T>
  *            the generic type
  */
-public abstract class Page<T, D extends DTO<T>> {
+public abstract class Page<T> {
 
 	private static final int OFFSET_PAGE = 3;
 	/**
@@ -42,12 +40,6 @@ public abstract class Page<T, D extends DTO<T>> {
 	private String search;
 	private String orderBy = "DESC";
 	private String column = "";
-
-	public void showEntities(List<D> list) {
-		for (final D d : list) {
-			System.out.println(d);
-		}
-	}
 
 	public List getEntities() {
 		return entities;

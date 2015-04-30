@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.CompanyDao;
 import com.excilys.cdb.persistence.ComputerDao;
@@ -32,12 +31,9 @@ public class CompanyServiceImpl implements CompanyService {
 	@Autowired
 	private ComputerDao computerDao;
 
-	@Autowired
-	private CompanyMapper mapper;
-
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.service.CompanyService#find(int)
 	 */
 	@Override
@@ -53,7 +49,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.service.CompanyService#findAll()
 	 */
 	@Override
@@ -65,7 +61,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.service.CompanyService#findAll(int, int)
 	 */
 	@Override
@@ -77,7 +73,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * com.excilys.cdb.service.CompanyService#delete(com.excilys.cdb.model.Company
 	 * )
@@ -91,7 +87,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.service.Service#delete(int)
 	 */
 	@Override

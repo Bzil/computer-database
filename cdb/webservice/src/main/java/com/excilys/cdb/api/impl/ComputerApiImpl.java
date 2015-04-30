@@ -2,6 +2,7 @@ package com.excilys.cdb.api.impl;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
 
@@ -17,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.cdb.api.ComputerApi;
-import com.excilys.cdb.dto.ComputerDTO;
-import com.excilys.cdb.mapper.ComputerMapper;
+import com.excilys.cdb.api.dto.ComputerJson;
 import com.excilys.cdb.service.ComputerService;
 
 /**
@@ -42,9 +42,6 @@ public class ComputerApiImpl implements ComputerApi {
 	@Autowired
 	private ServletContext context;
 
-	@Autowired
-	private ComputerMapper mapper;
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -52,9 +49,9 @@ public class ComputerApiImpl implements ComputerApi {
 	 */
 	@Override
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
-	public ResponseEntity<ComputerDTO> getById(@PathVariable("id") Integer id) {
-		LOGGER.info("JSON to computer {}", id);
-		final ComputerDTO dto = computerService.find(id);
+	public ResponseEntity<ComputerJson> getById(@PathVariable("id") Integer id) {
+		LOGGER.info("JSON to computer {}, computer : {}", id, computerService.find(id));
+		final ComputerJson dto = ComputerJson.to(computerService.find(id));
 		return dto != null ? new ResponseEntity<>(dto, HttpStatus.CREATED) : new ResponseEntity<>(
 				HttpStatus.BAD_REQUEST);
 	}
@@ -66,9 +63,10 @@ public class ComputerApiImpl implements ComputerApi {
 	 */
 	@Override
 	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public ResponseEntity<List<ComputerDTO>> getAll() {
+	public ResponseEntity<List<ComputerJson>> getAll() {
 		LOGGER.info("JSON getAll");
-		final List<ComputerDTO> dtos = computerService.findAll(null);
+		final List<ComputerJson> dtos = computerService.findAll(null).stream().map(ComputerJson::to)
+				.collect(Collectors.toList());
 		return dtos != null && !dtos.isEmpty() ? new ResponseEntity<>(dtos, HttpStatus.OK) : new ResponseEntity<>(
 				HttpStatus.NO_CONTENT);
 	}
@@ -80,9 +78,10 @@ public class ComputerApiImpl implements ComputerApi {
 	 */
 	@Override
 	@RequestMapping(value = "name/{name}", method = RequestMethod.GET)
-	public ResponseEntity<List<ComputerDTO>> getByName(@PathVariable("name") final String name) {
+	public ResponseEntity<List<ComputerJson>> getByName(@PathVariable("name") final String name) {
 		LOGGER.info("JSON to computer {}", name);
-		final List<ComputerDTO> dtos = computerService.find(name, null);
+		final List<ComputerJson> dtos = computerService.find(name, null).stream().map(ComputerJson::to)
+				.collect(Collectors.toList());
 		return dtos != null && !dtos.isEmpty() ? new ResponseEntity<>(dtos, HttpStatus.OK) : new ResponseEntity<>(
 				HttpStatus.BAD_REQUEST);
 	}
@@ -91,13 +90,13 @@ public class ComputerApiImpl implements ComputerApi {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.excilys.cdb.api.ComputerApi#create(com.excilys.cdb.dto.ComputerDTO)
+	 * com.excilys.cdb.api.ComputerApi#create(com.excilys.cdb.dto.ComputerJson)
 	 */
 	@Override
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<ComputerDTO> create(@RequestBody ComputerDTO dto) {
+	public ResponseEntity<ComputerJson> create(@RequestBody ComputerJson dto) {
 		LOGGER.info("Create computer {}", dto);
-		final ComputerDTO computer = computerService.add(mapper.toModel(dto));
+		final ComputerJson computer = ComputerJson.to(computerService.add(ComputerJson.from(dto)));
 		final URI uri = URI.create(context.getContextPath() + "/api/computer/" + computer.getId());
 		return computer.getId() != -1 ? ResponseEntity.created(uri).body(computer) : new ResponseEntity<>(
 				HttpStatus.NO_CONTENT);
@@ -107,13 +106,13 @@ public class ComputerApiImpl implements ComputerApi {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.excilys.cdb.api.ComputerApi#update(com.excilys.cdb.dto.ComputerDTO)
+	 * com.excilys.cdb.api.ComputerApi#update(com.excilys.cdb.dto.ComputerJson)
 	 */
 	@Override
 	@RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
-	public ResponseEntity<ComputerDTO> update(@RequestBody ComputerDTO dto) {
+	public ResponseEntity<ComputerJson> update(@RequestBody ComputerJson dto) {
 		LOGGER.info("Update computer {}", dto);
-		final ComputerDTO computer = computerService.update(mapper.toModel(dto));
+		final ComputerJson computer = ComputerJson.to(computerService.add(ComputerJson.from(dto)));
 		return computer.getId() != -1 ? new ResponseEntity<>(dto, HttpStatus.OK) : new ResponseEntity<>(
 				HttpStatus.NO_CONTENT);
 	}
@@ -125,7 +124,7 @@ public class ComputerApiImpl implements ComputerApi {
 	 */
 	@Override
 	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<ComputerDTO> delete(@PathVariable("id") Integer id) {
+	public ResponseEntity<ComputerJson> delete(@PathVariable("id") Integer id) {
 		LOGGER.info("Delete computer {}", id);
 		computerService.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);
