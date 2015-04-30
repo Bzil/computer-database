@@ -2,14 +2,13 @@ package com.excilys.cdb.service;
 
 import java.util.List;
 
-import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.sort.SortCriteria;
 
 /**
  * The Interface ComputerService.
  */
-public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
+public interface ComputerService extends ServiceCommons<Computer> {
 
 	/**
 	 * Find.
@@ -19,7 +18,7 @@ public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
 	 * @return the computer
 	 */
 	@Override
-	public ComputerDTO find(int id);
+	public Computer find(int id);
 
 	/**
 	 * Find.
@@ -28,7 +27,7 @@ public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
 	 *            the name
 	 * @return the computer dto
 	 */
-	public List<ComputerDTO> find(String name, SortCriteria criteria);
+	public List<Computer> find(String name, SortCriteria criteria);
 
 	/**
 	 * Find.
@@ -37,8 +36,7 @@ public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
 	 *            the name
 	 * @return the computer dto
 	 */
-	public List<ComputerDTO> find(String name, int start, int offset,
-			SortCriteria criteria);
+	public List<Computer> find(String name, int start, int offset, SortCriteria criteria);
 
 	/**
 	 * Find all.
@@ -46,7 +44,7 @@ public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
 	 * @return the list
 	 */
 	@Override
-	public List<ComputerDTO> findAll(SortCriteria criteria);
+	public List<Computer> findAll(SortCriteria criteria);
 
 	/**
 	 * Find all.
@@ -58,8 +56,7 @@ public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
 	 * @return the list
 	 */
 	@Override
-	public List<ComputerDTO> findAll(int start, int offset,
-			SortCriteria criteria);
+	public List<Computer> findAll(int start, int offset, SortCriteria criteria);
 
 	/**
 	 * Adds the.
@@ -69,7 +66,7 @@ public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
 	 * @return the computer
 	 */
 	@Override
-	public ComputerDTO add(Computer computer);
+	public Computer add(Computer computer);
 
 	/**
 	 * Delete.
@@ -96,7 +93,7 @@ public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
 	 * @return the computer
 	 */
 	@Override
-	public ComputerDTO update(Computer computer);
+	public Computer update(Computer computer);
 
 	/**
 	 * Save or update.
@@ -105,7 +102,7 @@ public interface ComputerService extends ServiceCommons<Computer, ComputerDTO> {
 	 *            the computer
 	 * @return the computer dto
 	 */
-	public ComputerDTO saveOrUpdate(Computer computer);
+	public Computer saveOrUpdate(Computer computer);
 
 	/**
 	 * Count.

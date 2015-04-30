@@ -1,6 +1,5 @@
 package com.excilys.cdb.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDao;
@@ -41,18 +39,14 @@ public class ComputerServiceImpl implements ComputerService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public ComputerDTO find(final int id) {
+	public Computer find(final int id) {
 		LOGGER.info("Looking for computer {}", id);
-		ComputerDTO dto = null;
+		Computer c = null;
 		if (id > 0) {
-			final Computer c = dao.find(id);
-
-			if (c != null) {
-				dto = mapper.toDto(c);
-			}
+			c = dao.find(id);
 		}
-		LOGGER.info("computer {}", dto);
-		return dto;
+		LOGGER.info("computer {}", c);
+		return c;
 	}
 
 	/*
@@ -62,12 +56,9 @@ public class ComputerServiceImpl implements ComputerService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<ComputerDTO> find(final String name, final SortCriteria criteria) {
+	public List<Computer> find(final String name, final SortCriteria criteria) {
 		LOGGER.info("Looking for computer {}", name);
-		final List<ComputerDTO> dtos = new ArrayList<>();
-		dao.find(name, criteria).stream().forEach(c -> dtos.add(mapper.toDto(c)));
-
-		return dtos;
+		return dao.find(name, criteria);
 	}
 
 	/*
@@ -77,12 +68,9 @@ public class ComputerServiceImpl implements ComputerService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<ComputerDTO> find(String name, int start, int offset, SortCriteria criteria) {
+	public List<Computer> find(String name, int start, int offset, SortCriteria criteria) {
 		LOGGER.info("Looking for computer {}", name);
-		final List<ComputerDTO> dtos = new ArrayList<>();
-		dao.find(name, criteria).stream().forEach(c -> dtos.add(mapper.toDto(c)));
-
-		return dtos;
+		return dao.find(name, criteria);
 	}
 
 	/*
@@ -92,12 +80,9 @@ public class ComputerServiceImpl implements ComputerService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<ComputerDTO> findAll(final SortCriteria criteria) {
+	public List<Computer> findAll(final SortCriteria criteria) {
 		LOGGER.info("Looking for all computer");
-		final List<ComputerDTO> dtos = new ArrayList<>();
-		dao.findAll(criteria).stream().forEach(c -> dtos.add(mapper.toDto(c)));
-
-		return dtos;
+		return dao.findAll(criteria);
 	}
 
 	/*
@@ -107,12 +92,10 @@ public class ComputerServiceImpl implements ComputerService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<ComputerDTO> findAll(final int start, final int offset, final SortCriteria criteria) {
+	public List<Computer> findAll(final int start, final int offset, final SortCriteria criteria) {
 		LOGGER.info("Looking for all computer between {} - {}", start, offset);
-		final List<ComputerDTO> dtos = new ArrayList<>();
-		dao.findAll(start, offset, criteria).stream().forEach(c -> dtos.add(mapper.toDto(c)));
+		return dao.findAll(start, offset, criteria);
 
-		return dtos;
 	}
 
 	/*
@@ -124,17 +107,13 @@ public class ComputerServiceImpl implements ComputerService {
 	 */
 	@Override
 	@Transactional
-	public ComputerDTO add(final Computer computer) {
-		ComputerDTO dto = null;
+	public Computer add(final Computer computer) {
+		Computer c = null;
 		if (computer != null) {
 			LOGGER.info("Create" + computer);
-			final Computer c = dao.create(computer);
-
-			if (c != null) {
-				dto = mapper.toDto(c);
-			}
+			c = dao.create(computer);
 		}
-		return dto;
+		return c;
 	}
 
 	/*
@@ -177,19 +156,14 @@ public class ComputerServiceImpl implements ComputerService {
 	 */
 	@Override
 	@Transactional
-	public ComputerDTO update(final Computer computer) {
+	public Computer update(final Computer computer) {
 		LOGGER.info("Update {}", computer);
-		final Computer c = dao.update(computer);
-		ComputerDTO dto = null;
-		if (c != null) {
-			dto = mapper.toDto(c);
-		}
-		return dto;
+		return dao.update(computer);
 	}
 
 	@Override
 	@Transactional
-	public ComputerDTO saveOrUpdate(final Computer computer) {
+	public Computer saveOrUpdate(final Computer computer) {
 		LOGGER.info("Save or Update {}", computer);
 		return (computer.getId() > 0) ? update(computer) : add(computer);
 	}

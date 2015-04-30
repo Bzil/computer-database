@@ -1,6 +1,5 @@
 package com.excilys.cdb.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.cdb.dto.CompanyDTO;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.CompanyDao;
@@ -44,16 +42,13 @@ public class CompanyServiceImpl implements CompanyService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public CompanyDTO find(final int id) {
+	public Company find(final int id) {
 		LOGGER.info("Find company {}", id);
-		CompanyDTO dto = null;
+		final Company c = null;
 		if (id > 0) {
-			final Company c = companyDao.find(id);
-			if (c != null) {
-				dto = mapper.toDto(c);
-			}
+			c = companyDao.find(id);
 		}
-		return dto;
+		return c;
 	}
 
 	/*
@@ -63,12 +58,9 @@ public class CompanyServiceImpl implements CompanyService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<CompanyDTO> findAll(final SortCriteria criteria) {
+	public List<Company> findAll(final SortCriteria criteria) {
 		LOGGER.info("Find all companies");
-		final List<CompanyDTO> dtos = new ArrayList<>();
-		companyDao.findAll().stream().forEach(c -> dtos.add(mapper.toDto(c)));
-
-		return dtos;
+		return companyDao.findAll();
 	}
 
 	/*
@@ -78,11 +70,9 @@ public class CompanyServiceImpl implements CompanyService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<CompanyDTO> findAll(final int start, final int offset, final SortCriteria criteria) {
+	public List<Company> findAll(final int start, final int offset, final SortCriteria criteria) {
 		LOGGER.info("Find all companies {} - {}", start, offset);
-		final List<CompanyDTO> dtos = new ArrayList<>();
-		companyDao.findAll(start, offset).stream().forEach(c -> dtos.add(mapper.toDto(c)));
-		return dtos;
+		return companyDao.findAll(start, offset);
 	}
 
 	/*
