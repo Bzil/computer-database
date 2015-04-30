@@ -1,65 +1,35 @@
 package com.excilys.cdb.model;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
 
 /**
  * The Class Computer.
  */
-@Entity
-@Table(name = "computer")
-public class Computer implements Serializable {
-
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 1L;
+public class Computer {
 
 	/**
 	 * Specific id of a computer.
 	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 
 	/**
 	 * The name.
 	 */
-	@Column(name = "name", nullable = true, length = 255)
 	private String name;
 
 	/**
 	 * The introduced.
 	 */
-	@Type(type = "com.excilys.cdb.type.LocalDateTimeUserType")
-	@Column(name = "introduced", nullable = true)
 	private LocalDateTime introduced;
 
 	/**
 	 * The discontinued.
 	 */
-	@Type(type = "com.excilys.cdb.type.LocalDateTimeUserType")
-	@Column(name = "discontinued", nullable = true)
 	private LocalDateTime discontinued;
 
 	/**
 	 * The compagny.
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "company_id")
 	private Company company;
 
 	/**
@@ -214,6 +184,10 @@ public class Computer implements Serializable {
 		this.discontinued = discontinued;
 	}
 
+	public static Builder builder(String name) {
+		return new Builder(name);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -299,7 +273,7 @@ public class Computer implements Serializable {
 	/**
 	 * The Class Builder.
 	 */
-	static class Builder {
+	public static class Builder {
 		private final Computer c;
 
 		private Builder(String name) {
@@ -319,6 +293,11 @@ public class Computer implements Serializable {
 
 		public Builder company(Company company) {
 			c.company = company;
+			return this;
+		}
+
+		public Builder id(Integer id) {
+			c.id = id;
 			return this;
 		}
 
