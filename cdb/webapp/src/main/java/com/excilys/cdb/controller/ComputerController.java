@@ -29,8 +29,7 @@ import com.excilys.cdb.sort.SortCriteria;
 @Controller
 public class ComputerController {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(ComputerController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerController.class);
 
 	@Autowired
 	private ComputerService computerService;
@@ -61,14 +60,10 @@ public class ComputerController {
 	 * @return the computer list
 	 */
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-	public String getComputerList(
-			@RequestParam(required = false) final Integer id,
-			@RequestParam(required = false) final Integer size,
-			@RequestParam(required = false) final String search,
-			@RequestParam(required = false) final String column,
-			@RequestParam(required = false) final String dir,
-			@RequestParam(required = false) final String selection,
-			final Model model) {
+	public String getComputerList(@RequestParam(required = false) final Integer id,
+			@RequestParam(required = false) final Integer size, @RequestParam(required = false) final String search,
+			@RequestParam(required = false) final String column, @RequestParam(required = false) final String dir,
+			@RequestParam(required = false) final String selection, final Model model) {
 		final ComputerPage computerPage = new ComputerPage();
 
 		List<ComputerDTO> entities = null;
@@ -91,8 +86,7 @@ public class ComputerController {
 		long count = computerService.count();
 
 		// Sort criteria
-		final SortCriteria criteria = SortCriteria.buildSortCriteria(column,
-				dir);
+		final SortCriteria criteria = SortCriteria.buildSortCriteria(column, dir);
 		if (criteria != null) {
 			computerPage.setOrderBy(criteria.getDirection());
 			computerPage.setColumn(criteria.getColumn());
@@ -100,13 +94,11 @@ public class ComputerController {
 		// Search
 		if (search != null && !search.trim().isEmpty()) {
 			LOGGER.info("Looking for : {}", search);
-			entities = computerService.find(search, computerPage.getStart(),
-					computerPage.getOffset(), criteria);
+			entities = computerService.find(search, computerPage.getStart(), computerPage.getOffset(), criteria);
 			count = entities.size();
 			computerPage.setSearch(search);
 		} else {
-			entities = computerService.findAll(computerPage.getStart(),
-					computerPage.getOffset(), criteria);
+			entities = computerService.findAll(computerPage.getStart(), computerPage.getOffset(), criteria);
 		}
 		computerPage.setCount(count);
 		computerPage.setEntities(entities);
@@ -124,33 +116,30 @@ public class ComputerController {
 		model.addAttribute("companies", companies);
 		// Check param
 		if (id != null && id > 0) {
-			LOGGER.debug("Load edit page  DTO id = {}", id);
+			LOGGER.info("Load edit page  DTO id = {}", id);
 			final ComputerDTO dto = computerService.find(id);
 			model.addAttribute("computer", dto);
 			return ControllerList.EDIT_VIEW;
 		} else {
-			LOGGER.debug("Load add page");
+			LOGGER.info("Load add page");
 			return ControllerList.ADD_VIEW;
 		}
 
 	}
 
 	@RequestMapping(value = { "/edit", "/add" }, method = RequestMethod.POST)
-	public String edit(
-			@Valid @ModelAttribute("computerDto") ComputerDTO computerDto,
-			BindingResult result, Model model) {
+	public String edit(@Valid @ModelAttribute("computerDto") ComputerDTO computerDto, BindingResult result, Model model) {
 
-		LOGGER.debug("add or edit  DTO {}", computerDto);
+		LOGGER.info("add or edit  DTO {}", computerDto);
 
 		if (!result.hasErrors()) {
-			computerDto.company.name = companyService
-					.find(computerDto.company.id) != null ? companyService
-							.find(computerDto.company.id).getName() : "";
-							final Computer computer = mapper.toModel(computerDto);
-							computerService.saveOrUpdate(computer);
-							LOGGER.debug("add or edit computer {}", computer);
+			computerDto.company.name = companyService.find(computerDto.company.id) != null ? companyService.find(
+					computerDto.company.id).getName() : "";
+			final Computer computer = mapper.toModel(computerDto);
+			computerService.saveOrUpdate(computer);
+			LOGGER.info("add or edit computer {}", computer);
 
-							return ControllerList.REDIRECT + ControllerList.DASHBOARD_VIEW;
+			return ControllerList.REDIRECT + ControllerList.DASHBOARD_VIEW;
 		} else {
 			return load(computerDto.id, computerDto, model);
 		}
@@ -161,8 +150,8 @@ public class ComputerController {
 		LOGGER.info("Delete {} ", selection);
 		// Deletion
 		if (selection != null && !selection.trim().isEmpty()) {
-			final List<Integer> list = Arrays.stream(selection.split(","))
-					.map(Integer::valueOf).collect(Collectors.toList());
+			final List<Integer> list = Arrays.stream(selection.split(",")).map(Integer::valueOf)
+					.collect(Collectors.toList());
 			for (final Integer i : list) {
 				try {
 					computerService.delete(i);

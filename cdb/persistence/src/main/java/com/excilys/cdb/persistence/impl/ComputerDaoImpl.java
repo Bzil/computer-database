@@ -1,6 +1,7 @@
 package com.excilys.cdb.persistence.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ComputerDao;
+import com.excilys.cdb.persistence.dto.ComputerJPA;
 import com.excilys.cdb.sort.SortCriteria;
 import com.excilys.cdb.sort.SortDirection;
 
@@ -30,8 +32,8 @@ public class ComputerDaoImpl implements ComputerDao {
 	/**
 	 * The Constant LOGGER.
 	 */
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(ComputerDaoImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
+
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -49,8 +51,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public Computer find(final int id) {
 		LOGGER.info("Find computer {}", id);
-		return (Computer) sessionFactory.getCurrentSession().get(
-				Computer.class, id);
+		return ComputerJPA.from((ComputerJPA) sessionFactory.getCurrentSession().get(ComputerJPA.class, id));
 	}
 
 	/*
@@ -61,60 +62,44 @@ public class ComputerDaoImpl implements ComputerDao {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Computer> find(final String name,
-			final SortCriteria sortCriteria) {
+	public List<Computer> find(final String name, final SortCriteria sortCriteria) {
 		LOGGER.info("Find computers by name : {}", name);
+		final StringBuilder correctName = new StringBuilder("%").append(name).append("%");
+		final Criterion computerName = Restrictions.like("computer.name", correctName.toString());
+		final Criterion companyName = Restrictions.like("company.name", correctName.toString());
+		final LogicalExpression orExp = Restrictions.or(computerName, companyName);
 
-		final StringBuilder correctName = new StringBuilder("%").append(name)
-				.append("%");
-
-		final Criterion computerName = Restrictions.like("computer.name",
-				correctName.toString());
-		final Criterion companyName = Restrictions.like("company.name",
-				correctName.toString());
-		final LogicalExpression orExp = Restrictions.or(computerName,
-				companyName);
-
-		final Criteria criteria = sessionFactory.getCurrentSession()
-				.createCriteria(Computer.class, "computer")
-				.createCriteria("company", "company", JoinType.LEFT_OUTER_JOIN)
-				.add(orExp);
+		final Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ComputerJPA.class, "computer")
+				.createCriteria("company", "company", JoinType.LEFT_OUTER_JOIN).add(orExp);
 
 		if (sortCriteria != null) {
 			final Order order = getOrder(sortCriteria);
 			criteria.addOrder(order);
 		}
 
-		return criteria.list();
+		final List<ComputerJPA> list = criteria.list();
+		return list.stream().map(ComputerJPA::from).collect(Collectors.toList());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Computer> find(final String name, final int start,
-			final int offset, final SortCriteria sortCriteria) {
+	public List<Computer> find(final String name, final int start, final int offset, final SortCriteria sortCriteria) {
 		LOGGER.info("Find computers by name : {}", name);
+		final StringBuilder correctName = new StringBuilder("%").append(name).append("%");
+		final Criterion computerName = Restrictions.like("computer.name", correctName.toString());
+		final Criterion companyName = Restrictions.like("company.name", correctName.toString());
+		final LogicalExpression orExp = Restrictions.or(computerName, companyName);
 
-		final StringBuilder correctName = new StringBuilder("%").append(name)
-				.append("%");
-
-		final Criterion computerName = Restrictions.like("computer.name",
-				correctName.toString());
-		final Criterion companyName = Restrictions.like("company.name",
-				correctName.toString());
-		final LogicalExpression orExp = Restrictions.or(computerName,
-				companyName);
-
-		final Criteria criteria = sessionFactory.getCurrentSession()
-				.createCriteria(Computer.class, "computer")
-				.createCriteria("company", "company", JoinType.LEFT_OUTER_JOIN)
-				.add(orExp);
+		final Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ComputerJPA.class, "computer")
+				.createCriteria("company", "company", JoinType.LEFT_OUTER_JOIN).add(orExp);
 
 		if (sortCriteria != null) {
 			final Order order = getOrder(sortCriteria);
 			criteria.addOrder(order);
 		}
 
-		return criteria.setFirstResult(start).setMaxResults(offset).list();
+		final List<ComputerJPA> list = criteria.setFirstResult(start).setMaxResults(offset).list();
+		return list.stream().map(ComputerJPA::from).collect(Collectors.toList());
 	}
 
 	/*
@@ -126,10 +111,10 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public List<Computer> findByCompanyId(final int companyId) {
 		LOGGER.info("Find computers by company id : {}", companyId);
-		return sessionFactory.getCurrentSession()
-				.createCriteria(Computer.class, "computer")
+		final List<ComputerJPA> list = sessionFactory.getCurrentSession().createCriteria(ComputerJPA.class, "computer")
 				.createCriteria("company", "company", JoinType.LEFT_OUTER_JOIN)
 				.add(Restrictions.like("company.id", companyId)).list();
+		return list.stream().map(ComputerJPA::from).collect(Collectors.toList());
 	}
 
 	/*
@@ -141,7 +126,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	 */
 	@Override
 	public Computer create(final Computer computer) {
-		final int id = (int) sessionFactory.getCurrentSession().save(computer);
+		final int id = (int) sessionFactory.getCurrentSession().save(ComputerJPA.to(computer));
 		computer.setId(id);
 		LOGGER.info("Create computer {}", computer);
 		return computer;
@@ -157,7 +142,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public Computer update(final Computer computer) {
 		LOGGER.info("Update computer {}", computer);
-		sessionFactory.getCurrentSession().merge(computer);
+		sessionFactory.getCurrentSession().merge(ComputerJPA.to(computer));
 		return computer;
 	}
 
@@ -172,7 +157,7 @@ public class ComputerDaoImpl implements ComputerDao {
 	public void delete(final int id) {
 		LOGGER.info("Delete computer with id {} ", id);
 		final Session session = sessionFactory.getCurrentSession();
-		final Computer computer = (Computer) session.get(Computer.class, id);
+		final ComputerJPA computer = (ComputerJPA) session.get(ComputerJPA.class, id);
 
 		if (computer == null) {
 			return;
@@ -186,13 +171,13 @@ public class ComputerDaoImpl implements ComputerDao {
 	 *
 	 * @see com.excilys.cdb.persistence.ComputerDao#deleteByCompanyId(int)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void deleteByCompanyId(final int companyId) {
 		LOGGER.info("Delete computer whit company id {} ", companyId);
 		final Session session = sessionFactory.getCurrentSession();
-		@SuppressWarnings("unchecked")
-		final List<Computer> computers = session.createCriteria(Computer.class)
-		.add(Restrictions.eq("company.id", companyId)).list();
+		final List<ComputerJPA> computers = session.createCriteria(ComputerJPA.class)
+				.add(Restrictions.eq("company.id", companyId)).list();
 		session.delete(computers);
 	}
 
@@ -203,10 +188,10 @@ public class ComputerDaoImpl implements ComputerDao {
 	 */
 	@Override
 	public long count() {
-		final Criteria criteria = sessionFactory.getCurrentSession()
-				.createCriteria(Computer.class);
-		return (long) criteria.setProjection(Projections.rowCount())
-				.uniqueResult();
+		final Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ComputerJPA.class);
+		final long count = (long) criteria.setProjection(Projections.rowCount()).list().get(0);
+		LOGGER.info("Count {}", count);
+		return count;
 	}
 
 	/*
@@ -217,16 +202,16 @@ public class ComputerDaoImpl implements ComputerDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Computer> findAll(final SortCriteria sortCriteria) {
-		LOGGER.info("final all");
-		final Criteria criteria = sessionFactory.getCurrentSession()
-				.createCriteria(Computer.class, "computer")
+		LOGGER.info("find all");
+		final Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ComputerJPA.class, "computer")
 				.createCriteria("company", "company", JoinType.LEFT_OUTER_JOIN);
 		if (sortCriteria != null) {
 			LOGGER.info("final all with criteria {}", sortCriteria.toString());
 			final Order order = getOrder(sortCriteria);
 			criteria.addOrder(order);
 		}
-		return criteria.list();
+		final List<ComputerJPA> list = criteria.list();
+		return list.stream().map(ComputerJPA::from).collect(Collectors.toList());
 	}
 
 	/*
@@ -236,24 +221,23 @@ public class ComputerDaoImpl implements ComputerDao {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Computer> findAll(final int start, final int offset,
-			final SortCriteria sortCriteria) {
-		LOGGER.info("final all  start : {}, offset : {} ", start, offset);
+	public List<Computer> findAll(final int start, final int offset, final SortCriteria sortCriteria) {
+		LOGGER.info("find all  start : {}, offset : {} ", start, offset);
 
-		final Criteria criteria = sessionFactory.getCurrentSession()
-				.createCriteria(Computer.class, "computer")
+		final Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ComputerJPA.class, "computer")
 				.createCriteria("company", "company", JoinType.LEFT_OUTER_JOIN);
 		if (sortCriteria != null) {
 			final Order order = getOrder(sortCriteria);
 			criteria.addOrder(order);
 		}
-		return criteria.setFirstResult(start).setMaxResults(offset).list();
+
+		final List<ComputerJPA> list = criteria.setFirstResult(start).setMaxResults(offset).list();
+		return list.stream().map(ComputerJPA::from).collect(Collectors.toList());
 	}
 
 	private Order getOrder(SortCriteria sortCriteria) {
-		return (sortCriteria.getSortDirection() == SortDirection.ASC) ? Order
-				.asc(sortCriteria.getColumn()) : Order.desc(sortCriteria
-						.getColumn());
+		return (sortCriteria.getSortDirection() == SortDirection.ASC) ? Order.asc(sortCriteria.getColumn()) : Order
+				.desc(sortCriteria.getColumn());
 	}
 
 }

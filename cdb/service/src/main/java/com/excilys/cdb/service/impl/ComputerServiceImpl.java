@@ -22,8 +22,7 @@ import com.excilys.cdb.sort.SortCriteria;
 @Service
 public class ComputerServiceImpl implements ComputerService {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(ComputerServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerServiceImpl.class);
 	/**
 	 * The dao.
 	 */
@@ -37,13 +36,13 @@ public class ComputerServiceImpl implements ComputerService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.ComputerService#find(int)
 	 */
 	@Override
 	@Transactional(readOnly = true)
 	public ComputerDTO find(final int id) {
-		LOGGER.debug("Looking for computer {}", id);
+		LOGGER.info("Looking for computer {}", id);
 		ComputerDTO dto = null;
 		if (id > 0) {
 			final Computer c = dao.find(id);
@@ -52,52 +51,49 @@ public class ComputerServiceImpl implements ComputerService {
 				dto = mapper.toDto(c);
 			}
 		}
-		LOGGER.debug("computer {}", dto);
+		LOGGER.info("computer {}", dto);
 		return dto;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.ComputerService#find(String)
 	 */
 	@Override
 	@Transactional(readOnly = true)
 	public List<ComputerDTO> find(final String name, final SortCriteria criteria) {
-		LOGGER.debug("Looking for computer {}", name);
+		LOGGER.info("Looking for computer {}", name);
 		final List<ComputerDTO> dtos = new ArrayList<>();
-		dao.find(name, criteria).stream()
-				.forEach(c -> dtos.add(mapper.toDto(c)));
+		dao.find(name, criteria).stream().forEach(c -> dtos.add(mapper.toDto(c)));
 
 		return dtos;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.ComputerService#find(String)
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<ComputerDTO> find(String name, int start, int offset,
-			SortCriteria criteria) {
-		LOGGER.debug("Looking for computer {}", name);
+	public List<ComputerDTO> find(String name, int start, int offset, SortCriteria criteria) {
+		LOGGER.info("Looking for computer {}", name);
 		final List<ComputerDTO> dtos = new ArrayList<>();
-		dao.find(name, criteria).stream()
-				.forEach(c -> dtos.add(mapper.toDto(c)));
+		dao.find(name, criteria).stream().forEach(c -> dtos.add(mapper.toDto(c)));
 
 		return dtos;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.ComputerService#findAll()
 	 */
 	@Override
 	@Transactional(readOnly = true)
 	public List<ComputerDTO> findAll(final SortCriteria criteria) {
-		LOGGER.debug("Looking for all computer");
+		LOGGER.info("Looking for all computer");
 		final List<ComputerDTO> dtos = new ArrayList<>();
 		dao.findAll(criteria).stream().forEach(c -> dtos.add(mapper.toDto(c)));
 
@@ -106,24 +102,22 @@ public class ComputerServiceImpl implements ComputerService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.ComputerService#findAll(int, int)
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<ComputerDTO> findAll(final int start, final int offset,
-			final SortCriteria criteria) {
-		LOGGER.debug("Looking for all computer between {} - {}", start, offset);
+	public List<ComputerDTO> findAll(final int start, final int offset, final SortCriteria criteria) {
+		LOGGER.info("Looking for all computer between {} - {}", start, offset);
 		final List<ComputerDTO> dtos = new ArrayList<>();
-		dao.findAll(start, offset, criteria).stream()
-				.forEach(c -> dtos.add(mapper.toDto(c)));
+		dao.findAll(start, offset, criteria).stream().forEach(c -> dtos.add(mapper.toDto(c)));
 
 		return dtos;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.service.ComputerService#add(com.excilys.cdb.model.Computer
 	 * )
@@ -133,7 +127,7 @@ public class ComputerServiceImpl implements ComputerService {
 	public ComputerDTO add(final Computer computer) {
 		ComputerDTO dto = null;
 		if (computer != null) {
-			LOGGER.debug("Create" + computer);
+			LOGGER.info("Create" + computer);
 			final Computer c = dao.create(computer);
 
 			if (c != null) {
@@ -145,38 +139,38 @@ public class ComputerServiceImpl implements ComputerService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.ComputerService#delete(int)
 	 */
 	@Override
 	@Transactional
 	public void delete(final Computer computer) {
-		LOGGER.debug("Delete {}", computer);
+		LOGGER.info("Delete {}", computer);
 		dao.delete(computer.getId());
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.Service#delete(int)
 	 */
 	@Override
 	@Transactional
 	public void delete(final int id) {
-		LOGGER.debug("Delete computer with id {}", id);
+		LOGGER.info("Delete computer with id {}", id);
 		dao.delete(id);
 	}
 
 	@Override
 	@Transactional
 	public void deleteByCompanyId(final int companyId) {
-		LOGGER.debug("Delete computer with id {}", companyId);
+		LOGGER.info("Delete computer with id {}", companyId);
 		dao.deleteByCompanyId(companyId);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.service.ComputerService#update(com.excilys.cdb.model.
 	 * Computer )
@@ -184,7 +178,7 @@ public class ComputerServiceImpl implements ComputerService {
 	@Override
 	@Transactional
 	public ComputerDTO update(final Computer computer) {
-		LOGGER.debug("Update {}", computer);
+		LOGGER.info("Update {}", computer);
 		final Computer c = dao.update(computer);
 		ComputerDTO dto = null;
 		if (c != null) {
@@ -196,19 +190,19 @@ public class ComputerServiceImpl implements ComputerService {
 	@Override
 	@Transactional
 	public ComputerDTO saveOrUpdate(final Computer computer) {
-		LOGGER.debug("Save or Update {}", computer);
+		LOGGER.info("Save or Update {}", computer);
 		return (computer.getId() > 0) ? update(computer) : add(computer);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.ComputerService#count()
 	 */
 	@Override
 	@Transactional
 	public long count() {
-		LOGGER.debug("Count");
+		LOGGER.info("Count");
 		return dao.count();
 	}
 }

@@ -1,7 +1,8 @@
 package com.excilys.cdb.persistence.impl;
 
-import com.excilys.cdb.model.User;
 import com.excilys.cdb.persistence.UserDao;
+import com.excilys.cdb.persistence.dto.UserJPA;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -26,7 +27,7 @@ public class UserDaoImpl implements UserDao {
 
     @SuppressWarnings("unchecked")
     @Override
-    public User findByName(String username) {
+    public UserJPA findByName(String username) {
         LOGGER.info("Find user by name : {} ", username);
 
         final StringBuilder correctName = new StringBuilder("%").append(username)
@@ -35,11 +36,11 @@ public class UserDaoImpl implements UserDao {
         final Criterion criterion = Restrictions.like("u.username",
                 correctName.toString());
 
-        final List<User> users = sessionFactory.getCurrentSession()
-                .createCriteria(User.class, "u").add(criterion).list();
+        final List<UserJPA> userJPAs = sessionFactory.getCurrentSession()
+                .createCriteria(UserJPA.class, "u").add(criterion).list();
 
-        if (users.size() > 0) {
-            return users.get(0);
+        if (userJPAs.size() > 0) {
+            return userJPAs.get(0);
         } else {
             return null;
         }

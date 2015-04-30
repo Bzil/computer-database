@@ -21,7 +21,10 @@ public class CompanyJPA {
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+
+	@Column(name = "name", nullable = true, length = 255)
 	private String name;
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
 	private List<ComputerJPA> computers;
 
@@ -35,8 +38,7 @@ public class CompanyJPA {
 
 	@Override
 	public String toString() {
-		return "CompanyJPA{" + "id=" + id + ", name='" + name + '\''
-				+ ", computers=" + computers + '}';
+		return "CompanyJPA{" + "id=" + id + ", name='" + name + '\'' + ", computers=" + computers + '}';
 	}
 
 	/**

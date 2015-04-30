@@ -38,22 +38,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(final String username)
             throws UsernameNotFoundException {
-        final com.excilys.cdb.model.User user = userDao.findByName(username);
-        final List<GrantedAuthority> authorities = buildUserAuthority(user
+        final com.excilys.cdb.persistence.dto.UserJPA userJPA = userDao.findByName(username);
+        final List<GrantedAuthority> authorities = buildUserAuthority(userJPA
                 .getRole());
-        return buildUserForAuthentication(user, authorities);
+        return buildUserForAuthentication(userJPA, authorities);
     }
 
     /**
      * Builds the user for authentication.
      *
-     * @param user        the user
+     * @param userJPA        the user
      * @param authorities the authorities
      * @return the user
      */
-    private User buildUserForAuthentication(com.excilys.cdb.model.User user,
+    private User buildUserForAuthentication(com.excilys.cdb.persistence.dto.UserJPA userJPA,
                                             List<GrantedAuthority> authorities) {
-        return new User(user.getUsername(), user.getPassword(), true, true,
+        return new User(userJPA.getUsername(), userJPA.getPassword(), true, true,
                 true, true, authorities);
     }
 
