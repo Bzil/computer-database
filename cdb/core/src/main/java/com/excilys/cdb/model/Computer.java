@@ -1,7 +1,10 @@
 package com.excilys.cdb.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class Computer.
  */
@@ -46,8 +49,7 @@ public class Computer {
 	 * @param company
 	 *            the company
 	 */
-	public Computer(int id, String name, LocalDateTime introduced,
-			LocalDateTime discontinued, Company company) {
+	public Computer(int id, String name, LocalDateTime introduced, LocalDateTime discontinued, Company company) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -68,8 +70,7 @@ public class Computer {
 	 * @param company
 	 *            the company
 	 */
-	public Computer(String name, LocalDateTime introduced,
-			LocalDateTime discontinued, Company company) {
+	public Computer(String name, LocalDateTime introduced, LocalDateTime discontinued, Company company) {
 		this(-1, name, introduced, discontinued, company);
 	}
 
@@ -184,25 +185,31 @@ public class Computer {
 		this.discontinued = discontinued;
 	}
 
+	/**
+	 * Builder.
+	 *
+	 * @param name
+	 *            the name
+	 * @return the builder
+	 */
 	public static Builder builder(String name) {
 		return new Builder(name);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Computer [id=" + id + " name : " + name + " introduced : "
-				+ introduced + " discontinued : " + discontinued
-				+ " company : " + company + " ]";
+		return "Computer [id=" + id + " name : " + name + " introduced : " + introduced + " discontinued : "
+				+ discontinued + " company : " + company + " ]";
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -210,18 +217,16 @@ public class Computer {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((company == null) ? 0 : company.hashCode());
-		result = prime * result
-				+ ((discontinued == null) ? 0 : discontinued.hashCode());
+		result = prime * result + ((discontinued == null) ? 0 : discontinued.hashCode());
 		result = prime * result + id;
-		result = prime * result
-				+ ((introduced == null) ? 0 : introduced.hashCode());
+		result = prime * result + ((introduced == null) ? 0 : introduced.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -274,33 +279,106 @@ public class Computer {
 	 * The Class Builder.
 	 */
 	public static class Builder {
+
+		/** The Constant FORMATTER. */
+		private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-uuuu HH:mm:ss",
+				new Locale("fr"));
+
+		/** The computer build. */
 		private final Computer c;
 
+		/**
+		 * Instantiates a new builder.
+		 *
+		 * @param name
+		 *            the name
+		 */
 		private Builder(String name) {
 			c = new Computer();
 			c.name = name;
 		}
 
+		/**
+		 * Introduced.
+		 *
+		 * @param introduced
+		 *            the introduced
+		 * @return the builder
+		 */
 		public Builder introduced(LocalDateTime introduced) {
 			c.introduced = introduced;
 			return this;
 		}
 
+		/**
+		 * Discontinued.
+		 *
+		 * @param discontinued
+		 *            the discontinued
+		 * @return the builder
+		 */
 		public Builder discontinued(LocalDateTime discontinued) {
 			c.discontinued = discontinued;
 			return this;
 		}
 
+		/**
+		 * Discontinued. Expecting dd-mm-yyyy pattern
+		 *
+		 * @param str
+		 *            the str
+		 * @return the builder
+		 */
+		public Builder discontinued(String str) {
+			if (str != null && !str.trim().isEmpty()) {
+				c.discontinued = LocalDateTime.parse(str += " 00:00:00", FORMATTER);
+			}
+			return this;
+		}
+
+		/**
+		 * Introduced. Expecting dd-mm-yyyy pattern
+		 *
+		 * @param str
+		 *            the str
+		 * @return the builder
+		 */
+		public Builder introduced(String str) {
+			if (str != null && !str.trim().isEmpty()) {
+				c.introduced = LocalDateTime.parse(str += " 00:00:00", FORMATTER);
+			}
+			return this;
+		}
+
+		/**
+		 * Company.
+		 *
+		 * @param company
+		 *            the company
+		 * @return the builder
+		 */
 		public Builder company(Company company) {
 			c.company = company;
 			return this;
 		}
 
+		/**
+		 * Id.
+		 *
+		 * @param id
+		 *            the id
+		 * @return the builder
+		 */
 		public Builder id(Integer id) {
 			c.id = id;
 			return this;
 		}
 
+		/**
+		 * Builds the.
+		 *
+		 * @return the computer
+		 */
 		public Computer build() {
 			return c;
 		}

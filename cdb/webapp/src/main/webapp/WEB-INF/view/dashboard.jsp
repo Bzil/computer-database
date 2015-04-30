@@ -102,7 +102,7 @@
                 <!-- Table header for Company -->
                 <th><spring:message code="company"/> <span style="float: right;"> <c:choose>
                     <c:when
-                            test="${page.orderBy == 'DESC' && page.column == 'computer.company.id'}">
+                            test="${page.orderBy == 'DESC' && page.column == 'computer.companyId'}">
                         <mylib:link body="&#x21E7;" page="${page.currentPage}"
                                     active="false" target="dashboard" search="${page.search}"
                                     column="company_id" dir="ASC" size="${page.offset}"/>
@@ -132,7 +132,7 @@
                     </td>
                     <td>${computer.introduced}</td>
                     <td>${computer.discontinued}</td>
-                    <td>${computer.company.name}</td>
+                    <td>${computer.companyName}</td>
                 </tr>
             </c:forEach>
 

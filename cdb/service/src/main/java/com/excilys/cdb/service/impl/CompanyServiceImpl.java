@@ -37,14 +37,14 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.CompanyService#find(int)
 	 */
 	@Override
 	@Transactional(readOnly = true)
 	public Company find(final int id) {
 		LOGGER.info("Find company {}", id);
-		final Company c = null;
+		Company c = null;
 		if (id > 0) {
 			c = companyDao.find(id);
 		}
@@ -53,7 +53,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.CompanyService#findAll()
 	 */
 	@Override
@@ -65,7 +65,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.CompanyService#findAll(int, int)
 	 */
 	@Override
@@ -77,7 +77,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.service.CompanyService#delete(com.excilys.cdb.model.Company
 	 * )
@@ -91,7 +91,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.Service#delete(int)
 	 */
 	@Override

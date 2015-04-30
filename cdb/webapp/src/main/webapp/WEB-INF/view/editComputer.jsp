@@ -16,10 +16,7 @@
                 <div class="label label-default pull-right">id: ${computer.id}
                 </div>
                 <h1><spring:message code="edit.computer"/></h1>
-                <c:if test="${!empty message}">
-                    <div class="has-error">${message}</div>
-                </c:if>
-                <form:form commandName="computerDto" action="edit" method="POST">
+               <form:form commandName="computerDto" action="edit" method="POST">
                     <input type="hidden" value="${computer.id}" name="id"/>
                     <fieldset>
                         <div class="form-group">
@@ -48,8 +45,8 @@
                         </div>
                         <div class="form-group">
                             <spring:message code="select.company" var="company"/>
-                            <form:label path="company.id" for="company.id"><spring:message code="company"/></form:label>
-                            <form:select id="company.id" name="company.id" path="company.id" cssClass="form-control"
+                            <form:label path="companyId" for="companyId"><spring:message code="company"/></form:label>
+                            <form:select id="companyId" name="companyId" path="companyId" cssClass="form-control"
                                          multiple="false">
                                 <form:option value="0" label="${company}"/>
                                 <form:options items="${companies}" itemValue="id" itemLabel="name"/>

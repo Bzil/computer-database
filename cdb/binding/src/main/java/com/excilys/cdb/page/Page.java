@@ -1,6 +1,5 @@
 package com.excilys.cdb.page;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.cdb.dto.DTO;
@@ -17,7 +16,7 @@ public abstract class Page<T, D extends DTO<T>> {
 	/**
 	 * The entities.
 	 */
-	private List<D> entities = new ArrayList<>();
+	private List entities;
 	/**
 	 * The index of T in base.
 	 */
@@ -50,11 +49,11 @@ public abstract class Page<T, D extends DTO<T>> {
 		}
 	}
 
-	public List<D> getEntities() {
+	public List getEntities() {
 		return entities;
 	}
 
-	public void setEntities(List<D> entities) {
+	public void setEntities(List entities) {
 		this.entities = entities;
 	}
 
@@ -145,11 +144,9 @@ public abstract class Page<T, D extends DTO<T>> {
 
 	@Override
 	public String toString() {
-		return "Page [start=" + start + ", offset=" + offset + ", count="
-				+ count + ", currentPage=" + currentPage + ", pageNb=" + pageNb
-				+ ", startPage=" + startPage + ", endPage=" + endPage
-				+ ", search=" + search + ", orderBy=" + orderBy + ", column="
-				+ column + "]";
+		return "Page [start=" + start + ", offset=" + offset + ", count=" + count + ", currentPage=" + currentPage
+				+ ", pageNb=" + pageNb + ", startPage=" + startPage + ", endPage=" + endPage + ", search=" + search
+				+ ", orderBy=" + orderBy + ", column=" + column + "]";
 	}
 
 }

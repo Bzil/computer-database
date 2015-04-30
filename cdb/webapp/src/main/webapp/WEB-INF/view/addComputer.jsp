@@ -42,13 +42,13 @@
                         </div>
                         <div class="form-group">
                             <spring:message code="select.company" var="company"/>
-                            <form:label path="company.id" for="company.id"><spring:message code="company"/></form:label>
-                            <form:select id="company.id" name="company.id" path="company.id" cssClass="form-control"
+                            <form:label path="companyId" for="companyId"><spring:message code="company"/></form:label>
+                            <form:select id="companyId" name="companyId" path="companyId" cssClass="form-control"
                                          multiple="false">
                                 <form:option value="0" label="${company}"/>
                                 <form:options items="${companies}" itemValue="id" itemLabel="name"/>
                             </form:select>
-                            <form:errors path="company.id" cssClass="has-error"/>
+                            <form:errors path="companyId" cssClass="has-error"/>
                         </div>
                     </fieldset>
                     <div class="actions pull-right">
