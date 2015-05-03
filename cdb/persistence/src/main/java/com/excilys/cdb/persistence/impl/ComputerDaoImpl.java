@@ -51,7 +51,9 @@ public class ComputerDaoImpl implements ComputerDao {
 	@Override
 	public Computer find(final int id) {
 		LOGGER.info("Find computer {}", id);
-		return ComputerJPA.from((ComputerJPA) sessionFactory.getCurrentSession().get(ComputerJPA.class, id));
+		ComputerJPA c = (ComputerJPA) sessionFactory.getCurrentSession().get(ComputerJPA.class, id);
+		LOGGER.info("Find computer JPA{}", c);
+		return ComputerJPA.from(c);
 	}
 
 	/*

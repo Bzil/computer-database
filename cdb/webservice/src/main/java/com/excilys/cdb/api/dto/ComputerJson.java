@@ -4,6 +4,9 @@ import java.time.format.DateTimeFormatter;
 
 import com.excilys.cdb.model.Computer;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class ComputerJson {
 
 	private int id;
@@ -72,7 +75,8 @@ public class ComputerJson {
 		} else {
 			computerView.discontinued = "";
 		}
-		if (computer.getCompany() != null) {
+		if (computer.getCompany() != null && computer.getCompany().getName() != null
+                && !computer.getCompany().getName().trim().isEmpty()) {
 			computerView.company = CompanyJson.to(computer.getCompany());
 		} else {
 			computerView.company = null;

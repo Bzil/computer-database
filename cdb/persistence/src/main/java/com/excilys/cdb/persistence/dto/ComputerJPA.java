@@ -12,7 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Entity
 @Table(name = "computer")
@@ -59,7 +62,7 @@ public class ComputerJPA {
 		computerJPA.introduced = computer.getIntroduced() != null ? Timestamp.valueOf(computer.getIntroduced()) : null;
 		computerJPA.discontinued = computer.getDiscontinued() != null ? Timestamp.valueOf(computer.getDiscontinued())
 				: null;
-		computerJPA.company = computer.getCompany() != null ? CompanyJPA.to(computer.getCompany()) : null;
+        computerJPA.company = (computer.getCompany() != null) ? CompanyJPA.to(computer.getCompany()) : null;
 		return computerJPA;
 	}
 
@@ -79,7 +82,8 @@ public class ComputerJPA {
 			builder.introduced(computerJPA.discontinued.toLocalDateTime());
 		}
 		if (computerJPA.company != null) {
-			builder.company(CompanyJPA.from(computerJPA.company));
+            Company company = CompanyJPA.from(computerJPA.company);
+			builder.company(company);
 		}
 		return builder.build();
 	}

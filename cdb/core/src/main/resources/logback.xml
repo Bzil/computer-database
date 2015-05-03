@@ -20,10 +20,10 @@
     </appender>
 
     <!-- Spring logger -->
-    <logger name="org.springframework" level="debug"/>
+    <logger name="org.springframework" level="info"/>
 
     <!-- Hibernate logger -->
-    <logger name="org.hibernate" level="debug"/>
+    <logger name="org.hibernate" level="info"/>
 
     <!-- Logback logger -->
 <!--     <logger name=" ch.qos.logback" level="off"/> -->

@@ -12,21 +12,22 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.excilys.cdb.model.Company;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Entity
 @Table(name = "company")
 public class CompanyJPA {
-
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	protected Integer id;
 
 	@Column(name = "name", nullable = true, length = 255)
-	private String name;
+    protected String name;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
-	private List<ComputerJPA> computers;
+    protected List<ComputerJPA> computers;
 
 	protected CompanyJPA() {
 	}
@@ -38,7 +39,7 @@ public class CompanyJPA {
 
 	@Override
 	public String toString() {
-		return "CompanyJPA{" + "id=" + id + ", name='" + name + '\'' + ", computers=" + computers + '}';
+		return String.format("CompanyJPA {id=%d, name='%s' }", id, name);
 	}
 
 	/**
@@ -55,11 +56,27 @@ public class CompanyJPA {
 	/**
 	 * Convert a Company from a CompanyJPA
 	 *
-	 * @param company
+	 * @param companyJPA
 	 *            must not be null
 	 * @return the corresponding Company
 	 */
-	public static Company from(CompanyJPA company) {
-		return Company.builder(company.id, company.name).build();
+	public static Company from(CompanyJPA companyJPA) {
+        return Company.builder().id(companyJPA.getId()).name(companyJPA.getName()).build();
 	}
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

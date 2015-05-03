@@ -103,8 +103,8 @@ public class Company implements Serializable {
 		this.name = name;
 	}
 
-	public static Builder builder(Integer id, String name) {
-		return new Builder(id, name);
+	public static Builder builder() {
+		return new Builder();
 	}
 
 	/*
@@ -167,10 +167,18 @@ public class Company implements Serializable {
 	public static class Builder {
 		private final Company c;
 
-		private Builder(Integer id, String name) {
+		private Builder() {
 			c = new Company();
+		}
+
+		public Builder id(Integer id) {
 			c.id = id;
+			return this;
+		}
+
+		public Builder name(String name) {
 			c.name = name;
+			return this;
 		}
 
 		public Company build() {

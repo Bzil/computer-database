@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Computer.
  */

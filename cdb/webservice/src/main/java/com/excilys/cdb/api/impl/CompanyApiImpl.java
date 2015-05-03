@@ -44,6 +44,7 @@ public class CompanyApiImpl implements CompanyApi {
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
 	public ResponseEntity<CompanyJson> getById(@PathVariable("id") Integer id) {
 		LOGGER.info("JSON to company {}", id);
+		LOGGER.info("{}", companyService.find(id));
 		final CompanyJson dto = CompanyJson.to(companyService.find(id));
 		return dto != null ? new ResponseEntity<>(dto, HttpStatus.CREATED) : new ResponseEntity<>(
 				HttpStatus.BAD_REQUEST);

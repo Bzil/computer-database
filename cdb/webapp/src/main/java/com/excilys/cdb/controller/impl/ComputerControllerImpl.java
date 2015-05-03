@@ -21,7 +21,6 @@ import com.excilys.cdb.controller.ComputerController;
 import com.excilys.cdb.controller.ControllerList;
 import com.excilys.cdb.controller.dto.CompanyView;
 import com.excilys.cdb.controller.dto.ComputerView;
-import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.page.ComputerPage;
 import com.excilys.cdb.service.CompanyService;
@@ -44,10 +43,6 @@ public class ComputerControllerImpl implements ComputerController {
 	/** The company service. */
 	@Autowired
 	private CompanyService companyService;
-
-	/** The mapper. */
-	@Autowired
-	private ComputerMapper mapper;
 
 	@Override
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)

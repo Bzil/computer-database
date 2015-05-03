@@ -2,6 +2,9 @@ package com.excilys.cdb.api.dto;
 
 import com.excilys.cdb.model.Company;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class CompanyJson {
 
 	private int id;
@@ -34,7 +37,7 @@ public class CompanyJson {
 	}
 
 	public static Company from(CompanyJson company) {
-		return Company.builder(company.id, company.name).build();
+		return Company.builder().id(company.id).name(company.name).build();
 	}
 
 }
