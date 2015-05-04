@@ -26,7 +26,6 @@
             <groupId>com.excilys</groupId>
             <artifactId>service</artifactId>
         </dependency>
-
         <!-- JACKSON -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
