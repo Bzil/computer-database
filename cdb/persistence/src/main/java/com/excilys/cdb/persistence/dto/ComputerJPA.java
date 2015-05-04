@@ -1,3 +1,7 @@
+/**
+ * 
+ * @author Basile
+ */
 package com.excilys.cdb.persistence.dto;
 
 import java.sql.Timestamp;
@@ -14,34 +18,48 @@ import javax.persistence.Table;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+/**
+ * The Class ComputerJPA.
+ */
 @Entity
 @Table(name = "computer")
 public class ComputerJPA {
 
+	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", unique = true, nullable = false)
 	protected Integer id;
 
+	/** The name. */
 	@Column(name = "name", nullable = true, length = 255)
 	protected String name;
 
+	/** The introduced. */
 	@Column(name = "introduced", nullable = true)
 	protected Timestamp introduced;
 
+	/** The discontinued. */
 	@Column(name = "discontinued", nullable = true)
 	protected Timestamp discontinued;
 
+	/** The company. */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "company_id")
 	protected CompanyJPA company;
 
+	/**
+	 * Instantiates a new computer jpa.
+	 */
 	protected ComputerJPA() {
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "ComputerJPA [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued="
@@ -49,11 +67,10 @@ public class ComputerJPA {
 	}
 
 	/**
-	 * Convert a Computer to the corresponding ComputerJPA
+	 * To.
 	 *
-	 * @param computer
-	 *            must not be null
-	 * @return the corresponding ComputerJPA
+	 * @param computer the computer
+	 * @return the computer jpa
 	 */
 	public static ComputerJPA to(Computer computer) {
 		final ComputerJPA computerJPA = new ComputerJPA();
@@ -62,16 +79,15 @@ public class ComputerJPA {
 		computerJPA.introduced = computer.getIntroduced() != null ? Timestamp.valueOf(computer.getIntroduced()) : null;
 		computerJPA.discontinued = computer.getDiscontinued() != null ? Timestamp.valueOf(computer.getDiscontinued())
 				: null;
-        computerJPA.company = (computer.getCompany() != null) ? CompanyJPA.to(computer.getCompany()) : null;
+		computerJPA.company = (computer.getCompany() != null) ? CompanyJPA.to(computer.getCompany()) : null;
 		return computerJPA;
 	}
 
 	/**
-	 * Convert a ComputerJPA to the corresponding Computer
+	 * From.
 	 *
-	 * @param computerJPA
-	 *            must not be null
-	 * @return the corresponding Computer
+	 * @param computerJPA the computer jpa
+	 * @return the computer
 	 */
 	public static Computer from(ComputerJPA computerJPA) {
 		final Computer.Builder builder = Computer.builder(computerJPA.name).id(computerJPA.id);
@@ -82,7 +98,7 @@ public class ComputerJPA {
 			builder.introduced(computerJPA.discontinued.toLocalDateTime());
 		}
 		if (computerJPA.company != null) {
-            Company company = CompanyJPA.from(computerJPA.company);
+			final Company company = CompanyJPA.from(computerJPA.company);
 			builder.company(company);
 		}
 		return builder.build();

@@ -1,3 +1,7 @@
+/**
+ * 
+ * @author Basile
+ */
 package com.excilys.cdb.controller;
 
 import org.slf4j.Logger;
@@ -8,11 +12,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * The Class UserController.
+ */
 @Controller
 public class UserController {
 
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
+	/**
+	 * Welcome page.
+	 *
+	 * @return the model and view
+	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView welcomePage() {
 		final ModelAndView model = new ModelAndView();
@@ -36,10 +49,8 @@ public class UserController {
 	/**
 	 * Login.
 	 *
-	 * @param error
-	 *            the error
-	 * @param logout
-	 *            the logout
+	 * @param error the error
+	 * @param logout the logout
 	 * @return the model and view
 	 */
 	@RequestMapping(value = "/connect", method = RequestMethod.GET)

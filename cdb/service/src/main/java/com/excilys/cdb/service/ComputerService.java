@@ -1,3 +1,7 @@
+/**
+ * 
+ * @author Basile
+ */
 package com.excilys.cdb.service;
 
 import java.util.List;
@@ -10,12 +14,8 @@ import com.excilys.cdb.sort.SortCriteria;
  */
 public interface ComputerService extends ServiceCommons<Computer> {
 
-	/**
-	 * Find.
-	 *
-	 * @param id
-	 *            the id
-	 * @return the computer
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.service.ServiceCommons#find(int)
 	 */
 	@Override
 	public Computer find(int id);
@@ -23,56 +23,43 @@ public interface ComputerService extends ServiceCommons<Computer> {
 	/**
 	 * Find.
 	 *
-	 * @param name
-	 *            the name
-	 * @return the computer dto
+	 * @param name the name
+	 * @param criteria the criteria
+	 * @return the list
 	 */
 	public List<Computer> find(String name, SortCriteria criteria);
 
 	/**
 	 * Find.
 	 *
-	 * @param name
-	 *            the name
-	 * @return the computer dto
+	 * @param name the name
+	 * @param start the start
+	 * @param offset the offset
+	 * @param criteria the criteria
+	 * @return the list
 	 */
 	public List<Computer> find(String name, int start, int offset, SortCriteria criteria);
 
-	/**
-	 * Find all.
-	 *
-	 * @return the list
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.service.ServiceCommons#findAll(com.excilys.cdb.sort.SortCriteria)
 	 */
 	@Override
 	public List<Computer> findAll(SortCriteria criteria);
 
-	/**
-	 * Find all.
-	 *
-	 * @param start
-	 *            the start
-	 * @param offset
-	 *            the offset
-	 * @return the list
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.service.ServiceCommons#findAll(int, int, com.excilys.cdb.sort.SortCriteria)
 	 */
 	@Override
 	public List<Computer> findAll(int start, int offset, SortCriteria criteria);
 
-	/**
-	 * Adds the.
-	 *
-	 * @param computer
-	 *            the computer
-	 * @return the computer
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.service.ServiceCommons#add(java.lang.Object)
 	 */
 	@Override
 	public Computer add(Computer computer);
 
-	/**
-	 * Delete.
-	 *
-	 * @param computer
-	 *            the computer
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.service.ServiceCommons#delete(java.lang.Object)
 	 */
 	@Override
 	public void delete(Computer computer);
@@ -80,17 +67,12 @@ public interface ComputerService extends ServiceCommons<Computer> {
 	/**
 	 * Delete by company id.
 	 *
-	 * @param companyId
-	 *            the company id
+	 * @param companyId the company id
 	 */
 	public void deleteByCompanyId(int companyId);
 
-	/**
-	 * Update.
-	 *
-	 * @param computer
-	 *            the computer
-	 * @return the computer
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.service.ServiceCommons#update(java.lang.Object)
 	 */
 	@Override
 	public Computer update(Computer computer);
@@ -98,16 +80,13 @@ public interface ComputerService extends ServiceCommons<Computer> {
 	/**
 	 * Save or update.
 	 *
-	 * @param computer
-	 *            the computer
-	 * @return the computer dto
+	 * @param computer the computer
+	 * @return the computer
 	 */
 	public Computer saveOrUpdate(Computer computer);
 
-	/**
-	 * Count.
-	 *
-	 * @return c
+	/* (non-Javadoc)
+	 * @see com.excilys.cdb.service.ServiceCommons#count()
 	 */
 	@Override
 	public long count();

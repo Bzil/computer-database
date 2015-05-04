@@ -1,3 +1,7 @@
+/**
+ * 
+ * @author Basile
+ */
 package com.excilys.cdb.model;
 
 import java.io.Serializable;
@@ -16,22 +20,16 @@ import javax.persistence.Table;
 @Table(name = "company")
 public class Company implements Serializable {
 
-	/**
-	 *
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Specific id of a company.
-	 */
+	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
 
-	/**
-	 * company name.
-	 */
+	/** The name. */
 	@Column(name = "name", nullable = true, length = 255)
 	private String name;
 
@@ -44,10 +42,8 @@ public class Company implements Serializable {
 	/**
 	 * Instantiates a new company.
 	 *
-	 * @param id
-	 *            the id
-	 * @param name
-	 *            the name
+	 * @param id the id
+	 * @param name the name
 	 */
 	public Company(int id, String name) {
 		super();
@@ -58,8 +54,7 @@ public class Company implements Serializable {
 	/**
 	 * Instantiates a new company.
 	 *
-	 * @param name
-	 *            the name
+	 * @param name the name
 	 */
 	public Company(String name) {
 		this(-1, name);
@@ -103,13 +98,18 @@ public class Company implements Serializable {
 		this.name = name;
 	}
 
+	/**
+	 * Builder.
+	 *
+	 * @return the builder
+	 */
 	public static Builder builder() {
 		return new Builder();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -123,7 +123,7 @@ public class Company implements Serializable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -153,7 +153,7 @@ public class Company implements Serializable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -165,22 +165,44 @@ public class Company implements Serializable {
 	 * The Class Builder.
 	 */
 	public static class Builder {
+
+		/** The c. */
 		private final Company c;
 
+		/**
+		 * Instantiates a new builder.
+		 */
 		private Builder() {
 			c = new Company();
 		}
 
+		/**
+		 * Id.
+		 *
+		 * @param id the id
+		 * @return the builder
+		 */
 		public Builder id(Integer id) {
 			c.id = id;
 			return this;
 		}
 
+		/**
+		 * Name.
+		 *
+		 * @param name the name
+		 * @return the builder
+		 */
 		public Builder name(String name) {
 			c.name = name;
 			return this;
 		}
 
+		/**
+		 * Builds the.
+		 *
+		 * @return the company
+		 */
 		public Company build() {
 			return c;
 		}

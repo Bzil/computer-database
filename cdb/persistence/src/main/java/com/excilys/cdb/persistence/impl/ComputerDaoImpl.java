@@ -1,3 +1,7 @@
+/**
+ * 
+ * @author Basile
+ */
 package com.excilys.cdb.persistence.impl;
 
 import java.util.List;
@@ -29,11 +33,10 @@ import com.excilys.cdb.sort.SortDirection;
 @Repository
 public class ComputerDaoImpl implements ComputerDao {
 
-	/**
-	 * The Constant LOGGER.
-	 */
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDaoImpl.class);
 
+	/** The session factory. */
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -45,20 +48,20 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#find(int)
 	 */
 	@Override
 	public Computer find(final int id) {
 		LOGGER.info("Find computer {}", id);
-		ComputerJPA c = (ComputerJPA) sessionFactory.getCurrentSession().get(ComputerJPA.class, id);
+		final ComputerJPA c = (ComputerJPA) sessionFactory.getCurrentSession().get(ComputerJPA.class, id);
 		LOGGER.info("Find computer JPA{}", c);
 		return ComputerJPA.from(c);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#find(java.lang.String,
 	 * com.excilys.cdb.util.sort.SortCriteria)
 	 */
@@ -83,6 +86,12 @@ public class ComputerDaoImpl implements ComputerDao {
 		return list.stream().map(ComputerJPA::from).collect(Collectors.toList());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.excilys.cdb.persistence.ComputerDao#find(java.lang.String, int,
+	 * int, com.excilys.cdb.sort.SortCriteria)
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Computer> find(final String name, final int start, final int offset, final SortCriteria sortCriteria) {
@@ -106,7 +115,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#findByCompanyId(int)
 	 */
 	@SuppressWarnings("unchecked")
@@ -121,7 +130,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * com.excilys.cdb.persistence.ComputerDao#create(com.excilys.cdb.model.
 	 * Computer)
@@ -136,7 +145,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * com.excilys.cdb.persistence.ComputerDao#update(com.excilys.cdb.model.
 	 * Computer)
@@ -150,7 +159,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * com.excilys.cdb.persistence.ComputerDao#delete(com.excilys.cdb.model.
 	 * Computer)
@@ -170,7 +179,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#deleteByCompanyId(int)
 	 */
 	@SuppressWarnings("unchecked")
@@ -185,7 +194,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#count()
 	 */
 	@Override
@@ -198,7 +207,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#findAll()
 	 */
 	@SuppressWarnings("unchecked")
@@ -218,7 +227,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.ComputerDao#findAll(int, int)
 	 */
 	@SuppressWarnings("unchecked")
@@ -237,6 +246,12 @@ public class ComputerDaoImpl implements ComputerDao {
 		return list.stream().map(ComputerJPA::from).collect(Collectors.toList());
 	}
 
+	/**
+	 * Gets the order.
+	 *
+	 * @param sortCriteria the sort criteria
+	 * @return the order
+	 */
 	private Order getOrder(SortCriteria sortCriteria) {
 		return (sortCriteria.getSortDirection() == SortDirection.ASC) ? Order.asc(sortCriteria.getColumn()) : Order
 				.desc(sortCriteria.getColumn());

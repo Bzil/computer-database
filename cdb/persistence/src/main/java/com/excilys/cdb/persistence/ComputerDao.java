@@ -1,5 +1,6 @@
-/*
- *
+/**
+ * 
+ * @author Basile
  */
 package com.excilys.cdb.persistence;
 
@@ -16,8 +17,7 @@ public interface ComputerDao {
 	/**
 	 * Find.
 	 *
-	 * @param id
-	 *            the id
+	 * @param id the id
 	 * @return the computer
 	 */
 	Computer find(int id);
@@ -25,31 +25,35 @@ public interface ComputerDao {
 	/**
 	 * Find.
 	 *
-	 * @param name
-	 *            the name
-	 * @param criteria
-	 *            the criteria
-	 * @return the computer
+	 * @param name the name
+	 * @param criteria the criteria
+	 * @return the list
 	 */
 	List<Computer> find(String name, SortCriteria criteria);
-
-	List<Computer> find(String name, int start, int offset,
-			SortCriteria criteria);
 
 	/**
 	 * Find.
 	 *
-	 * @param companyId
-	 *            the company id
-	 * @return the computer
+	 * @param name the name
+	 * @param start the start
+	 * @param offset the offset
+	 * @param criteria the criteria
+	 * @return the list
+	 */
+	List<Computer> find(String name, int start, int offset, SortCriteria criteria);
+
+	/**
+	 * Find by company id.
+	 *
+	 * @param companyId the company id
+	 * @return the list
 	 */
 	List<Computer> findByCompanyId(int companyId);
 
 	/**
 	 * Find all.
 	 *
-	 * @param criteria
-	 *            the criteria
+	 * @param criteria the criteria
 	 * @return the list
 	 */
 	List<Computer> findAll(SortCriteria criteria);
@@ -57,12 +61,9 @@ public interface ComputerDao {
 	/**
 	 * Find all.
 	 *
-	 * @param start
-	 *            the start
-	 * @param offset
-	 *            the offset
-	 * @param criteria
-	 *            the criteria
+	 * @param start the start
+	 * @param offset the offset
+	 * @param criteria the criteria
 	 * @return the list
 	 */
 	List<Computer> findAll(int start, int offset, SortCriteria criteria);
@@ -70,8 +71,7 @@ public interface ComputerDao {
 	/**
 	 * Creates the.
 	 *
-	 * @param computer
-	 *            the computer
+	 * @param computer the computer
 	 * @return the computer
 	 */
 	Computer create(Computer computer);
@@ -79,8 +79,7 @@ public interface ComputerDao {
 	/**
 	 * Update.
 	 *
-	 * @param computer
-	 *            the computer
+	 * @param computer the computer
 	 * @return the computer
 	 */
 	Computer update(Computer computer);
@@ -88,16 +87,14 @@ public interface ComputerDao {
 	/**
 	 * Delete.
 	 *
-	 * @param id
-	 *            the id
+	 * @param id the id
 	 */
 	void delete(int id);
 
 	/**
 	 * Delete by company id.
 	 *
-	 * @param companyId
-	 *            the company id
+	 * @param companyId the company id
 	 */
 	void deleteByCompanyId(int companyId);
 

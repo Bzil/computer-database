@@ -1,3 +1,7 @@
+/**
+ * 
+ * @author Basile
+ */
 package com.excilys.cdb.service.impl;
 
 import java.util.List;
@@ -14,24 +18,27 @@ import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.sort.SortCriteria;
 
 /**
- * The Enum ComputerServiceImpl.
+ * The Class ComputerServiceImpl.
  */
 @Service
 public class ComputerServiceImpl implements ComputerService {
 
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerServiceImpl.class);
-	/**
-	 * The dao.
-	 */
+	
+	/** The dao. */
 	@Autowired
 	private ComputerDao dao;;
 
+	/**
+	 * Instantiates a new computer service impl.
+	 */
 	public ComputerServiceImpl() {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.ComputerService#find(int)
 	 */
 	@Override
@@ -48,7 +55,7 @@ public class ComputerServiceImpl implements ComputerService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.ComputerService#find(String)
 	 */
 	@Override
@@ -60,7 +67,7 @@ public class ComputerServiceImpl implements ComputerService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.ComputerService#find(String)
 	 */
 	@Override
@@ -72,7 +79,7 @@ public class ComputerServiceImpl implements ComputerService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.ComputerService#findAll()
 	 */
 	@Override
@@ -84,7 +91,7 @@ public class ComputerServiceImpl implements ComputerService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.ComputerService#findAll(int, int)
 	 */
 	@Override
@@ -97,7 +104,7 @@ public class ComputerServiceImpl implements ComputerService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.service.ComputerService#add(com.excilys.cdb.model.Computer
 	 * )
@@ -115,7 +122,7 @@ public class ComputerServiceImpl implements ComputerService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.ComputerService#delete(int)
 	 */
 	@Override
@@ -127,7 +134,7 @@ public class ComputerServiceImpl implements ComputerService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.Service#delete(int)
 	 */
 	@Override
@@ -137,6 +144,11 @@ public class ComputerServiceImpl implements ComputerService {
 		dao.delete(id);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.excilys.cdb.service.ComputerService#deleteByCompanyId(int)
+	 */
 	@Override
 	@Transactional
 	public void deleteByCompanyId(final int companyId) {
@@ -146,7 +158,7 @@ public class ComputerServiceImpl implements ComputerService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.service.ComputerService#update(com.excilys.cdb.model.
 	 * Computer )
@@ -158,6 +170,13 @@ public class ComputerServiceImpl implements ComputerService {
 		return dao.update(computer);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.excilys.cdb.service.ComputerService#saveOrUpdate(com.excilys.cdb.
+	 * model.Computer)
+	 */
 	@Override
 	@Transactional
 	public Computer saveOrUpdate(final Computer computer) {
@@ -167,7 +186,7 @@ public class ComputerServiceImpl implements ComputerService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.ComputerService#count()
 	 */
 	@Override

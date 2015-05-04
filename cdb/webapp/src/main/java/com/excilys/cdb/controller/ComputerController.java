@@ -1,3 +1,7 @@
+/**
+ * 
+ * @author Basile
+ */
 package com.excilys.cdb.controller;
 
 import org.springframework.ui.Model;
@@ -13,20 +17,13 @@ public interface ComputerController {
 	/**
 	 * Gets the computer list.
 	 *
-	 * @param id
-	 *            the id
-	 * @param size
-	 *            the size
-	 * @param search
-	 *            the search
-	 * @param column
-	 *            the column
-	 * @param dir
-	 *            the dir
-	 * @param selection
-	 *            the selection
-	 * @param model
-	 *            the model
+	 * @param id the id
+	 * @param size the size
+	 * @param search the search
+	 * @param column the column
+	 * @param dir the dir
+	 * @param selection the selection
+	 * @param model the model
 	 * @return the computer list
 	 */
 	public String getComputerList(final Integer id, final Integer size, final String search, final String column,
@@ -35,12 +32,9 @@ public interface ComputerController {
 	/**
 	 * Load.
 	 *
-	 * @param id
-	 *            the id
-	 * @param computerDto
-	 *            the computer dto
-	 * @param model
-	 *            the model
+	 * @param id the id
+	 * @param computerDto the computer dto
+	 * @param model the model
 	 * @return the string
 	 */
 	public String load(final Integer id, ComputerView computerDto, Model model);
@@ -48,12 +42,9 @@ public interface ComputerController {
 	/**
 	 * Edits the.
 	 *
-	 * @param computerDto
-	 *            the computer dto
-	 * @param result
-	 *            the result
-	 * @param model
-	 *            the model
+	 * @param computerDto the computer dto
+	 * @param result the result
+	 * @param model the model
 	 * @return the string
 	 */
 	public String edit(ComputerView computerDto, BindingResult result, Model model);
@@ -61,8 +52,7 @@ public interface ComputerController {
 	/**
 	 * Delete.
 	 *
-	 * @param selection
-	 *            the selection
+	 * @param selection the selection
 	 * @return the string
 	 */
 	public String delete(String selection);

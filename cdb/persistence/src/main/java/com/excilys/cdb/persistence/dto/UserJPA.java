@@ -1,3 +1,7 @@
+/**
+ * 
+ * @author Basile
+ */
 package com.excilys.cdb.persistence.dto;
 
 import java.io.Serializable;
@@ -10,40 +14,30 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * The Class User.
+ * The Class UserJPA.
  */
 @Entity
 @Table(name = "user")
 public class UserJPA implements Serializable {
 
-	/**
-	 * The Constant serialVersionUID.
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * The id.
-	 */
+	/** The id. */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private int id;
 
-	/**
-	 * The username.
-	 */
+	/** The username. */
 	@Column(name = "username", unique = true, nullable = false)
 	private String username;
 
-	/**
-	 * The password.
-	 */
+	/** The password. */
 	@Column(name = "password", nullable = false)
 	private String password;
 
-	/**
-	 * The role.
-	 */
+	/** The role. */
 	@Column(name = "role", nullable = false)
 	private int role;
 
@@ -125,7 +119,7 @@ public class UserJPA implements Serializable {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -135,7 +129,7 @@ public class UserJPA implements Serializable {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -150,7 +144,7 @@ public class UserJPA implements Serializable {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

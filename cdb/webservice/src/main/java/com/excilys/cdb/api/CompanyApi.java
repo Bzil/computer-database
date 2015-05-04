@@ -1,3 +1,7 @@
+/**
+ *
+ * @author Basile
+ */
 package com.excilys.cdb.api;
 
 import java.util.List;
@@ -6,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 
 import com.excilys.cdb.api.dto.CompanyJson;
 
+/**
+ * The Interface CompanyApi.
+ */
 public interface CompanyApi {
 
 	/**
@@ -29,7 +36,7 @@ public interface CompanyApi {
 	 *
 	 * @param id
 	 *            the id
-	 * @return the response
+	 * @return the response entity
 	 */
 	ResponseEntity<CompanyJson> delete(Integer id);
 }

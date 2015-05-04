@@ -1,3 +1,7 @@
+/**
+ *
+ * @author Basile
+ */
 package com.excilys.cdb.service.impl;
 
 import java.util.List;
@@ -15,25 +19,25 @@ import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.sort.SortCriteria;
 
 /**
- * The Enum CompanyServiceImpl.
+ * The Class CompanyServiceImpl.
  */
 @Service
 public class CompanyServiceImpl implements CompanyService {
 
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CompanyServiceImpl.class);
 
-	/**
-	 * The dao.
-	 */
+	/** The company dao. */
 	@Autowired
 	private CompanyDao companyDao;
 
+	/** The computer dao. */
 	@Autowired
 	private ComputerDao computerDao;
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.CompanyService#find(int)
 	 */
 	@Override
@@ -49,7 +53,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.CompanyService#findAll()
 	 */
 	@Override
@@ -61,7 +65,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.CompanyService#findAll(int, int)
 	 */
 	@Override
@@ -73,7 +77,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.service.CompanyService#delete(com.excilys.cdb.model.Company
 	 * )
@@ -87,7 +91,7 @@ public class CompanyServiceImpl implements CompanyService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.service.Service#delete(int)
 	 */
 	@Override

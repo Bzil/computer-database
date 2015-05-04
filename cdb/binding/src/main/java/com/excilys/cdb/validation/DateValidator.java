@@ -1,3 +1,7 @@
+/**
+ * 
+ * @author Basile
+ */
 package com.excilys.cdb.validation;
 
 import java.util.Locale;
@@ -16,20 +20,15 @@ import com.excilys.cdb.annotation.Date;
  */
 public class DateValidator implements ConstraintValidator<Date, String> {
 
-	/** Pattern to match all en / fr date */
-	private static final Pattern DATE_PATTERN = Pattern
-			.compile("^(\\d{2})-(\\d{2})-(\\d{4})$");
+	/** The Constant DATE_PATTERN. */
+	private static final Pattern DATE_PATTERN = Pattern.compile("^(\\d{2})-(\\d{2})-(\\d{4})$");
 
-	/**
-	 * Binary who represent months with 31 day <br />
-	 * current bit : 1 0 1 0 1 1 0 1 0 1 0 1 0 <br />
-	 * 31-d months : D N O S A J J M A M F J /
-	 */
+	/** The Constant MONTHS. */
 	private static final int MONTHS = 0x15AA;
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * javax.validation.ConstraintValidator#initialize(java.lang.annotation.
 	 * Annotation)
@@ -40,7 +39,7 @@ public class DateValidator implements ConstraintValidator<Date, String> {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see javax.validation.ConstraintValidator#isValid(java.lang.Object,
 	 * javax.validation.ConstraintValidatorContext)
 	 */
@@ -53,12 +52,10 @@ public class DateValidator implements ConstraintValidator<Date, String> {
 		if (m.find()) {
 			final Locale locale = LocaleContextHolder.getLocale();
 			if (locale.equals(Locale.FRENCH)) {
-				return validate(Integer.parseInt(m.group(1)),
-						Integer.parseInt(m.group(2)),
+				return validate(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)),
 						Integer.parseInt(m.group(3)));
 			} else {
-				return validate(Integer.parseInt(m.group(2)),
-						Integer.parseInt(m.group(1)),
+				return validate(Integer.parseInt(m.group(2)), Integer.parseInt(m.group(1)),
 						Integer.parseInt(m.group(3)));
 			}
 		}
@@ -67,17 +64,11 @@ public class DateValidator implements ConstraintValidator<Date, String> {
 	}
 
 	/**
-	 * Validate the current date so it matches mySQL format
+	 * Validate.
 	 *
-	 * @See https://dev.mysql.com/worklog/task/?id=1872
-	 *      http://fr.wikipedia.org/wiki/Bug_de_l%27an_2038
-	 *
-	 * @param day
-	 *            the day
-	 * @param month
-	 *            the month
-	 * @param year
-	 *            the year
+	 * @param day the day
+	 * @param month the month
+	 * @param year the year
 	 * @return true, if successful
 	 */
 	protected boolean validate(int day, int month, int year) {

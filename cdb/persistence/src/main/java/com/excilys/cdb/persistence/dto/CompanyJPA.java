@@ -1,3 +1,7 @@
+/**
+ * 
+ * @author Basile
+ */
 package com.excilys.cdb.persistence.dto;
 
 import java.util.List;
@@ -12,71 +16,110 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.excilys.cdb.model.Company;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+/**
+ * The Class CompanyJPA.
+ */
 @Entity
 @Table(name = "company")
 public class CompanyJPA {
+
+	/** The id. */
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected Integer id;
 
+	/** The name. */
 	@Column(name = "name", nullable = true, length = 255)
-    protected String name;
+	protected String name;
 
+	/** The computers. */
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
-    protected List<ComputerJPA> computers;
+	protected List<ComputerJPA> computers;
 
+	/**
+	 * Instantiates a new company jpa.
+	 */
 	protected CompanyJPA() {
 	}
 
+	/**
+	 * Instantiates a new company jpa.
+	 *
+	 * @param id the id
+	 * @param name the name
+	 */
 	protected CompanyJPA(Integer id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return String.format("CompanyJPA {id=%d, name='%s' }", id, name);
 	}
 
 	/**
-	 * Convert a Company to a CompanyJPA
+	 * To.
 	 *
-	 * @param company
-	 *            must not be null
-	 * @return the corresponding CompanyJPA
+	 * @param company the company
+	 * @return the company jpa
 	 */
 	public static CompanyJPA to(Company company) {
 		return new CompanyJPA(company.getId(), company.getName());
 	}
 
 	/**
-	 * Convert a Company from a CompanyJPA
+	 * From.
 	 *
-	 * @param companyJPA
-	 *            must not be null
-	 * @return the corresponding Company
+	 * @param companyJPA the company jpa
+	 * @return the company
 	 */
 	public static Company from(CompanyJPA companyJPA) {
-        return Company.builder().id(companyJPA.getId()).name(companyJPA.getName()).build();
+		return Company.builder().id(companyJPA.getId()).name(companyJPA.getName()).build();
 	}
 
-    public Integer getId() {
-        return id;
-    }
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public Integer getId() {
+		return id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	/**
+	 * Sets the id.
+	 *
+	 * @param id
+	 *            the new id
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	/**
+	 * Sets the name.
+	 *
+	 * @param name
+	 *            the new name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 }

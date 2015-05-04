@@ -1,3 +1,7 @@
+/**
+ *
+ * @author Basile
+ */
 package com.excilys.cdb.model;
 
 import java.time.LocalDateTime;
@@ -9,29 +13,19 @@ import java.util.Locale;
  */
 public class Computer {
 
-	/**
-	 * Specific id of a computer.
-	 */
+	/** The id. */
 	private Integer id;
 
-	/**
-	 * The name.
-	 */
+	/** The name. */
 	private String name;
 
-	/**
-	 * The introduced.
-	 */
+	/** The introduced. */
 	private LocalDateTime introduced;
 
-	/**
-	 * The discontinued.
-	 */
+	/** The discontinued. */
 	private LocalDateTime discontinued;
 
-	/**
-	 * The compagny.
-	 */
+	/** The company. */
 	private Company company;
 
 	/**
@@ -42,7 +36,7 @@ public class Computer {
 	 * @param name
 	 *            the name
 	 * @param introduced
-	 *            the introducedgetTime
+	 *            the introduced
 	 * @param discontinued
 	 *            the discontinued
 	 * @param company
@@ -197,7 +191,7 @@ public class Computer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -208,7 +202,7 @@ public class Computer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -225,7 +219,7 @@ public class Computer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -283,7 +277,7 @@ public class Computer {
 		private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-uuuu HH:mm:ss",
 				new Locale("fr"));
 
-		/** The computer build. */
+		/** The c. */
 		private final Computer c;
 
 		/**
@@ -322,7 +316,7 @@ public class Computer {
 		}
 
 		/**
-		 * Discontinued. Expecting dd-mm-yyyy pattern
+		 * Discontinued.
 		 *
 		 * @param str
 		 *            the str
@@ -336,7 +330,7 @@ public class Computer {
 		}
 
 		/**
-		 * Introduced. Expecting dd-mm-yyyy pattern
+		 * Introduced.
 		 *
 		 * @param str
 		 *            the str

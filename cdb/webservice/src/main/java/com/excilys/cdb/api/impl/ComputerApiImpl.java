@@ -1,3 +1,7 @@
+/**
+ *
+ * @author Basile
+ */
 package com.excilys.cdb.api.impl;
 
 import java.net.URI;
@@ -28,23 +32,20 @@ import com.excilys.cdb.service.ComputerService;
 @RequestMapping(value = "api/computer", produces = "application/json")
 public class ComputerApiImpl implements ComputerApi {
 
-	/**
-	 * The Constant LOGGER.
-	 */
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerApiImpl.class);
 
-	/**
-	 * The computer service.
-	 */
+	/** The computer service. */
 	@Autowired
 	private ComputerService computerService;
 
+	/** The context. */
 	@Autowired
 	private ServletContext context;
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.api.ComputerApi#getById(java.lang.Integer)
 	 */
 	@Override
@@ -58,7 +59,7 @@ public class ComputerApiImpl implements ComputerApi {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.api.ComputerApi#getAll()
 	 */
 	@Override
@@ -73,7 +74,7 @@ public class ComputerApiImpl implements ComputerApi {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.api.ComputerApi#getByName(java.lang.String)
 	 */
 	@Override
@@ -88,7 +89,7 @@ public class ComputerApiImpl implements ComputerApi {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.api.ComputerApi#create(com.excilys.cdb.dto.ComputerJson)
 	 */
@@ -104,7 +105,7 @@ public class ComputerApiImpl implements ComputerApi {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.api.ComputerApi#update(com.excilys.cdb.dto.ComputerJson)
 	 */
@@ -119,7 +120,7 @@ public class ComputerApiImpl implements ComputerApi {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.api.ComputerApi#delete(java.lang.Integer)
 	 */
 	@Override

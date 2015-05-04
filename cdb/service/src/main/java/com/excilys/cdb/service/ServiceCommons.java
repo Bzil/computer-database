@@ -1,3 +1,7 @@
+/**
+ * 
+ * @author Basile
+ */
 package com.excilys.cdb.service;
 
 import java.util.List;
@@ -5,20 +9,16 @@ import java.util.List;
 import com.excilys.cdb.sort.SortCriteria;
 
 /**
- * The Interface Service.
+ * The Interface ServiceCommons.
  *
- * @param <T>
- *            the generic type
- * @param <D>
- *            the generic type
+ * @param <T> the generic type
  */
 public interface ServiceCommons<T> {
 
 	/**
 	 * Find.
 	 *
-	 * @param id
-	 *            the id
+	 * @param id the id
 	 * @return the t
 	 */
 	T find(int id);
@@ -26,6 +26,7 @@ public interface ServiceCommons<T> {
 	/**
 	 * Find all.
 	 *
+	 * @param criteria the criteria
 	 * @return the list
 	 */
 	List<T> findAll(SortCriteria criteria);
@@ -33,10 +34,9 @@ public interface ServiceCommons<T> {
 	/**
 	 * Find all.
 	 *
-	 * @param start
-	 *            the start
-	 * @param offset
-	 *            the offset
+	 * @param start the start
+	 * @param offset the offset
+	 * @param criteria the criteria
 	 * @return the list
 	 */
 	List<T> findAll(int start, int offset, SortCriteria criteria);
@@ -44,8 +44,7 @@ public interface ServiceCommons<T> {
 	/**
 	 * Adds the.
 	 *
-	 * @param t
-	 *            the t
+	 * @param t the t
 	 * @return the t
 	 */
 	default T add(final T t) {
@@ -55,24 +54,21 @@ public interface ServiceCommons<T> {
 	/**
 	 * Delete.
 	 *
-	 * @param t
-	 *            the t
+	 * @param t the t
 	 */
 	void delete(T t);
 
 	/**
 	 * Delete.
 	 *
-	 * @param id
-	 *            the id
+	 * @param id the id
 	 */
 	void delete(int id);
 
 	/**
 	 * Update.
 	 *
-	 * @param t
-	 *            the t
+	 * @param t the t
 	 * @return the t
 	 */
 	default T update(final T t) {
@@ -82,7 +78,7 @@ public interface ServiceCommons<T> {
 	/**
 	 * Count.
 	 *
-	 * @return c
+	 * @return the long
 	 */
 	default long count() {
 		throw new UnsupportedOperationException();

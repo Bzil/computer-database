@@ -1,3 +1,7 @@
+/**
+ * 
+ * @author Basile
+ */
 package com.excilys.cdb.persistence;
 
 import com.excilys.cdb.persistence.dto.UserJPA;
@@ -7,12 +11,12 @@ import com.excilys.cdb.persistence.dto.UserJPA;
  */
 public interface UserDao {
 
-    /**
-     * Find user by name.
-     *
-     * @param username the username
-     * @return the user
-     */
-    UserJPA findByName(String username);
+	/**
+	 * Find by name.
+	 *
+	 * @param username the username
+	 * @return the user jpa
+	 */
+	UserJPA findByName(String username);
 
 }

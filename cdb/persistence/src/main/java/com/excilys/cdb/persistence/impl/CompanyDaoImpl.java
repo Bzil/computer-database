@@ -1,3 +1,7 @@
+/**
+ * 
+ * @author Basile
+ */
 package com.excilys.cdb.persistence.impl;
 
 import java.util.List;
@@ -19,16 +23,22 @@ import com.excilys.cdb.persistence.dto.CompanyJPA;
 @Repository
 public class CompanyDaoImpl implements CompanyDao {
 
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDaoImpl.class);
+
+	/** The session factory. */
 	@Autowired
 	private SessionFactory sessionFactory;
 
+	/**
+	 * Instantiates a new company dao impl.
+	 */
 	private CompanyDaoImpl() {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.CompanyDao#find(int)
 	 */
 	@Override
@@ -39,7 +49,7 @@ public class CompanyDaoImpl implements CompanyDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * com.excilys.cdb.persistence.CompanyDao#delete(com.excilys.cdb.model.Compagny
 	 * )
@@ -55,7 +65,7 @@ public class CompanyDaoImpl implements CompanyDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.CompanyDao#findAll()
 	 */
 	@SuppressWarnings("unchecked")
@@ -67,7 +77,7 @@ public class CompanyDaoImpl implements CompanyDao {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.persistence.CompanyDao#findAll(int, int)
 	 */
 	@SuppressWarnings("unchecked")

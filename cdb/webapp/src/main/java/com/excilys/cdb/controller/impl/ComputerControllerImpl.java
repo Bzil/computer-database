@@ -1,3 +1,7 @@
+/**
+ *
+ * @author Basile
+ */
 package com.excilys.cdb.controller.impl;
 
 import java.util.Arrays;
@@ -44,6 +48,14 @@ public class ComputerControllerImpl implements ComputerController {
 	@Autowired
 	private CompanyService companyService;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.excilys.cdb.controller.ComputerController#getComputerList(java.lang
+	 * .Integer, java.lang.Integer, java.lang.String, java.lang.String,
+	 * java.lang.String, java.lang.String, org.springframework.ui.Model)
+	 */
 	@Override
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	public String getComputerList(@RequestParam(required = false) final Integer id,
@@ -96,6 +108,15 @@ public class ComputerControllerImpl implements ComputerController {
 		return ControllerList.DASHBOARD_VIEW;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.excilys.cdb.controller.ComputerController#load(java.lang.Integer,
+	 * com.excilys.cdb.controller.dto.ComputerView,
+	 * org.springframework.ui.Model)
+	 */
+	@Override
 	@RequestMapping(value = { "/edit", "/add" }, method = RequestMethod.GET)
 	public String load(@RequestParam(required = false) final Integer id,
 			@ModelAttribute("computerDto") ComputerView computerDto, Model model) {
@@ -117,6 +138,15 @@ public class ComputerControllerImpl implements ComputerController {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.excilys.cdb.controller.ComputerController#edit(com.excilys.cdb.controller
+	 * .dto.ComputerView, org.springframework.validation.BindingResult,
+	 * org.springframework.ui.Model)
+	 */
+	@Override
 	@RequestMapping(value = { "/edit", "/add" }, method = RequestMethod.POST)
 	public String edit(@Valid @ModelAttribute("computerDto") ComputerView computerDto, BindingResult result, Model model) {
 		LOGGER.info("add or edit  DTO {}", computerDto);
@@ -136,7 +166,7 @@ public class ComputerControllerImpl implements ComputerController {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.excilys.cdb.controller.ComputerController#delete(java.lang.String)
 	 */

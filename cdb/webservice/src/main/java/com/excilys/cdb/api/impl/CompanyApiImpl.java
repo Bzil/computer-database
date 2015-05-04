@@ -1,3 +1,7 @@
+/**
+ *
+ * @author Basile
+ */
 package com.excilys.cdb.api.impl;
 
 import java.util.List;
@@ -24,20 +28,16 @@ import com.excilys.cdb.service.CompanyService;
 @RequestMapping(value = "api/company", produces = "application/json")
 public class CompanyApiImpl implements CompanyApi {
 
-	/**
-	 * The Constant LOGGER.
-	 */
+	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CompanyApiImpl.class);
 
-	/**
-	 * The company service.
-	 */
+	/** The company service. */
 	@Autowired
 	private CompanyService companyService;
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.api.CompanyApi#getById(java.lang.Integer)
 	 */
 	@Override
@@ -52,7 +52,7 @@ public class CompanyApiImpl implements CompanyApi {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.api.CompanyApi#getAll()
 	 */
 	@Override
@@ -67,7 +67,7 @@ public class CompanyApiImpl implements CompanyApi {
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see com.excilys.cdb.api.CompanyApi#delete(java.lang.Integer)
 	 */
 	@Override
