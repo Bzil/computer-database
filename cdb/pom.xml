@@ -91,6 +91,17 @@
 
         <!-- Plugin -->
         <version.maven.assembly.plugin>2.5.3</version.maven.assembly.plugin>
+        <!-- Mockito-->
+        <mockito.version>1.10.19</mockito.version>
+
+        <!-- Assert J-->
+        <assertj.version>2.0.0</assertj.version>
+
+        <!-- H2 -->
+        <h2database.version>1.4.186</h2database.version>
+
+        <!-- Db unti -->
+        <excilys.dbunit.spring.version>1.4.0</excilys.dbunit.spring.version>
     </properties>
 
     <build>
@@ -239,7 +250,6 @@
                 <artifactId>spring-orm</artifactId>
                 <version>${spring.version}</version>
             </dependency>
-
             <!-- Spring security -->
             <dependency>
                 <groupId>org.springframework.security</groupId>
@@ -373,6 +383,7 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
                 <scope>test</scope>
             </dependency>
 
@@ -421,10 +432,45 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Test -->
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2database.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <version>${dbunit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.excilys.ebi.spring-dbunit</groupId>
+            <artifactId>spring-dbunit-test</artifactId>
+            <version>${excilys.dbunit.spring.version}</version>
         </dependency>
     </dependencies>
 </project>

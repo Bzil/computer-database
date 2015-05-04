@@ -68,6 +68,10 @@
             <artifactId>jcl-over-slf4j</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+        <dependency>
             <groupId>commons-logging</groupId>
             <!-- Empty jar for create a bridge -->
             <artifactId>commons-logging</artifactId>

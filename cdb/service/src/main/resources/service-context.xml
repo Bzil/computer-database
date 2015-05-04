@@ -14,7 +14,7 @@
   		http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 
-    <import resource="classpath:persitence-context.xml"/>
+    <import resource="classpath:persistence-context.xml"/>
     <import resource="classpath:binding-context.xml"/>
 
 

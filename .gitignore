@@ -32,3 +32,5 @@ RemoteSystemsTempFiles
 
 .idea
 *.iml
+
+.DS_Store
