@@ -37,7 +37,7 @@ public class CompanyApiImpl implements CompanyApi {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.api.CompanyApi#getById(java.lang.Integer)
 	 */
 	@Override
@@ -52,7 +52,7 @@ public class CompanyApiImpl implements CompanyApi {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.api.CompanyApi#getAll()
 	 */
 	@Override
@@ -67,7 +67,7 @@ public class CompanyApiImpl implements CompanyApi {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.excilys.cdb.api.CompanyApi#delete(java.lang.Integer)
 	 */
 	@Override

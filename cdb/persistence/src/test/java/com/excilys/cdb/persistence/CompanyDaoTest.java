@@ -4,6 +4,7 @@ import com.excilys.ebi.spring.dbunit.test.DataSet;
 import com.excilys.ebi.spring.dbunit.test.ExpectedDataSet;
 import com.excilys.ebi.spring.dbunit.test.RollbackTransactionalDataSetTestExecutionListener;
 import com.excilys.cdb.model.Company;
+import junit.framework.TestCase;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,7 +18,6 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,8 +27,9 @@ import java.util.List;
         TransactionalTestExecutionListener.class,
         RollbackTransactionalDataSetTestExecutionListener.class })
 @TransactionConfiguration
+
 @Transactional
-public class CompanyDaoTest {
+public class CompanyDaoTest extends TestCase {
         @Autowired
         CompanyDao companyDAO;
 
@@ -86,12 +87,11 @@ public class CompanyDaoTest {
 
                 // WHEN
                 try {
-                        companyDAO.find(-1);
-                        // THEN KO
-                        Assert.fail("must throw an exception because of illegal ID");
+                        Company c = companyDAO.find(-1);
+                        Assertions.assertThat(c).isNull();
                 } catch (Exception ex) {
                         // THEN OK
-                        Assertions.assertThat(ex).isInstanceOf(SQLException.class);
+                        Assertions.assertThat(ex).isInstanceOf(NullPointerException.class);
                 }
         }
 
@@ -129,18 +129,15 @@ public class CompanyDaoTest {
         }
 
         @Test
+        @DataSet("company_delete.xml")
+        @ExpectedDataSet("company_delete.xml")
         public void deleteWhenWrongIdThrowsException() {
                 // GIVEN
 
                 // WHEN
-                try {
                         companyDAO.delete(-1);
-                        // THEN KO
-                        Assert.fail("must throw an exception because of illegal ID");
-                } catch (Exception ex) {
-                        // THEN OK
-                        Assertions.assertThat(ex).isInstanceOf(SQLException.class);
-                }
+
+
         }
 
         @Test

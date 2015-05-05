@@ -82,7 +82,7 @@ public class CompanyJPA {
 	 * @return the company
 	 */
 	public static Company from(CompanyJPA companyJPA) {
-		return Company.builder().id(companyJPA.getId()).name(companyJPA.getName()).build();
+		return (companyJPA != null ) ? Company.builder().id(companyJPA.getId()).name(companyJPA.getName()).build() : null;
 	}
 
 	/**

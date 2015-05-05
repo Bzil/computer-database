@@ -90,6 +90,9 @@ public class ComputerJPA {
 	 * @return the computer
 	 */
 	public static Computer from(ComputerJPA computerJPA) {
+		if (computerJPA == null) {
+			return null;
+		}
 		final Computer.Builder builder = Computer.builder(computerJPA.name).id(computerJPA.id);
 		if (computerJPA.introduced != null) {
 			builder.introduced(computerJPA.introduced.toLocalDateTime());
